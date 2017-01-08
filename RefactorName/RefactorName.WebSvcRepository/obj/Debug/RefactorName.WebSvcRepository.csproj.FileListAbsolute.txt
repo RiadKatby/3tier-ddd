@@ -1,0 +1,4 @@
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.WebSvcRepository\bin\Debug\RefactorName.WebSvcRepository.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.WebSvcRepository\bin\Debug\RefactorName.WebSvcRepository.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.WebSvcRepository\obj\Debug\RefactorName.WebSvcRepository.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.WebSvcRepository\obj\Debug\RefactorName.WebSvcRepository.pdb

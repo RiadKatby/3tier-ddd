@@ -1,0 +1,5 @@
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.Core.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.Core.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.csprojResolveAssemblyReference.cache
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.pdb
