@@ -1,0 +1,5 @@
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Domain\bin\Debug\RefactorName.Domain.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Domain\bin\Debug\RefactorName.Domain.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Domain\obj\Debug\RefactorName.Domain.csprojResolveAssemblyReference.cache
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Domain\obj\Debug\RefactorName.Domain.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Domain\obj\Debug\RefactorName.Domain.pdb

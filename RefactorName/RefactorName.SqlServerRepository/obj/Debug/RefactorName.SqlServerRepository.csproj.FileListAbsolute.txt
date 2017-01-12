@@ -1,0 +1,4 @@
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.SqlServerRepository.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.SqlServerRepository.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.pdb
