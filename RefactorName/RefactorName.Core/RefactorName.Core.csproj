@@ -48,6 +48,7 @@
     <Compile Include="Workflow\Activity.cs" />
     <Compile Include="Workflow\ActivityType.cs" />
     <Compile Include="Workflow\Field.cs" />
+    <Compile Include="Workflow\FieldType.cs" />
     <Compile Include="Workflow\Group.cs" />
     <Compile Include="Workflow\Process.cs" />
     <Compile Include="Workflow\Request.cs" />
@@ -58,6 +59,12 @@
     <Compile Include="Workflow\StateField.cs" />
     <Compile Include="Workflow\StateType.cs" />
     <Compile Include="Workflow\Transition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RefactorName.GraphDiff\RefactorName.GraphDiff.csproj">
+      <Project>{438efb89-7edd-499e-9b80-ad7a7d4cf21d}</Project>
+      <Name>RefactorName.GraphDiff</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

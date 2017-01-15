@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefactorName.SqlServerRepos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefactorName.WebSvcRepository", "RefactorName.WebSvcRepository\RefactorName.WebSvcRepository.csproj", "{CD6B8484-1970-47A6-A86B-7DBAF3F0AECA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefactorName.GraphDiff", "RefactorName.GraphDiff\RefactorName.GraphDiff.csproj", "{438EFB89-7EDD-499E-9B80-AD7A7D4CF21D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{CD6B8484-1970-47A6-A86B-7DBAF3F0AECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD6B8484-1970-47A6-A86B-7DBAF3F0AECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD6B8484-1970-47A6-A86B-7DBAF3F0AECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{438EFB89-7EDD-499E-9B80-AD7A7D4CF21D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438EFB89-7EDD-499E-9B80-AD7A7D4CF21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438EFB89-7EDD-499E-9B80-AD7A7D4CF21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438EFB89-7EDD-499E-9B80-AD7A7D4CF21D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,9 @@
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\RefactorName.GraphDiff.dll.config
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\RefactorName.GraphDiff.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\RefactorName.GraphDiff.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\EntityFramework.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\EntityFramework.xml
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\obj\Debug\RefactorName.GraphDiff.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.GraphDiff\obj\Debug\RefactorName.GraphDiff.pdb
