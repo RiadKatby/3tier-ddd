@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,6 +42,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Workflow\Action.cs" />
+    <Compile Include="Workflow\ActionType.cs" />
+    <Compile Include="Workflow\Activity.cs" />
+    <Compile Include="Workflow\ActivityType.cs" />
+    <Compile Include="Workflow\Field.cs" />
+    <Compile Include="Workflow\Group.cs" />
+    <Compile Include="Workflow\Process.cs" />
+    <Compile Include="Workflow\Request.cs" />
+    <Compile Include="Workflow\RequestAction.cs" />
+    <Compile Include="Workflow\RequestData.cs" />
+    <Compile Include="Workflow\RequestNote.cs" />
+    <Compile Include="Workflow\State.cs" />
+    <Compile Include="Workflow\StateField.cs" />
+    <Compile Include="Workflow\StateType.cs" />
+    <Compile Include="Workflow\Transition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
