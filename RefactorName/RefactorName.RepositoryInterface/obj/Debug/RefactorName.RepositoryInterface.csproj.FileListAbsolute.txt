@@ -1,4 +1,13 @@
-C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.RepositoryInterface.dll
-C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.RepositoryInterface.pdb
-C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.dll
-C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.csprojResolveAssemblyReference.cache
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.RepositoryInterface.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.RepositoryInterface.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.GraphDiff.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\EntityFramework.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.Core.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.GraphDiff.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\EntityFramework.xml
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.pdb
