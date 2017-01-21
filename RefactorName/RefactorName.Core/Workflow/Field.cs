@@ -37,5 +37,15 @@ namespace RefactorName.Core.Workflow
         /// Gets length of this <see cref="Field"/> object.
         /// </summary>
         public int Length { get; private set; }
+
+        public Field() { }
+
+        public Field(string name, FieldType fieldType, int length)
+        {
+            this.Name = name;
+            this.Type = fieldType;
+            this.Length = length;
+        }
+
     }
 }

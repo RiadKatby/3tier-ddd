@@ -102,5 +102,29 @@ namespace RefactorName.Core.Workflow
 
             return this;
         }
+
+        /// <summary>
+        /// Add <see cref="Action"/> that would be executed when this <see cref="Transition"/> is followed.
+        /// </summary>
+        /// <param name="action"><see cref="Action"/> object to be added.</param>
+        /// <returns>Current instance of <see cref="Transition"/> object.</returns>
+        public Transition AddActon(Action action)
+        {
+            this.Actions.Add(action);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Delete <see cref="Action"/> from those which will be executed when this <see cref="Transition"/> is going to be followed.
+        /// </summary>
+        /// <param name="action"><see cref="Action"/> object to delete.</param>
+        /// <returns>Current instance of <see cref="Transition"/> object.</returns>
+        public Transition DeleteAction(Action action)
+        {
+            this.Actions.Remove(action);
+
+            return this;
+        }
     }
 }

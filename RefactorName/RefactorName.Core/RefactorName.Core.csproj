@@ -86,7 +86,9 @@
       <Name>RefactorName.GraphDiff</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Workflow\WorkflowClassDiagram.cd" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Assemblies\MCI.Mvc.Validation.Core.dll" />
   </ItemGroup>
