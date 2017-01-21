@@ -23,5 +23,10 @@ namespace RefactorName.Core.Workflow
         public Action Action { get; private set; }
 
         public Transition Transition { get; private set; }
+
+        /// <summary>
+        /// Instanciate empty <see cref="RequestAction"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public RequestAction() { }
     }
 }

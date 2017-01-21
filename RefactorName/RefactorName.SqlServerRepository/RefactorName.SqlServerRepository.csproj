@@ -60,6 +60,10 @@
     <Compile Include="GenericImplementation\GenericQueryRepository.cs" />
     <Compile Include="GenericImplementation\GenericRepository.cs" />
     <Compile Include="GenericImplementation\UnitOfWork.cs" />
+    <Compile Include="Migrations\201701211140566_InitializeDatabase.cs" />
+    <Compile Include="Migrations\201701211140566_InitializeDatabase.Designer.cs">
+      <DependentUpon>201701211140566_InitializeDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +90,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Identity\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201701211140566_InitializeDatabase.resx">
+      <DependentUpon>201701211140566_InitializeDatabase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

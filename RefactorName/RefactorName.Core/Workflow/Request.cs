@@ -25,5 +25,10 @@ namespace RefactorName.Core.Workflow
         public IList<User> Stakeholders { get; private set; }
 
         public IList<RequestAction> History { get; private set; }
+
+        /// <summary>
+        /// Instanciate empty <see cref="Request"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public Request(){  }
     }
 }

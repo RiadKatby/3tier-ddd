@@ -55,5 +55,10 @@ namespace RefactorName.Core.Workflow
 
         [Owned]
         public IList<Transition> Transitions { get; private set; }
+
+        /// <summary>
+        /// Instanciate empty <see cref="Process"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public Process() { } 
     }
 }

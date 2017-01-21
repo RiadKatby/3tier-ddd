@@ -16,3 +16,4 @@ D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\EntityFramework.
 D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.dll
 D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.pdb
 D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\MCI.Mvc.Validation.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.csprojResolveAssemblyReference.cache

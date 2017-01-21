@@ -19,5 +19,13 @@ namespace RefactorName.Core.Workflow
         public int ValueIndex { get; private set; }
 
         public Field Field { get; private set; }
+
+        /// <summary>
+        /// Instanciate empty <see cref="RequestData"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public RequestData()
+        {
+
+        }
     }
 }

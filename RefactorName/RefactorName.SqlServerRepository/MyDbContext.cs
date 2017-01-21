@@ -5,6 +5,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using RefactorName.Core;
+using RefactorName.Core.Workflow;
 
 namespace RefactorName.SqlServerRepository
 {
@@ -22,21 +23,51 @@ namespace RefactorName.SqlServerRepository
         //public DbSet<IdentityRoleClaim> RoleClaims { get; set; }
         #endregion
 
+        #region Entities
+        public DbSet<Process> Process { get; set; }
+
+        public DbSet<State> State { get; set; }
+        public DbSet<StateType> StateType { get; set; }
+
+        public DbSet<Transition> Transition { get; set; }
+
+
+        public DbSet<Field> Field { get; set; }
+        public DbSet<FieldType> FieldType { get; set; }
+        public DbSet<StateField> StateField { get; set; }
+
+        public DbSet<Core.Workflow.Action> Action { get; set; }
+        public DbSet<ActionType> ActionType { get; set; }
+
+        public DbSet<Activity> Activity { get; set; }
+        public DbSet<ActivityType> ActivityType { get; set; }
+
+        public DbSet<Request> Request { get; set; }
+        public DbSet<RequestAction> RequestAction { get; set; }
+        public DbSet<RequestData> RequestData { get; set; }
+        public DbSet<RequestNote> RequestNote { get; set; }
+
+        public DbSet<Group> Group { get; set; }
+
+
+        #endregion
+        public DbSet<User> Users { get; set; }
+
         //public DbSet<IdentityUser> Users { get; set; }
 
-        public MyDbContext() : base("CnnStr")
+        public MyDbContext() : base("DefaultConnection")
         {
             base.Configuration.ProxyCreationEnabled = false;
             base.Configuration.ValidateOnSaveEnabled = false;
 
             var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
-#if DEBUG
+            #if DEBUG
             Database.Log = new Action<string>(s =>
             {
                 string str = s.Length > 32766 ? s.Substring(0, 30000) : s;
                 System.Diagnostics.Debug.WriteLine("{0}", (object)str);
             });
-#endif
+            #endif
             Database.SetInitializer<MyDbContext>(new CreateDatabaseIfNotExists<MyDbContext>());
         }
 
@@ -82,6 +113,10 @@ namespace RefactorName.SqlServerRepository
 
 
             #endregion
+
+            modelBuilder.Entity<State>().HasRequired(c => c.Fields).WithMany().WillCascadeOnDelete(false);
+            modelBuilder.Entity<RequestAction>().HasRequired(c => c.Transition).WithMany().WillCascadeOnDelete(false);
+
 
             base.OnModelCreating(modelBuilder);
         }

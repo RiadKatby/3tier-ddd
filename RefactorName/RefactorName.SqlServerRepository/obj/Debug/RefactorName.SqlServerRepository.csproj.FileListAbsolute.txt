@@ -16,3 +16,5 @@ D:\Solutions\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\E
 D:\Solutions\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\Microsoft.AspNet.Identity.Core.xml
 D:\Solutions\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.dll
 D:\Solutions\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.Migrations.InitializeDatabase.resources
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.csproj.GenerateResource.Cache

@@ -21,5 +21,13 @@ namespace RefactorName.Core.Workflow
         public State State { get; private set; }
 
         public User User { get; private set; }
+
+        /// <summary>
+        /// Instanciate empty <see cref="RequestNote"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public RequestNote()
+        {
+
+        }
     }
 }
