@@ -16,7 +16,7 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets identity number of <see cref="State"/> object.
         /// </summary>
-        public int StateId { get; private set; }
+        public int StateId { get;  set; }
 
         /// <summary>
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="State"/>.
@@ -58,12 +58,18 @@ namespace RefactorName.Core.Workflow
         [Owned]
         public IList<StateField> Fields { get; private set; }
 
+        public IList<Transition> Outgoing { get; private set; }
+
+        public IList<Transition> Ingoing { get; private set; }
+
         /// <summary>
         /// Instanciate empty <see cref="State"/> object, this constructor used by infrastrcutre libraries only.
         /// </summary>
         public State()
         {
             this.Activities = new List<Activity>();
+            this.Outgoing = new List<Transition>();
+            this.Ingoing = new List<Transition>();
         }
 
         /// <summary>
@@ -131,6 +137,11 @@ namespace RefactorName.Core.Workflow
             this.Fields.Remove(stateFiled);
 
             return this;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

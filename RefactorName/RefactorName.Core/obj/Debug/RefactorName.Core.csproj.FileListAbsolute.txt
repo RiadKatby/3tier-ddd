@@ -7,3 +7,5 @@ C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\EntityFramework.dll
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.GraphDiff.pdb
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\EntityFramework.xml
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\Microsoft.AspNet.Identity.Core.xml

@@ -2,3 +2,15 @@ C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerReposi
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.SqlServerRepository.pdb
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.dll
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.SqlServerRepository.dll.config
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\EntityFramework.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.Core.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.GraphDiff.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.Core.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\EntityFramework.xml
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\bin\Debug\RefactorName.GraphDiff.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.SqlServerRepository\obj\Debug\RefactorName.SqlServerRepository.csprojResolveAssemblyReference.cache

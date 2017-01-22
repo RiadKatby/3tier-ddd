@@ -15,7 +15,7 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets identity number of <see cref="Transition"/> object.
         /// </summary>
-        public int TransitionId { get; private set; }
+        public int TransitionId { get; set; }
 
         /// <summary>
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="Transition"/>.
@@ -62,6 +62,7 @@ namespace RefactorName.Core.Workflow
         public Transition()
         {
             this.Activities = new List<Activity>();
+            this.Actions = new List<Action>();
         }
 
         /// <summary>
@@ -101,6 +102,21 @@ namespace RefactorName.Core.Workflow
             this.Activities.Remove(activity);
 
             return this;
+        }
+
+        public override bool Equals(object obj)
+        {
+            Transition entity = obj as Transition;
+
+            if (entity == null) return false;
+            if (entity.TransitionId != this.TransitionId) return false;
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}:[{1}] -> [{2}]", string.Join(", ", Actions.Select(x => x.Name)), CurrentState.Name, NextState.Name);
         }
     }
 }

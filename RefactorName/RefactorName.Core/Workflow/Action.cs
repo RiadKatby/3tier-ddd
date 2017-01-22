@@ -13,10 +13,12 @@ namespace RefactorName.Core.Workflow
     /// </summary>
     public class Action
     {
+        public static readonly Action Submit = new Action("Submit Application", "Submitting new application", ActionType.Approve) { ActionId = 1 };
+
         /// <summary>
         /// Gets identity number of <see cref="Action"/> object.
         /// </summary>
-        public int ActionId { get; private set; }
+        public int ActionId { get;  set; }
 
         /// <summary>
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="Action"/>.
@@ -45,6 +47,11 @@ namespace RefactorName.Core.Workflow
         /// </summary>
         [Associated]
         public ActionType ActionType { get; private set; }
+
+        /// <summary>
+        /// Gets all <see cref="Transition"/>s that may be followed as a result of performing this <see cref="Action"/>.
+        /// </summary>
+        public IList<Transition> Transitions { get; private set; }
 
         /// <summary>
         /// Instanciate empty <see cref="Action"/> object, this constructor used by infrastrcutre libraries only.
@@ -82,6 +89,21 @@ namespace RefactorName.Core.Workflow
             this.ActionTypeId = actionType.ActionTypeId;
 
             return this;
+        }
+
+        public override bool Equals(object obj)
+        {
+            Action entity = obj as Action;
+
+            if (entity == null) return false;
+            if (entity.ActionId != this.ActionId) return false;
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }
