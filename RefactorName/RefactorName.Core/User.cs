@@ -31,5 +31,10 @@ namespace RefactorName.Core
         public string Email { get; set; }
         public object PasswordHash { get; set; }
         public object PhoneNumber { get; set; }
+
+        public User()
+        {
+
+        }
     }
 }

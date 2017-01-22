@@ -66,5 +66,68 @@ namespace RefactorName.Core.Workflow
         /// </summary>
         [Owned]
         public IList<Transition> Transitions { get; private set; }
+
+        /// <summary>
+        /// Instanciate empty <see cref="Process"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public Process()
+        {
+            States = new List<State>();
+            Groups = new List<Group>();
+            Admins = new List<User>();
+            Actions = new List<Action>();
+            Activities = new List<Activity>();
+            Transitions = new List<Transition>();
+            Fields = new List<Field>();
+        }
+
+        /// <summary>
+        /// Instanciate empty <see cref="Process"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        /// <param name="name"></param>
+        public Process(string name, int userId) : this()
+        {
+            this.Name = name;
+            States = new List<State>();
+            UserId = userId;
+        }
+
+        // Methods
+
+        public Process AddState(State state)
+        {
+            this.States.Add(state);
+            return this;
+        }
+
+        public Process AddGroup(Group group)
+        {
+            this.Groups.Add(group);
+            return this;
+        }
+
+        public Process AddAction(Action action)
+        {
+            this.Actions.Add(action);
+            return this;
+        }
+
+        public Process AddActivity(Activity activity)
+        {
+            this.Activities.Add(activity);
+            return this;
+        }
+
+        public Process AddTransition(Transition transition)
+        {
+            this.Transitions.Add(transition);
+            return this;
+        }
+
+        public Process AddField(Field field)
+        {
+            this.Fields.Add(field);
+            return this;
+        }
     }
 }

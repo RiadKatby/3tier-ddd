@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RefactorName.Core.Workflow.Transition">
+    <Position X="12.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIICAAAEAAAAABCAAAABAFAAAAAAAAJAAAAI=</HashCode>
+      <FileName>Workflow\Transition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.Action" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQACAAAAAAgAAAAAAAAAAQAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workflow\Action.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.ActionType" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAgAAAAAQACAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Workflow\ActionType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.Activity" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAEAAAAAAAAQAAAAAEAAEAAAAAAgAAAA=</HashCode>
+      <FileName>Workflow\Activity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.ActivityType" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAGAAAAEAAIAAA=</HashCode>
+      <FileName>Workflow\ActivityType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.Field" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAARAAAAAEAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Workflow\Field.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.FieldType" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAgAAAAAQAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Workflow\FieldType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.Group" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAAAAAAAAAAAASAAQAAEAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Workflow\Group.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.Process">
+    <Position X="14.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAEIACAAAAAAAAAAQwAAAAgEAIAAAAADIAgiAA=</HashCode>
+      <FileName>Workflow\Process.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.Request">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAQAAAAAAAAAACAACBAAAQCCAAAAAAA=</HashCode>
+      <FileName>Workflow\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.RequestAction">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAACAAAAAAAAAQAEAAAAAAAAABBAAAAAAAAAAAAAAY=</HashCode>
+      <FileName>Workflow\RequestAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.RequestData">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACABAAAQAAAAAAAACAAAAAAAAAAAgAAAAgAA=</HashCode>
+      <FileName>Workflow\RequestData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.RequestNote">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAQAAAAAQAAAAQAAgAAAAAAAAAAAAABAEAAAA=</HashCode>
+      <FileName>Workflow\RequestNote.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.State">
+    <Position X="14" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAEQACgAAEAAAAAAAQAAAAAEAAAAAAAAIDAgAA=</HashCode>
+      <FileName>Workflow\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.StateField">
+    <Position X="8.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAASAAAAAAAAAAAIAAgAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Workflow\StateField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RefactorName.Core.Workflow.StateType">
+    <Position X="10.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAIAAAAAAAYAAAAIAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Workflow\StateType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

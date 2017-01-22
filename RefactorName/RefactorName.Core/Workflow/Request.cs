@@ -44,10 +44,12 @@ namespace RefactorName.Core.Workflow
         /// </summary>
         public User UserRequested { get; private set; }
 
+        
         /// <summary>
         /// Gets current <see cref="State"/> object.
         /// </summary>
-        public State CurrentState { get; private set; }
+		[Required]        
+		public State CurrentState { get; private set; }
 
         /// <summary>
         /// Gets all highly-variable set of data that pertains to this <see cref="Request"/>.
@@ -133,15 +135,12 @@ namespace RefactorName.Core.Workflow
         {
             return string.Format("Title={0}, CurrentState={1}", Title, CurrentState.Name);
         }
+
+        /// <summary>
+        /// Instanciate empty <see cref="Request"/> object, this constructor used by infrastrcutre libraries only.
+        /// </summary>
+        public Request(){  }
     }
 
-    public class Client
-    {
 
-
-        public void Test()
-        {
-
-        }
-    }
 }

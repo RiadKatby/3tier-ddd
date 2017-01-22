@@ -1,0 +1,4 @@
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.RepositoryInterface.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\bin\Debug\RefactorName.RepositoryInterface.pdb
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.dll
+C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.RepositoryInterface\obj\Debug\RefactorName.RepositoryInterface.pdb
