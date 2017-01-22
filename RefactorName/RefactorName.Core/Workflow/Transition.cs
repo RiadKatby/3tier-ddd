@@ -15,7 +15,7 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets identity number of <see cref="Transition"/> object.
         /// </summary>
-        public int TransitionId { get; private set; }
+        public int TransitionId { get; set; }
 
         /// <summary>
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="Transition"/>.
@@ -62,6 +62,7 @@ namespace RefactorName.Core.Workflow
         public Transition()
         {
             this.Activities = new List<Activity>();
+            this.Actions = new List<Action>();
         }
 
         /// <summary>
@@ -103,28 +104,19 @@ namespace RefactorName.Core.Workflow
             return this;
         }
 
-        /// <summary>
-        /// Add <see cref="Action"/> that would be executed when this <see cref="Transition"/> is followed.
-        /// </summary>
-        /// <param name="action"><see cref="Action"/> object to be added.</param>
-        /// <returns>Current instance of <see cref="Transition"/> object.</returns>
-        public Transition AddActon(Action action)
+        public override bool Equals(object obj)
         {
-            this.Actions.Add(action);
+            Transition entity = obj as Transition;
 
-            return this;
+            if (entity == null) return false;
+            if (entity.TransitionId != this.TransitionId) return false;
+
+            return true;
         }
 
-        /// <summary>
-        /// Delete <see cref="Action"/> from those which will be executed when this <see cref="Transition"/> is going to be followed.
-        /// </summary>
-        /// <param name="action"><see cref="Action"/> object to delete.</param>
-        /// <returns>Current instance of <see cref="Transition"/> object.</returns>
-        public Transition DeleteAction(Action action)
+        public override string ToString()
         {
-            this.Actions.Remove(action);
-
-            return this;
+            return string.Format("{0}:[{1}] -> [{2}]", string.Join(", ", Actions.Select(x => x.Name)), CurrentState.Name, NextState.Name);
         }
     }
 }
