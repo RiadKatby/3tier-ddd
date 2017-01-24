@@ -43,7 +43,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workflow\ProcessService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RefactorName.Core\RefactorName.Core.csproj">
+      <Project>{6923f1e7-e470-42b1-a24a-32693ca127f4}</Project>
+      <Name>RefactorName.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

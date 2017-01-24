@@ -9,3 +9,15 @@ C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\EntityFramework.xml
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\Microsoft.AspNet.Identity.Core.dll
 C:\Users\mkatby\Source\Repos\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.csprojResolveAssemblyReference.cache
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\obj\Debug\RefactorName.Core.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.Core.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\MCI.Mvc.Validation.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.GraphDiff.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\EntityFramework.dll
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\RefactorName.GraphDiff.pdb
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Solutions\3tier-ddd\RefactorName\RefactorName.Core\bin\Debug\EntityFramework.xml

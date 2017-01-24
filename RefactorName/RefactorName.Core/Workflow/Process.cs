@@ -89,7 +89,6 @@ namespace RefactorName.Core.Workflow
         {
             this.Name = name;
             States = new List<State>();
-            UserId = userId;
         }
 
         // Methods

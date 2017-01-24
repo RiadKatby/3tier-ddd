@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7382B4C2-DEB2-41AC-8BEC-FD0BA063C470}</ProjectGuid>
+    <ProjectGuid>{DC02110D-9F36-4E62-82D3-6D4E859482ED}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.SqlServerRepository</RootNamespace>

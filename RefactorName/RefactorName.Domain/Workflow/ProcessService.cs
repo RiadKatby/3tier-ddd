@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RefactorName.Core.Workflow;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,16 @@ namespace RefactorName.Domain.Workflow
 {
     public class ProcessService
     {
+        //public static
 
+        public ProcessService()
+        {
+
+        }
+
+        public Process Create(Process entity)
+        {
+            return entity;
+        }
     }
 }
