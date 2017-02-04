@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.WebApp.Models
+namespace RefactorName.WebApp.Areas.Workflow.Models
 {
     /// <summary>
     /// Activities are things that can happen as a result of a <see cref="Request"/> entering a <see cref="State"/> or following a <see cref="Transition"/>.

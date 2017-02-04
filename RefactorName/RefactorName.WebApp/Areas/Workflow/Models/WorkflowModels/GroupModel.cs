@@ -1,11 +1,12 @@
-﻿using System;
+﻿using RefactorName.WebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.WebApp.Models
+namespace RefactorName.WebApp.Areas.Workflow.Models
 {
     /// <summary>
     /// Group is a collection of Users that perform related functions.

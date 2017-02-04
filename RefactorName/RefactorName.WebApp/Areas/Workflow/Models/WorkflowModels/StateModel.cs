@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.WebApp.Models
+namespace RefactorName.WebApp.Areas.Workflow.Models
 {
     /// <summary>
     /// A State is a position in the <see cref="Process"/> that a given <see cref="Request"/> can be in at any given moment. 

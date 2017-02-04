@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.WebApp.Models
+namespace RefactorName.WebApp.Areas.Workflow.Models
 {
     /// <summary>
     /// Fields that may filled within the <see cref="Request"/> through out <see cref="Process"/>.
@@ -29,7 +29,8 @@ namespace RefactorName.WebApp.Models
         /// <summary>
         /// Gets <see cref="FieldType"/> of this <see cref="Field"/> object.
         /// </summary>
-        public FieldTypeModel Type { get; private set; }
+        //public FieldTypeModel Type { get; private set; }
+        public int Type { get; private set; }
 
         /// <summary>
         /// Gets length of this <see cref="Field"/> object.

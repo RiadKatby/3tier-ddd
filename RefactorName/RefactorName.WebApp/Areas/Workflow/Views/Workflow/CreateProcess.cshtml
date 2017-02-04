@@ -1,0 +1,59 @@
+﻿@model ProcessModel
+
+@{
+    ViewBag.Title = "CreateProcss";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<fieldset>
+    @using (Html.BeginForm("CreateProcess", "Workflow"))
+    {
+        @Html.AntiForgeryToken()
+        <legend>Create Process</legend>
+        <div>
+            @*Main Info*@
+            @Html.DisplayNameFor(d => d.Name)
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(v => v.Name)
+        </div>
+        <br />
+        <div>
+            @*Details*@
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#fields">Fields</a></li>
+                <li><a data-toggle="tab" href="#actions">Actions</a></li>
+                <li><a data-toggle="tab" href="#activities">Activities</a></li>
+                <li><a data-toggle="tab" href="#groups">Groups & Admins</a></li>
+                <li><a data-toggle="tab" href="#states">States</a></li>
+                <li><a data-toggle="tab" href="#transitions">Transitions</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="fields" class="tab-pane fade in active">
+                    @Html.Partial("_CreateField")
+                </div>
+                <div id="actions" class="tab-pane fade">
+                    <h3>Actions</h3>
+                </div>
+                <div id="activities" class="tab-pane fade">
+                    <h3>Activities</h3>
+                </div>
+                <div id="groups" class="tab-pane fade">
+                    <h3>Groups & Admins</h3>
+                </div>
+                <div id="states" class="tab-pane fade">
+                    @Html.Partial("_CreateStates", new ViewDataDictionary { TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "States" } })
+                </div>
+                <div id="transitions" class="tab-pane fade">
+                    @Html.Partial("_CreateTransitions", new ViewDataDictionary { TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Transitions" } })
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <button type="submit">Submit</button>
+    }
+</fieldset>
+
+
+

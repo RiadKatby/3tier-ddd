@@ -186,11 +186,22 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Workflow\Controllers\WorkflowController.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActionModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActionTypeModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActivityModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActivityTypeModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\FieldModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\FieldTypeModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\GroupModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\ProcessModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\StateModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\StateTypeModel.cs" />
+    <Compile Include="Areas\Workflow\Models\WorkflowModels\TransitionModel.cs" />
     <Compile Include="Areas\Workflow\WorkflowAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\WorkflowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -207,17 +218,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UserModel.cs" />
-    <Compile Include="Models\Workflow\ActionModel.cs" />
-    <Compile Include="Models\Workflow\ActionTypeModel.cs" />
-    <Compile Include="Models\Workflow\ActivityModel.cs" />
-    <Compile Include="Models\Workflow\ActivityTypeModel.cs" />
-    <Compile Include="Models\Workflow\FieldModel.cs" />
-    <Compile Include="Models\Workflow\FieldTypeModel.cs" />
-    <Compile Include="Models\Workflow\GroupModel.cs" />
-    <Compile Include="Models\Workflow\ProcessModel.cs" />
-    <Compile Include="Models\Workflow\StateModel.cs" />
-    <Compile Include="Models\Workflow\StateTypeModel.cs" />
-    <Compile Include="Models\Workflow\TransitionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -234,6 +234,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Areas\Workflow\Views\web.config" />
+    <Content Include="Areas\Workflow\Views\Workflow\Index.cshtml" />
+    <Content Include="Areas\Workflow\Views\Workflow\CreateProcess.cshtml" />
+    <Content Include="Areas\Workflow\Views\Workflow\_CreateField.cshtml" />
+    <Content Include="Areas\Workflow\Views\Workflow\_CreateStates.cshtml" />
+    <Content Include="Areas\Workflow\Views\Workflow\_CreateTransitions.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -280,13 +285,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Workflow\Index.cshtml" />
-    <Content Include="Views\Workflow\CreateProcss.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Workflow\Controllers\" />
-    <Folder Include="Areas\Workflow\Models\" />
     <Folder Include="Areas\Workflow\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>

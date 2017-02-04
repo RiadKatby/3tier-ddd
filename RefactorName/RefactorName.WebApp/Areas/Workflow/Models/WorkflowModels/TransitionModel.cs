@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.WebApp.Models
+namespace RefactorName.WebApp.Areas.Workflow.Models
 {
     /// <summary>
     /// A Transition is a path between two <see cref="State"/>s that shows how a <see cref="Request"/> can travel between them.

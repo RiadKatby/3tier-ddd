@@ -1,11 +1,12 @@
-﻿using System;
+﻿using RefactorName.WebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.WebApp.Models
+namespace RefactorName.WebApp.Areas.Workflow.Models
 {
     /// <summary>
     /// A Process is the collection of all other data that is unique to a group of users and how they want their <see cref="Request"/>s manipulated.
@@ -14,13 +15,14 @@ namespace RefactorName.WebApp.Models
     public class ProcessModel
     {
         /// <summary>
-        /// Gets identity number of <see cref="Process"/> object.
+        /// Gets identity number of <see cref="ProcessModel"/> object.
         /// </summary>
         public int ProcessId { get; set; }
 
         /// <summary>
-        /// Gets the name of this <see cref="Process"/>.
+        /// Gets the name of this <see cref="ProcessModel"/>.
         /// </summary>
+        [Display(Name = "Process Name")]
         [Required, StringLength(100)]
         public string Name { get; set; }
 
@@ -45,12 +47,12 @@ namespace RefactorName.WebApp.Models
         public IList<ActivityModel> Activities { get; set; }
 
         /// <summary>
-        /// Gets all data <see cref="Field"/>s definition which could be filled up within <see cref="Request"/> throught out this <see cref="Process"/>.
+        /// Gets all data <see cref="FieldModel"/>s definition which could be filled up within <see cref="Request"/> throught out this <see cref="Process"/>.
         /// </summary>
-        public IList<FieldModel> Fields { get; set; }
+        public List<FieldModel> Fields { get; set; }
 
         /// <summary>
-        /// Gets all <see cref="State"/>s which could be passed by throught out <see cref="Process"/>.
+        /// Gets all <see cref="StateModel"/>s which could be passed by throught out <see cref="Process"/>.
         /// </summary>
         public IList<StateModel> States { get; set; }
 
