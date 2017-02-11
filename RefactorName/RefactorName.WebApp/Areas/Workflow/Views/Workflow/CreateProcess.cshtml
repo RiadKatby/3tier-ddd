@@ -33,16 +33,18 @@
                     @Html.Partial("_CreateField")
                 </div>
                 <div id="actions" class="tab-pane fade">
-                    <h3>Actions</h3>
+                    @Html.Partial("_CreateActions")
                 </div>
                 <div id="activities" class="tab-pane fade">
-                    <h3>Activities</h3>
+                    @Html.Partial("_CreateActivity")
                 </div>
                 <div id="groups" class="tab-pane fade">
                     <h3>Groups & Admins</h3>
                 </div>
                 <div id="states" class="tab-pane fade">
-                    @Html.Partial("_CreateStates", new ViewDataDictionary { TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "States" } })
+                    @*@Html.Partial("_CreateStates", new ViewDataDictionary { TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "States" } })*@
+                    @Html.Partial("_CreateStates")
+
                 </div>
                 <div id="transitions" class="tab-pane fade">
                     @Html.Partial("_CreateTransitions", new ViewDataDictionary { TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Transitions" } })

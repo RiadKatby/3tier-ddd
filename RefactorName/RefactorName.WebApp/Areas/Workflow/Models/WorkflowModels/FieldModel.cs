@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,17 +25,20 @@ namespace RefactorName.WebApp.Areas.Workflow.Models
         /// <summary>
         /// Gets the name of this <see cref="Field"/>.
         /// </summary>
+        [Required]
         public string Name { get; private set; }
 
         /// <summary>
         /// Gets <see cref="FieldType"/> of this <see cref="Field"/> object.
         /// </summary>
         //public FieldTypeModel Type { get; private set; }
+        [Required]
         public int Type { get; private set; }
 
         /// <summary>
         /// Gets length of this <see cref="Field"/> object.
         /// </summary>
+        [Required]
         public int Length { get; private set; }
 
         public FieldModel() { }

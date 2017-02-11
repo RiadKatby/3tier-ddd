@@ -39,7 +39,7 @@ namespace RefactorName.WebApp.Areas.Workflow.Models
         /// <summary>
         /// Gets all <see cref="Action"/>s which could be taken against this <see cref="Process"/> object.
         /// </summary>
-        public IList<Action> Actions { get; set; }
+        public IList<ActionModel> Actions { get; set; }
 
         /// <summary>
         /// Gets all <see cref="Activity"/>s which could be executed as a result of <see cref="Action"/> taken or <see cref="Transition"/> followed.
@@ -69,7 +69,7 @@ namespace RefactorName.WebApp.Areas.Workflow.Models
             States = new List<StateModel>();
             Groups = new List<GroupModel>();
             Admins = new List<UserModel>();
-            Actions = new List<Action>();
+            Actions = new List<ActionModel>();
             Activities = new List<ActivityModel>();
             Transitions = new List<TransitionModel>();
             Fields = new List<FieldModel>();
