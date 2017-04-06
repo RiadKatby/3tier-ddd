@@ -1,0 +1,46 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Tabs";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Tabs</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginTabNavBar())
+        {
+            @Html.MCITabHeader("tab1", "Tab 1", true)
+            @Html.MCITabHeader("tab2", "Tab 2", false)
+            @Html.MCITabHeader("tab3", "Tab 3", false)
+            @Html.MCITabHeader("tab4", "Tab 4", false)
+            @Html.MCITabHeader("tab5", "Tab 5", false)
+        }
+
+        @using (Html.MCIBeginTabPanels("200px"))
+        {
+            using (Html.MCIBeginTabPanel("tab1", true))
+            {
+                <p>Tab 1 content</p>
+            }
+
+            using (Html.MCIBeginTabPanel("tab2", false))
+            {
+                <p>Tab 2 content</p>
+            }
+
+            using (Html.MCIBeginTabPanel("tab3", false))
+            {
+                <p>Tab 3 content</p>
+            }
+
+            using (Html.MCIBeginTabPanel("tab4", false))
+            {
+                <p>Tab 4 content</p>
+            }
+
+            using (Html.MCIBeginTabPanel("tab5", false))
+            {
+                <p>Tab 5 content</p>
+            }
+        }
+    </div>
+</div>

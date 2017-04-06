@@ -1,0 +1,81 @@
+﻿@model RefactorName.Web.Models.Company
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Display Items";
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Display Form Items</div>
+    <div class="panel-body">
+        <fieldset class="mci-fieldset">
+            <legend>عمودي</legend>
+            @Html.MCIStartFormItemsRow()
+            @Html.MCIDisplayItem("the value", "custom value", hint: "(this is a hint)")
+            @Html.MCIDisplayItem("the value", "custom value with postback", postBackValue: true, name: "CustomValue")
+            @Html.MCIDisplayItemFor(m => m.Name)
+            @Html.MCIDisplayItemFor(m => m.CompanyType.Name)
+
+            @Html.MCITextBoxItem("txtReadOnly", "This is a span!", "Textbox style", readOnly: true)
+            @Html.MCITextBoxItemFor(m => m.CreationDate, spanOf12: 6, readOnly: true)
+            @Html.MCIEndFormItemsRow()
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIDisplayItemWithTruncate("displayWithTruncate1", "This value is too long and will be truncated for you.", "Truncated value")
+                @Html.MCIDisplayItemWithTruncate("displayWithTruncate2", "This value is too long and will be truncated for you.", "With custom settings", textMaxLength: 30, popOverTitle: "Continue Title", seeMoreHtml: "more", showAllContentInPopover: true)
+
+                @Html.MCIDisplayItemWithTruncateFor(m => m.Activities)
+            }
+
+        </fieldset>
+
+        <fieldset class="mci-fieldset">
+            <legend>أفقي</legend>
+            @Html.MCIStartFormItemsRow()
+            @Html.MCIDisplayItem_H("the value", "custom value")
+            @Html.MCIDisplayItem_H("the value", "custom value with postback", postBackValue: true, name: "CustomValue")
+            @Html.MCIDisplayItemFor_H(m => m.Name)
+            @Html.MCIDisplayItemFor_H(m => m.CompanyType.Name)
+            @Html.MCIEndFormItemsRow()
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIDisplayItemWithTruncate_H("This value is too long and will be truncated for you.", "Truncated value", spanOf12: 12)
+                @Html.MCIDisplayItemWithTruncate_H("This value is too long and will be truncated for you.", "With custom settings", spanOf12: 12, name: "displayWithTruncate6", textMaxLength: 30, popOverTitle: "Continue Title", seeMoreHtml: "more", showAllContentInPopover: true)
+            }
+        </fieldset>
+
+        Truncate value in table:
+        <div id="grid_div" class="grid table-responsive">
+            <table class="table table-striped ">
+                <thead>
+                    <tr class="headerGrid">
+                        <th scope="col">
+                            رقم
+                        </th>
+                        <th scope="col">
+                            اسم الشركة
+                        </th>
+                        <th scope="col">
+                            نوع الشركة
+                        </th>
+                        <th scope="col">
+                            نشاط الشركة
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.ID</td>
+                        <td>@Model.Name</td>
+                        <td>@Model.CompanyType.Name</td>
+                        <td>@Html.MCIDisplayWithTruncate("displayWithTruncate3", "This value is too long and will be truncated for you.", textMaxLength: 30)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

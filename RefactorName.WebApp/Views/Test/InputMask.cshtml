@@ -1,0 +1,50 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Input Mask";
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery.inputmask.bundle.js"></script>
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">Input Mask</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>Reference: <a href="http://robinherbots.github.io/jquery.inputmask/" target="_blank">http://robinherbots.github.io/jquery.inputmask/</a></li>
+                    <li>You can use your regex or use the predefined classes in common.js file:</li>
+                </ul>
+            }
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                using (Html.MCIBeginItemsCol())
+                {
+                    @Html.MCITextBoxItem("inputMask1", "", "Date", 12, new { @class = "datepicker inputMask", data_inputmask = "'alias': 'date'" })
+                    @Html.MCITextBoxItem("inputMask2", "", "Ip", 12, new { @class = "inputMask", data_inputmask = "'alias': 'ip'" })
+                    @Html.MCITextBoxItem("inputMask3", "", "Decimal", 12, new { @class = "inputMask", data_inputmask = "'alias': 'decimal'" })
+                    @Html.MCITextBoxItem("inputMask4", "", "Decimal with grouping", 12, new { @class = "inputMask", data_inputmask = "'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'removeMaskOnSubmit': 'true'" })
+                    @Html.MCITextBoxItem("inputMask5", "", "Email", 12, new { @class = "inputMask", data_inputmask = "'alias': 'email'" })
+                    @Html.MCITextBoxItem("inputMask6", "", "10 degits", 12, new { @class = "inputMask", data_inputmask = "'mask': '9999999999'" })
+                    @Html.MCITextBoxItem("inputMask7", "", "Integer", 12, new { @class = "inputMask", data_inputmask = "'alias': 'integer'" })
+                    @Html.MCITextBoxItem("inputMask8", "", "Percentage", 12, new { @class = "inputMask", data_inputmask = "'alias': 'percentage', 'removeMaskOnSubmit': 'true'" })
+                    @Html.MCITextBoxItem("inputMask9", "", "regex of saudi mobile number", 12, new { @class = "inputMask", data_inputmask = "'mask': '059{8}'" })
+                }
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("إرسال", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+
+    </div>
+}
+<script>
+    $(function () {
+        $('.inputMask').inputmask();
+    });
+</script>

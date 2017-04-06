@@ -1,0 +1,64 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Multi Select";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">Multi Select</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>Reference: <a href="https://github.com/davidstutz/bootstrap-multiselect" target="_blank">https://github.com/davidstutz/bootstrap-multiselect</a></li>
+                </ul>
+            }
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIDropDownListItem("multiSelect1", ViewBag.CompanyTypes as SelectList, "Simple single select")
+                @Html.MCIDropDownListItem("multiSelect2", ViewBag.CompanyTypes as SelectList, "Simple single select with search")
+                @Html.MCIListBoxtItem("multiSelect3", ViewBag.CompanyTypes as SelectList, "multi-select with search")
+
+
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("إرسال", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+
+}
+
+<script>
+    $(function () {
+        $('#multiSelect1').multiselect({
+            selectedClass: 'active',
+            selectAllText: ' إختر الكل',
+            //includeSelectAllOption: 'true',
+            enableCaseInsensitiveFiltering: false,
+            filterPlaceholder: 'بحث',
+            nonSelectedText: 'لم يتم الاختيار',
+            nSelectedText: 'تم اختيارها',
+            numberDisplayed: 3,
+            maxHeight: 300
+        });
+
+        $('#multiSelect2, #multiSelect3').multiselect({
+            enableFiltering: true,
+            filterBehavior: 'both', // possible options: 'text', 'value', 'both'
+            selectedClass: 'active',
+            selectAllText: ' إختر الكل',
+            includeSelectAllOption: 'true',
+            enableCaseInsensitiveFiltering: false,
+            filterPlaceholder: 'بحث',
+            nonSelectedText: 'لم يتم الاختيار',
+            nSelectedText: 'تم اختيارها',
+            numberDisplayed: 3,
+            maxHeight: 300
+        });
+
+
+    });
+</script>

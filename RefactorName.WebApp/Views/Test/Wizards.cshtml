@@ -1,0 +1,108 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Wizards";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Style 1</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow())
+        {
+            using (Html.MCIBeginWizard())
+            {
+                @Html.MCIWizardStep("1", "حجز إسم", WizardStepStatus.Completed, "14.2%")
+                @Html.MCIWizardStep("2", "نشاط المنشأة", WizardStepStatus.Completed, "14.2%")
+                @Html.MCIWizardStep("3", "حالة المنشأة", WizardStepStatus.Active, "14.2%")
+                @Html.MCIWizardStep("4", "عنوان المنشأة", WizardStepStatus.Future, "14.2%")
+                @Html.MCIWizardStep("5", "الموافقة على الشروط", WizardStepStatus.Future, "14.2%")
+                @Html.MCIWizardStep("6", "الرسوم", WizardStepStatus.Future, "14.2%")
+                @Html.MCIWizardStep("7", "التأكيد", WizardStepStatus.Future, "14.2%")
+            }
+        }
+
+
+        javascript functions:
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            <div class="center-block" style="max-width: 200px;">
+                <button id="wizardBack" class="btn btn-default" type="button"><span class="fa fa-forward"></span></button>
+                <button id="wizardCurrent" class="btn btn-default" type="button"><span class="fa fa-question"></span></button>
+                <button id="wizardNext" class="btn btn-default" type="button"><span class="fa fa-backward"></span></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Style 2</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow())
+        {
+            using (Html.MCIBeginWizard2("mciWizard2"))
+            {
+                @Html.MCIWizardStep2("1", "حجز إسم")
+                @Html.MCIWizardStep2("2", "نشاط المنشأة", "#", false, true)
+                @Html.MCIWizardStep2("3", "عنوان المنشأة")
+                @Html.MCIWizardStep2("4", "الموافقة على الشروط")
+                @Html.MCIWizardStep2("5", "الرسوم", "", true)
+                @Html.MCIWizardStep2("6", "التأكيد")
+            }
+        }
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            <div class="center-block" style="max-width: 200px;">
+                <button id="wizard2Back" class="btn btn-default" type="button"><span class="fa fa-forward"></span></button>
+                <button id="wizard2Current" class="btn btn-default" type="button"><span class="fa fa-question"></span></button>
+                <button id="wizard2Next" class="btn btn-default" type="button"><span class="fa fa-backward"></span></button>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    $(function () {
+        $('#wizardNext').click(function () {
+            var step = MCIWizardCurrentStep() || 1;
+            step = parseInt(step, 10);
+            if (step < 7)
+                MCIWizardChangeStep(++step);
+        });
+
+        $('#wizardBack').click(function () {
+            var step = MCIWizardCurrentStep() || 1;
+            step = parseInt(step, 10);
+            if (step > 1)
+                MCIWizardChangeStep(--step);
+        });
+
+        $('#wizardCurrent').click(function () {
+            MCIAlert("current", "You are at step number " + MCIWizardCurrentStep())
+        });
+
+        //wizard2
+        $('#wizard2Next').click(function () {
+            var step = MCIWizardCurrentStep('mciWizard2') || 1;
+            step = parseInt(step, 10);
+            if (step < 6)
+                MCIWizardChangeStep(++step, 'mciWizard2');
+        });
+
+        $('#wizard2Back').click(function () {
+            var step = MCIWizardCurrentStep('mciWizard2') || 1;
+            step = parseInt(step, 10);
+            if (step > 1)
+                MCIWizardChangeStep(--step, 'mciWizard2');
+        });
+
+        $('#wizard2Current').click(function () {
+            MCIAlert("current", "You are at step number " + MCIWizardCurrentStep('mciWizard2'))
+        });
+    });
+
+</script>
+
+

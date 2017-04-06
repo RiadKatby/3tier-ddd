@@ -1,0 +1,92 @@
+﻿@model RefactorName.Web.Models.Company
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "DropDownLists";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">DropDownLists</div>
+    <div class="panel-body">
+        <fieldset class="mci-fieldset">
+            <legend>Normal DropDownLists</legend>
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIDropDownListItem("ddl1", ViewBag.CompanyTypes as SelectList, "Simple DropDownList", hint: "(binded to viewbag)")
+                @Html.MCIDropDownListItemFor(m => m.TypeID, ViewBag.CompanyTypes as SelectList, hint: "(mapped to model int property)")
+                @Html.MCIEnumDropDownListItemFor(m => m.StatusID, hint: "(mapped to enum value)")
+            }
+        </fieldset>
+
+        <fieldset class="mci-fieldset">
+            <legend>Ajax DropDownLists</legend>
+            <p class="ltr">Ajax DropDownList helpers uses AjaxOptions and combines with javascript event in common.js file to function</p>
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIAjaxDropDownListItem("addl1", ViewBag.CompanyTypes as SelectList,
+                new AjaxOptions()
+                {
+                    Url = Url.Action("addl1ValueChanged", new { value = "%value%" }),
+                    LoadingElementId = "dialog_loader",
+                    LoadingElementDuration = 500,
+                    UpdateTargetId = "addl1Target",
+                    OnSuccess = "addl1OnSuccess"
+                },
+                labelText: "Simple AjaxDropDownList", hint: "(binded to viewbag)")
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                <div class="col-md-6" id="addl1Target"></div>
+            }
+
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIAjaxDropDownListItem("addl2", ViewBag.CompanyTypes as SelectList,
+                new AjaxOptions()
+                {
+                    Url = Url.Action("ReturnAjaxErrorMessage"),
+                    LoadingElementId = "dialog_loader",
+                    LoadingElementDuration = 500,
+                    OnFailure = "addl2OnFailure"
+                },
+                     labelText: "Custom failure message", hint: "(using JsonErrorMessage)")
+            }
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIAjaxDropDownListItem("addl3", ViewBag.CompanyTypes as SelectList,
+                new AjaxOptions()
+                {
+                    Url = Url.Action("addl3ValueChanged", new { value = "%value%" }),
+                    LoadingElementId = "dialog_loader",
+                    LoadingElementDuration = 500,
+                    OnSuccess = "addl1OnSuccess"
+                },
+                labelText: "using Json data Provider function",
+                hint: "(it will send also first 3 ddl values)",
+                additionalJSONDataFunctionProvider: "addl3DataProvider",
+                spanOf12: 8)
+            }
+        </fieldset>
+
+    </div>
+</div>
+
+<script>
+    function addl1OnSuccess(result) {
+        MCIAlert("Success", result);
+    }
+
+    function addl2OnFailure(result) {
+        mciMessage(result.responseJSON.message, mciMessageType.Danger, 0);;
+    }
+
+    function addl3DataProvider() {
+        var ddl1Value = $('#ddl1').val();
+        var ddl2Value = $('#TypeID').val();
+        var ddl3Value = $('#StatusID').val();
+
+        return { 'ddl1Value': ddl1Value, 'ddl2Value': ddl2Value, 'ddl3Value': ddl3Value };
+    }
+</script>

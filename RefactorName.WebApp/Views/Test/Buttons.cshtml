@@ -1,0 +1,124 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Buttons";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">Buttons</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                using (Html.MCIBeginItemsCol(12))
+                {
+                    <p>Ajax button:</p>
+                    <ul>
+                        <li>Ajax button is actually rendered as ajax action link with special behavior.</li>
+                        <li>One behavior is the loading state. See this simple one:</li>
+                        @Ajax.MCIAjaxButton("aButton1", "Verify <i class='fa fa-search'></i>", "LoadAjaxContent", null /* current controller */, new { example = 1 },
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            OnFailure = "onFailerDefault",
+                            UpdateTargetId = "targetDiv"
+                        })
+                        <div id="targetDiv"></div>
+                        <li>This one will give an error:</li>
+                        @Ajax.MCIAjaxButton("aButton2", "Verify <i class='fa fa-search'></i>", "LoadAjaxContent", null, new { example = 2 },
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            OnFailure = "onFailureDefault",
+                            UpdateTargetId = "targetDiv"
+                        })
+                        <li>The route values have a problem that it is static! what if we want to send other real time values from the page?</li>
+                        <li>Ok: just pass your javascript function to the helper and return all data you need to send to the server as json object, and the button will just include your data in the request.</li>
+                        <li>Example: suppose you need to send the values of these two inputs:</li>
+                        @Html.MCIDropDownListItem("ddl1", ViewBag.CompanyTypes as SelectList)
+                        @Html.MCITextBoxItem("txt1", "", withValidation: true)
+                        @Ajax.MCIAjaxButton("aButton3", "Verify <i class='fa fa-search'></i>", "LoadAjaxContent", null, new { example = 3 },
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            OnFailure = "onFailerDefault",
+                            UpdateTargetId = "targetDiv2"
+                        }, jsonDataProviderFunction: "jsonDataProvider")
+                        <div id="targetDiv2"></div>
+
+                        <li>Ok. What if we need to validate something before request?</li>
+                        <li>We have two options: one by writing your validation inside OnBegin event.This is usually used if you don't have a form.</li>
+                        <li>Lets do it with the same example above. suppose that each input value is requierd.</li>
+                        @Ajax.MCIAjaxButton("aButton4", "Verify <i class='fa fa-search'></i>", "LoadAjaxContent", null, new { example = 4 },
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            OnBegin = "aButton3OnBegin",
+                            OnFailure = "onFailerDefault",
+                            UpdateTargetId = "targetDiv3"
+                        }, jsonDataProviderFunction: "jsonDataProvider")
+                        <div id="targetDiv3"></div>
+
+                        <li>The second option is used if you are inside a form.</li>
+                        <li>If you pass (validateBeforeSend = true) to the button, it will validate the form before request.</li>
+                        <li>What if you don't want to validate all the form?!</li>
+                        <li>You will need to provide the JQuery selector for elements you want to validate in the parameter: (validationSelector). let us try it:</li>
+                        <li>This is our required inputs</li>
+                        @Html.MCIDropDownListItem("ddl2", ViewBag.CompanyTypes as SelectList, httmlAttributes: new { data_val = "true", data_val_required = "Required Field" }, defaultValidationMessege: "")
+                        @Html.MCITextBoxItem("txt2", "", withValidation: true, httmlAttributes: new { data_val = "true", data_val_required = "Required Field" }, errorMessege: "")
+                        <li>And this is our ajax button with validation enabled:</li>
+                        @Ajax.MCIAjaxButton("aButton5", "Verify <i class='fa fa-search'></i>", "LoadAjaxContent", null, new { example = 5 },
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            OnFailure = "onFailerDefault",
+                        }, jsonDataProviderFunction: "jsonDataProvider",
+                        validateBeforeSend: true)
+
+                        <li>This one will validate only the textbox input:</li>
+                        @Ajax.MCIAjaxButton("aButton6", "Verify <i class='fa fa-search'></i>", "LoadAjaxContent", null, new { example = 6 },
+                        new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            OnFailure = "onFailerDefault",
+                        }, jsonDataProviderFunction: "jsonDataProvider",
+                        validateBeforeSend: true, validationSelector: "#txt2")
+
+                        <li>Ok. That's it. :-)</li>
+                    </ul>
+                }
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+
+            }
+        </div>
+        <div class="panel-footer text-left">
+            Normal submit buttons:
+            @Html.MCISubmitButton("simple submit", "command", "simple", new { @class = "btn btn-primary" })
+            @Html.MCISubmitButtonWithConfirm("with confirm", "confirm title", "Are you sure?", "command", "confirm", new { @class = "btn btn-primary" })
+            @Html.MCISubmitButtonWithConfirm("with modal confirm", "confirm title", "Are you sure?", "command", "modal confirm", new { @class = "btn btn-primary mci-confirm-modal" })
+        </div>
+    </div>
+}
+
+<script>
+    function jsonDataProvider() {
+        return { 'ddl1': $('#ddl1').val(), 'txt1': $('#txt1').val() };
+    }
+
+    function aButton3OnBegin() {
+        var valid = true;
+
+        if (!$('#ddl1').val()) {
+            showValidationErrorMessageFor($('#ddl1')[0], 'Please select a value.');
+            valid = false;
+        }
+        if (!$('#txt1').val()) {
+            showValidationErrorMessageFor($('#txt1')[0], 'Required input.');
+            valid = false;
+        }
+
+        return valid;
+    }
+</script>

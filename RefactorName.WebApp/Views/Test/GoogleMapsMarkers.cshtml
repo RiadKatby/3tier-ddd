@@ -1,0 +1,28 @@
+﻿@model List<GoogleMarker>
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Google Maps Markers";
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/MCI.Maps.js"></script>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Google Maps Markers</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow())
+        {
+            <p>Note: DO NOT include google maps api in your view. it will be loaded dynamically.</p>
+        }
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MCIGoogleMapMarkersItem(Model, labelText: "Locations", spanOf12: 12)
+        }
+    </div>
+</div>
+
+
+

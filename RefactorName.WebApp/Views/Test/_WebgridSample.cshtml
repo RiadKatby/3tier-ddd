@@ -1,0 +1,82 @@
+﻿@model List<RefactorName.Web.Models.TestEntity>
+@{
+    WebGrid testGrid = new WebGrid(Model, canPage: true, rowsPerPage: 3, ajaxUpdateContainerId: "grid_div");
+}
+<div>
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert">لا يوجد بيانات</div>
+    }
+    else
+    {
+
+        <div id="grid_div" class="grid table-responsive">
+            @testGrid.GetHtml(tableStyle: "table table-striped ",
+            //htmlAttributes: new { cellspacing = "1" },
+                            headerStyle: "headerGrid",
+                            alternatingRowStyle: "altGrid",
+                            mode: WebGridPagerModes.All,
+                            nextText: "التالي",
+                            previousText: "السابق",
+                            firstText: "«",
+                            lastText: "»",
+                            numericLinksCount: 10,
+                            footerStyle: "footerGrid",
+                            columns: testGrid.Columns(
+                            testGrid.Column("ID", header: "رقم ", canSort: true),
+                             testGrid.Column("Name", header: "  الاسم", canSort: true),
+                             testGrid.Column("Name", header: "  الاسم", canSort: true),
+                             testGrid.Column("Name", header: "  الاسم", canSort: true),
+                             testGrid.Column("Age", header: " العمر", canSort: true),
+                                testGrid.Column("Age", header: " العمر", canSort: true),
+                                testGrid.Column("Age", header: " العمر", canSort: true, format:
+                                @<text>
+                                    @Ajax.ActionLink("تعديل", "EditOpen", new { ID = item.ID }, new AjaxOptions()
+       {
+           UpdateTargetId = "EditDiag",
+           LoadingElementId = "dialog_loader",
+           OnSuccess = "OnEditOpen",
+           OnFailure = "OnEditOpenFail"
+       })
+                                    @Ajax.MCIAjaxLinkWithConfirm("حذف", "تأكيد", "سيتم حذف العنصر. هل أنت متأكد؟", "DeleteAction", "", new { id = item.ID },
+            new AjaxOptions()
+            {
+                HttpMethod = "post",
+                UpdateTargetId = "DataList",
+                LoadingElementId = "dialog_loader",
+                OnSuccess = "DeleteActionOnSuccess",
+                OnFailure = "on_failure_with_Error"
+            }, null)
+
+            @Ajax.MCIAjaxLinkWithConfirm("<i class='fa fa-trash'></i>", "تأكيد", "سيتم حذف العنصر. هل أنت متأكد؟", "DeleteAction", "", new { id = item.ID },
+            new AjaxOptions()
+            {
+                HttpMethod = "post",
+                UpdateTargetId = "DataList",
+                LoadingElementId = "dialog_loader",
+                OnSuccess = "DeleteActionOnSuccess",
+                OnFailure = "on_failure_with_Error"
+            }, new { @class = "mci-confirm-popover"})
+                                </text>
+                                                                                                                                                                                                     )
+                                                                                                                                                                             ))
+
+
+        </div>
+
+    }
+</div>
+
+<script>
+    function OnEditOpen() {
+        $("#EditDiag").modal("show");
+    }
+    function OnEditOpenFail(res) {
+        mciMessage(res.responseText, mciMessageType.Danger, 10);
+    }
+
+    function DeleteActionOnSuccess() {
+        mciMessage('تم حذف العنصر بنجاح', mciMessageType.Success, 10);
+    }
+
+</script>

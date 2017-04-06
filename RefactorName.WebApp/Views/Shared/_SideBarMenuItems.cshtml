@@ -1,0 +1,23 @@
+﻿@using RefactorName.Core;
+
+<!-- Menu Dashboard -->
+<li>
+    <a href='@Url.Content("~/")' class="active">
+        <i class="glyphicon glyphicon-home"></i><span class="title">الصفحة الرئيسية</span>
+    </a>
+</li><!--end /menu-item -->
+<!-- Menu UI -->
+
+<li>
+    <a href='@Url.Action("Index", "Test")'>
+        <i class="glyphicon glyphicon-briefcase"></i><span class="title">صفحة العينات</span>
+    </a>
+</li>
+
+
+
+<li secure-roles='@RoleNames.UsersView, @RoleNames.UsersAdd, @RoleNames.UsersEdit'>
+    <a href='@Url.Action("Index", "Users")'>
+        <i class="fa fa-users"></i><span class="title">إدارة المستخدمين</span>
+    </a>
+</li>

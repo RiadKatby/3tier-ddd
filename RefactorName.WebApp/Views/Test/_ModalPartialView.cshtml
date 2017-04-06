@@ -1,0 +1,18 @@
+﻿@using (Html.MCIBeginModal())
+{
+    using (Html.MCIBeginModalHeader())
+    {
+        <h4 class="modal-title">My Title</h4>
+    }
+    using (Html.MCIBeginModalBody())
+    {
+        <p>
+            This is Our modal body that was loaded by ajax.
+        </p>
+    }
+    using (Html.MCIBeginModalFooter())
+    {
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Next</button>
+    }
+}

@@ -1,0 +1,58 @@
+﻿@model RefactorName.Web.Models.LocationModel
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Google Maps Marker";
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/MCI.Maps.js"></script>
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">One Editable Location</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>Include MCI.Maps.js file in your view.</li>
+                    <li>DO NOT include google maps api in your view. it will be loaded dynamically.</li>
+                    <li>You can add multiple maps in your view. our script will handle multiple callbacks for you.</li>
+                    <li>You can pass your custom callback function name, we will call it for you after map initialization.</li>
+                    <li>You can access the map and the marker objects in your javascript.</li>
+                    <li>The map:([helper unique name]_map)</li>
+                    <li>The marker:([helper unique name]_marker)</li>
+                    <li>
+                        Also you can use [helper unique name]_changeMarkerPosition(lat, lng, title, panTo, zoomTo) function if you need.
+                        it will create marker for you if not exists or change its location.
+                    </li>
+                    <li><a id="lnkChangeLocation" href="#">Example(Riyadh Zoo)</a></li>
+                </ul>
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIGoogleMapItemFor(m => m.Lat, l => l.Lng, Model.Title, editable: true, labelText: "Location", withValidation: true, spanOf12: 12
+                    //, callBack: location2CallBack
+                     )
+                @Html.MCIGoogleMapItemFor(m => m.Lat, m => m.Lng, "title", "location2", false, "300px", 8, "custom size view only")
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("إرسال", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
+
+<script>
+    function location2CallBack() {
+        MCIAlert("callback", "This is callback");
+    }
+
+    $(function () {
+        $('#lnkChangeLocation').click(function () {
+            mciMap_changeMarkerPosition(24.677279, 46.737325,'new title',true,13);
+        });
+    });
+</script>

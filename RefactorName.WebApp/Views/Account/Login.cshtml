@@ -1,0 +1,26 @@
+﻿@model RefactorName.Web.Models.LoginModel
+@{
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+@section Styles
+{
+    <link href="~/Content/signin.css" rel="stylesheet" />
+}
+
+<div class="center-block SSO mk-shadow" style="max-width:600px;">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "loginPage", @class = "form-signin" }))
+    {
+        @Html.AntiForgeryToken()
+        <img class="signin-logo" src='@Url.Content("~/Images/Login-logo.png")'>
+
+        @Html.MCIStartFormItemsRow()
+        @Html.MCITextBoxItemFor(m => m.UserName, 12, new { @class = "focus", @maxlength = "50", placeholder = "اسم المستخدم" })
+        @Html.MCIPasswordItemFor(m => m.Password, 12, new { @maxlength = "50", placeholder = "كلمة المرور" }, true)
+        @Html.MCIEndFormItemsRow()
+        <br class="clearfix" />
+        <div class="pull-left">
+            @Html.MCISubmitButton("الدخول", "", "", new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

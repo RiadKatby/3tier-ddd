@@ -1,0 +1,41 @@
+﻿
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "TopMenu";
+}
+
+@section _TopNavMenuItemsCustom
+{
+    <li class="">
+        <a href="#" class="e-serv-link"> &nbsp; قائمة إضافية  </a>
+    </li>
+
+    <li class="dropdown">
+        <a href="javascript:void(0);" class="dropdown-toggle message" data-toggle="dropdown"><sup class="badge badge-support2">2</sup><i class="glyphicon glyphicon-envelope"></i></a>
+        <ul class="dropdown-menu animation-zoom">
+            <li class="dropdown-header text-right">اخر الرسائل</li>
+            <li>
+                <a class="alert-dismissable text-right" href="javascript:void(0);">
+                    <strong class="text-right"> <i class="glyphicon glyphicon-envelope"></i> اخر الرسائل &nbsp; </strong><br>
+                    <small class="text-right">نص الرسائل...</small>
+                </a>
+            </li>
+            <li>
+                <a class="alert-dismissable text-right" href="javascript:void(0);">
+                    <strong class="text-right"><i class="glyphicon glyphicon-envelope"></i> اخر الرسائل  &nbsp;</strong><br>
+                    <small class="text-right">نص الرسائل...</small>
+                </a>
+            </li>
+            <li><a href="#">مشاهدة كل الرسائل<span class="pull-right"><i class="fa fa-arrow-right"></i></span></a></li>
+        </ul><!--end .dropdown-menu -->
+    </li>
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Top Menu</div>
+    <div class="panel-body">
+        -How to add custom top nav bar items
+    </div>
+</div>
+

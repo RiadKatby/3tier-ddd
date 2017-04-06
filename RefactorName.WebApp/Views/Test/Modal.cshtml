@@ -1,0 +1,97 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Modal";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Modal</div>
+    <div class="panel-body">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#simpleModal">Simple Modal</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#smallModal">Small Modal</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#largeModal">Large Modal</button>        
+        @Ajax.MCIAjaxLink("Load ajax content", "LoadAjaxModal",
+        ajaxOptions: new AjaxOptions()
+        {
+            LoadingElementId = "dialog_loader",
+            UpdateTargetId = "ajaxContentModal",
+            OnFailure = "onFailureDefault",
+            OnSuccess = "LoadAjaxModalOnSuccess"
+        },
+        htmlAttributes: new { @class = "btn btn-default" })
+    </div>
+</div>
+
+@using (Html.MCIBeginModalContainer("simpleModal"))
+{
+    using (Html.MCIBeginModal())
+    {
+        using (Html.MCIBeginModalHeader())
+        {
+            <h4 class="modal-title">My Title</h4>
+        }
+        using (Html.MCIBeginModalBody())
+        {
+            <p>
+                This is Our modal body
+            </p>
+        }
+        using (Html.MCIBeginModalFooter())
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Next</button>
+        }
+    }
+}
+
+@using (Html.MCIBeginModalContainer("smallModal"))
+{
+    using (Html.MCIBeginModal(ModalSize.Small))
+    {
+        using (Html.MCIBeginModalHeader())
+        {
+            <h4 class="modal-title">My Title</h4>
+        }
+        using (Html.MCIBeginModalBody())
+        {
+            <p>
+                This is Our modal body
+            </p>
+        }
+        using (Html.MCIBeginModalFooter())
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Next</button>
+        }
+    }
+}
+
+@using (Html.MCIBeginModalContainer("largeModal"))
+{
+    using (Html.MCIBeginModal(ModalSize.Large))
+    {
+        using (Html.MCIBeginModalHeader())
+        {
+            <h4 class="modal-title">My Title</h4>
+        }
+        using (Html.MCIBeginModalBody())
+        {
+            <p>
+                This is Our modal body
+            </p>
+        }
+        using (Html.MCIBeginModalFooter())
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Next</button>
+        }
+    }
+}
+
+@using (Html.MCIBeginModalContainer("ajaxContentModal"))
+{ }
+
+<script>
+    function LoadAjaxModalOnSuccess() {
+        $('#ajaxContentModal').modal('show');
+    }
+</script>

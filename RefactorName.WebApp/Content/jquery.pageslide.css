@@ -1,0 +1,50 @@
+/*#pageslide {
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    width: 260px;
+    padding: 20px;
+    background-color: #333;
+    color: #FFF;
+    -webkit-box-shadow: inset 0 0 5px 5px #222;
+    -moz-shadow: inset 0 0 5px 5px #222;
+    box-shadow: inset 0 0 5px 5px #222;
+}*/
+
+
+#pageslide {
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+    width: 260px;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 15px;
+    background: #075654;
+    color: #fff;
+    -webkit-box-shadow: inset 0 0 5px 5px #064A48;
+    -moz-box-shadow: inset 0 0 5px 5px #064A48;
+    box-shadow: inset 0 0 5px 5px #064A48;
+    border-right:1px solid #fff;
+}
+ 
+ 
+    #pageslide.right {
+        left: auto;
+        right: -260px;
+    }
+
+    #pageslide.left {
+        left: -260px;
+        right: auto;
+    }
+
+    
+     
+    
+     

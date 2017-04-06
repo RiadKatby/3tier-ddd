@@ -1,0 +1,102 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Star Rating";
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/starrating")
+}
+
+@section Styles
+{
+    @Styles.Render("~/Content/starrating")
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">Star Rating</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>Plugin website: <a href="http://plugins.krajee.com/star-rating" target="_blank">http://plugins.krajee.com/star-rating</a></li>
+                    <li>Include Script bundle ("~/bundles/starrating") and Style bundle ("~/Content/starrating")</li>
+                    <li>We have put all default settings in (star-rating-defaults.js) file. you can change it or pass your options with control initialization.</li>
+                    <li>We Added these things to the plugin: The last rating value is passed to events so you can rollback to it.</li>
+                    <li>We added (showLoading and hideLoading) for the controll you can use if you have ajax request to the server.</li>
+                    <li>for more about available options return to plugin site.</li>
+                </ul>
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCITextBoxItem("rating1", null, "simple one", 12, new { @class = "rating rating-loading" })
+                @Html.MCITextBoxItem("rating2", null, "different sizes", 12, new { @class = "rating rating-loading", data_size = "xs" })
+                @Html.MCITextBoxItem("rating3", null, "different sizes", 12, new { @class = "rating rating-loading", data_size = "sm" })
+                @Html.MCITextBoxItem("rating4", null, "different sizes", 12,
+                new { @class = "rating rating-loading", data_size = "lg" })
+                @Html.MCITextBoxItem("rating5", null, "with events and ajax request", 12,
+                new { @class = "rating rating-loading", data_size = "sm" },
+                hint: "suppose server error occured when rate changed to 5(2.5 stars) so we rollback")
+                @Html.MCITextBoxItem("rating6", null, "different options", 12,
+                                    new { @class = "rating rating-loading", data_min = 0, data_max = 16, data_step = 1, data_stars = 8 })
+                @Html.MCITextBoxItem("rating7", null, "font awsome", 12, new { @class = "rating rating-loading"})
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("إرسال", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+
+}
+
+<script>
+    $(function () {
+
+        $(function () {
+            $('input.rating').rating();
+        });
+
+
+        //you can pass options in the initialization also
+        //$('#rating1').rating({ size: 'sm' });
+
+        $('#rating7').rating({
+            glyphicon: false,
+            symbol : '@HttpUtility.HtmlDecode("&#xf164;")',
+            ratingClass : "rating-fa"});
+
+        $('#rating5').on('rating.change', function (event, value, caption, lastValue) {
+            ratingChanged(value, lastValue);
+        });
+
+        $('#rating5').on('rating.clear', function (event, lastValue) {
+            ratingChanged(0, lastValue);
+        });
+    });
+
+    //to handle multible clicks (the last click only will call hidLoading method)
+    var sss = 0;
+    function ratingChanged(value, lastValue) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ChangeRating")',
+            data: '{ "value" : "' + value + '" }',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            beforeSend: function () {
+                sss++;
+                $('#rating5').rating('showLoading', 500);
+            },
+            error: function (result) {
+                $('#rating5').rating('update', lastValue);
+                //MCIAlert("callback server error","حدث خطأ");
+            },
+            complete: function () {
+                if (sss-- == 1)
+                    $('#rating5').rating('hideLoading');
+            }
+        });
+    }
+</script>

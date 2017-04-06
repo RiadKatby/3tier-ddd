@@ -1,0 +1,35 @@
+﻿@model RefactorName.Web.Models.Company
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    ViewBag.Title = "Textbox, Textarea and Password";
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Textbox, Textarea and Password</div>
+    <div class="panel-body">
+        @Html.MCIStartFormItemsRow()
+        @Html.MCITextBoxItem("Text1", "Default value", "Simple Text Input")
+        @Html.MCITextBoxItem("Text2", "", labelText: "Custom Text Input", postAddon: "%", preAddon: "النسبة", httmlAttributes: new { placeholder = "Enter percentage" })
+        @Html.MCIEndFormItemsRow()
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MCITextBoxItemFor(m => m.CRNO)
+            @Html.MCITextBoxItemFor(m => m.CreationDate, format: "{0:dd/MM/yyyy}", hint: "(using format)")
+        }
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MCITextAreaItem("TexArea1", "", labelText: "Simple TexArea")
+            @Html.MCITextAreaItemFor(m => m.Activities, 8, new { style = "height:200px;" })
+        }
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MCIPasswordItemFor(m => m.SecureCode, hint: "(this is a password input item)")
+            @Html.MCIPasswordItem("passwordInput", "", "Another Password Input")
+        }
+    </div>
+</div>
