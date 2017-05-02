@@ -1,0 +1,61 @@
+﻿@model ActionModel
+@*@{
+        var prefix = "Fields";
+    }*@
+<h3>Actions</h3>
+
+@*@using (Html.BeginForm("", "", FormMethod.Post, new { id = "FieldsForm" }))
+    { }*@
+<form id="FieldsForm">
+    @Html.DisplayNameFor(d => d.Name)
+    @Html.TextBoxFor(m => m.Name, new { id = "Actions_Name" })
+    @Html.ValidationMessageFor(v => v.Name)
+
+    @Html.DisplayNameFor(d => d.ActionTypeId)
+    @Html.TextBoxFor(m => m.ActionTypeId, new { id = "Actions_ActionTypeId" })
+    @Html.ValidationMessageFor(v => v.ActionTypeId)
+
+    @Html.DisplayNameFor(d => d.Description)
+    @Html.TextBoxFor(m => m.Description, new { id = "Actions_Description" })
+    @Html.ValidationMessageFor(v => v.Description)
+
+    <button type="button" onclick="AddAction()"> Add </button>
+</form>
+
+<br />
+<br />
+<table id="actionsTable" width="100%" border="1">
+    <thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody></tbody>
+    @*@for (int i = 0; i < Model.l; i++)
+        {
+
+        }
+        @foreach (var item in Model)
+        { }*@
+    @*<tr>
+            <td><span>@item.Name</span><input type="hidden" value="@item.Name" id="Fields.Name" /></td>
+            <td><span>@item.Type</span><input type="hidden" value="@item.Type" id="Fields.Type" /></td>
+            <td><span>@item.Length</span><input type="hidden" value="@item.Length" id="Fields.Length" /></td>
+            <td><button onclick="RemoveField(1)">X</button></td>
+        </tr>*@
+
+</table>
+
+<script>
+    function AddAction() {
+        //if ($("#FieldsForm").valid()) { }
+        var name = $("#Actions_Name").val(); $("#Actions_Name").val("");
+        var type = $("#Actions_ActionTypeId").val(); $("#Actions_ActionTypeId").val("")
+        var description = $("#Actions_Description").val(); $("#Actions_Length").val("")
+
+        var rowCount = $('#actionsTable tbody tr').length;
+        var rowHtml = '<tr><td><span>' + name + '</span><input type="hidden" value="' + name + '" id="Actions[' + rowCount + '].Name" /></td><td><span>' + type + '</span><input type="hidden" value="' + type + '" id="Actions[' + rowCount + '].ActionTypeId" /></td><td><span>' + description + '</span><input type="hidden" value="' + description + '" id="Actions[' + rowCount + '].Description" /></td></tr>';
+        $('#actionsTable > tbody').append(rowHtml);
+
+    }
+
+    function RemoveAction(index) {
+
+    }
+</script>
