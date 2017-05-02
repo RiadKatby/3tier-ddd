@@ -11,20 +11,25 @@ namespace RefactorName.Core
         /// <summary>
         /// This user can access the complete system privileges.
         /// </summary>
-        [PermissionCaption("مدير كامل النظام")]
+        [PermissionCaption("SuperAdmin")]
         public const string SuperAdministrator = "/";
 
-        [PermissionCaption("إدارة المستخدمين")]
-        public const string Users = "/Users";
+        [PermissionCaption("ProcessManagementAdmin")]
+        public const string ProcessManagementAdmin = "/ProcessManagement";
 
-        [PermissionCaption("عرض المستخدمين")]
-        public const string UsersView = "/Users/View";
+        [PermissionCaption("User")]
+        public const string User = "/empty";
+        //[PermissionCaption("إدارة المستخدمين")]
+        //public const string Users = "/Users";
 
-        [PermissionCaption("إضافة مستخدم")]
-        public const string UsersAdd = "/Users/Add";
+        //[PermissionCaption("عرض المستخدمين")]
+        //public const string UsersView = "/Users/View";
 
-        [PermissionCaption("تعديل مستخدم")]
-        public const string UsersEdit = "/Users/Edit";
+        //[PermissionCaption("إضافة مستخدم")]
+        //public const string UsersAdd = "/Users/Add";
+
+        //[PermissionCaption("تعديل مستخدم")]
+        //public const string UsersEdit = "/Users/Edit";
 
 
         /// <summary>
