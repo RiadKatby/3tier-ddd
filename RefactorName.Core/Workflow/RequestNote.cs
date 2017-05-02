@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     public class RequestNote
     {
@@ -21,6 +21,8 @@ namespace RefactorName.Core.Workflow
         public State State { get; private set; }
 
         public User User { get; private set; }
+
+        public Request Request { get; private set; }
 
         /// <summary>
         /// Instanciate empty <see cref="RequestNote"/> object, this constructor used by infrastrcutre libraries only.

@@ -1,0 +1,98 @@
+﻿@using RefactorName.WebApp.Areas.Backend.Models
+@using MvcHtmlHelpers
+@model List<TransitionAddModel>
+<div>
+    <div id="messageContainer" class="alert info" style='width:100%;display:@ViewBag.Style'>
+        <span class="closebtn" onclick='this.parentElement.style.display="none";'>&times;</span>
+        <strong>Info!</strong><span id="message"> @ViewBag.Message</span>
+    </div>
+    @using (Html.MCIBeginItemsCol(12))
+    {
+
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="panel panel-default">
+                    <div class="panel-heading">Manage Transitions</div>
+                    <div class="panel-body">
+
+                        @using (Html.MCIBeginItemsRow())
+                        {
+                            <input type="hidden" id="ProcessId" value="@ViewBag.ProcessId" />
+                        }
+                    </div>
+
+                    <div style="padding:10px;">
+                        <fieldset class="group">
+                            <legend>Select Current and Next State</legend>
+                            <div id="StatesDiv" style="padding:10px">
+                            </div>
+                            <button type="button" id="btnSave" class="btn btn-primary">Add</button>
+                        </fieldset>
+                        <div id="DivNoData" class="well well-sm center-block" style="position: relative; top: 50%; transform: translateY(0%);visibility:visible">No Data Found</div>
+                        <div id="grid_div" class="well well-sm center-block table-responsive" style="position: relative; top: 50%; transform: translateY(0%);visibility:hidden ">
+                            <table id="Transition_table" class="table table-striped table-bordered table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th style="width:20%;text-align:center">Currnt State</th>
+                                        <th style="width:20%;text-align:center">Next State</th>
+                                        <th style="width:20%;text-align:center">Actions</th>
+                                        <th style="width:20%;text-align:center">Activities</th>
+                                        <th style="width:10%;text-align:center">Delete</th>
+                                        <th style="width:10%;text-align:center">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-left" style="border:none">
+                        <input type="button" value="Back" onclick="Back()" class="btn btn-primary" />
+                        <input type="button" value="Finish" onclick="submitForm()" class="btn btn-primary" />
+                        <input type="button" value="Reload" onclick="Reload()" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
+        }
+    }
+
+    <div class="popup" data-popup="popup-1">
+        <div class="popup-inner" id="StatesDivPopup">
+            <fieldset class="group">
+                <legend>Select Transition Activities</legend>
+                <ul id="Activities" class="checkbox"></ul>
+            </fieldset>
+            <fieldset class="group">
+                <legend>Select Transition  Actions</legend>
+                <ul id="Actions" class="checkbox"></ul>
+            </fieldset>
+            <p><a data-popup-close="popup-1" href="#">Close</a></p>
+            <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+
+
+</div>
+@{
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var stateInfoJson = jss.Serialize(ViewBag.StateNames);
+
+    var actionInfoJson = jss.Serialize(ViewBag.ActionNames);
+
+    var activityInfoJson = jss.Serialize(ViewBag.ActivityNames);
+
+    var model = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var modelJson = model.Serialize(Model);
+}
+<script type="text/javascript">
+
+    var states = JSON.parse('@Html.Raw(stateInfoJson)');
+    var actions = JSON.parse('@Html.Raw(actionInfoJson)');
+    var activities = JSON.parse('@Html.Raw(activityInfoJson)');
+    var model = JSON.parse('@Html.Raw(modelJson)');
+    var CreateTransitionsURL = '@Url.Action("CreateTransitions")';
+    var BackToStatesURL = '@Url.Action("BackToStates")';
+    var BackToTransitionsURL = '@Url.Action("BackToTransitions")';
+</script>
+<script src="~/WorkflowJS/ProcessManagement/TransitionManagement.js"></script>

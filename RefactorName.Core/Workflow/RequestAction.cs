@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// The <see cref="Action"/>s that can be performed at any given time upon a <see cref="Request"/>.
@@ -30,6 +30,8 @@ namespace RefactorName.Core.Workflow
         public bool IsComplete { get; set; }
 
         public Action Action { get; private set; }
+
+        public Request Request { get; private set; }
 
         public Transition Transition { get; private set; }
 

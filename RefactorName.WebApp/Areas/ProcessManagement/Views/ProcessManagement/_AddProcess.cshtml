@@ -1,0 +1,53 @@
+﻿@using RefactorName.WebApp.Areas.Backend.Models
+@using MvcHtmlHelpers
+@model ProcessAddModel
+
+<div>
+    <div id="messageContainer" class="alert info" style='width:100%;display:none'>
+        <span class="closebtn" onclick='this.parentElement.style.display="none";'>&times;</span>
+        <strong>Info!</strong><span id="message"> @ViewBag.Message</span>
+    </div>
+    @using (Html.MCIBeginItemsCol(12))
+    {
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="panel panel-default">
+                    <div class="panel-heading">Manage Process</div>
+                    <div class="panel-body">
+
+                        @using (Html.MCIBeginItemsRow())
+                        {
+                            @Html.MCITextBoxItemFor(m => m.Name, httmlAttributes: new { maxLength = "50", id = "processName", required = "true" })
+                            <input type="hidden" id="ProcessId" value="@ViewBag.ProcessId" />
+                        }
+                    </div>
+                    <fieldset class="group">
+                        <legend>Select Process Admins</legend>
+                        <ul id="Users" class="checkbox"></ul>
+                    </fieldset>
+                    <div class="panel-footer text-left">
+                        <input type="button" value="Next" onclick="Save()" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
+        }
+    }
+    @{
+        var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+        var userInfoJson = jss.Serialize(ViewBag.Users);
+
+        var model = new System.Web.Script.Serialization.JavaScriptSerializer();
+        var modelJson = model.Serialize(Model);
+    }
+
+</div>
+
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+<script>
+    var model = JSON.parse('@Html.Raw(modelJson)')
+    var users = JSON.parse('@Html.Raw(userInfoJson)');
+    var CreateProcessURL = '@Url.Action("CreateProcess")'
+</script>
+<script src="~/WorkflowJS/ProcessManagement/ProcessManagement.js"></script>

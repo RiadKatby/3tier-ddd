@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+
+@*<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <link href="~/Content/Gridmvc.css" rel="stylesheet" />
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/gridmvc.min.js"></script>
+        <title>Index</title>
+    </head>
+    <body>
+        <h1>Grid.MVC</h1>
+        <hr />
+        <div style="width:500px;">
+            @Html.Grid(Model).Columns(columns =>
+       {
+           columns.Add(c => c.Name).Titled("Name").Filterable(true);
+       }).Sortable(true).WithPaging(10)
+        </div>
+    </body>
+    </html>*@
+
+
+@model IEnumerable<ProcessAddModel>
+@using GridMvc.Html
+
+
+@{
+    Layout = "~/Views/Shared/_ENLayout.cshtml";
+    ViewBag.Title = "Processes";
+}
+@section breadcrumb
+{
+    <ol class="breadcrumb">        
+        <li>@Html.ActionLink("Workflow", "Index")</li>
+        <li class="active"><a href="#">Process Management</a></li>
+    </ol>
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/angulartree")
+}
+@section Styles
+{
+    @Styles.Render("~/Content/angulartree")
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/Gridmvc.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/gridmvc.min.js"></script>
+    <title>Index</title>
+</head>
+<div id="messageContainer" class="alert info" style='width:100%;display:@ViewBag.Style'>
+    <span class="closebtn" onclick='this.parentElement.style.display="none";'>&times;</span>
+    <strong>Info!</strong><span id="message"> @ViewBag.Message</span>
+</div>
+
+<div style="width:500px;">
+    @Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(c => c.Name).Titled("Name").Filterable(true);
+
+    columns.Add()
+     .Encoded(false)
+     .Sanitized(false)
+     .SetWidth(30)
+     .RenderValueAs(p => Html.ActionLink("Delete", "Delete", new { id = p.ProcessId },
+    new { onclick = "return confirm('Are you sure you wish to delete this Process?');" }));
+
+    columns.Add()
+     .Encoded(false)
+     .Sanitized(false)
+     .SetWidth(30)
+     .RenderValueAs(p => Html.ActionLink("Edit", "ManageProcess", new { id = p.ProcessId }));
+
+}).Sortable(true).WithPaging(10)
+</div>
+@Html.ActionLink("Create Process", "ManageProcess")
+<script>
+    $(document).ready(function () {
+        document.getElementById("dialog_loader").style.display = "none";
+    })
+</script>

@@ -1,0 +1,490 @@
+@font-face {
+    font-family: "JFFlatRegular";
+    src: url('../fonts/JF-Flat-regular.eot');
+    src: url('../fonts/JF-Flat-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/JF-Flat-regular.svg#JF Flat Regular') format('svg'), url('../fonts/JF-Flat-regular.woff') format('woff'), url('../fonts/JF-Flat-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'JFFlatRegular';
+}
+a,
+img {
+    border: none;
+    text-decoration: none;
+}
+.floatRight {
+    float: right;
+}
+.floatLeft {
+    float: left;
+}
+.clearfix:after {
+    clear: both;
+    content: '';
+    display: block;
+}
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.head {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: url('../images/login/background.jpg') center center no-repeat;
+    background-size: cover;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+.login-circle {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    background-image: url('../images/login/circle-bulb.png');
+    background-image: linear-gradient(transparent, transparent), url('../images/login/circle-bulb.svg');
+    background-repeat: no-repeat;
+    background-position: -100px bottom;
+    z-index: 1003;
+    width: 525px;
+    height: 525px;
+    border-radius: 50%;
+    max-height: 80%;
+    max-width: 70%;
+    box-sizing: border-box;
+    padding: 20px;
+    vertical-align: middle;
+    /* display: none; */
+}
+.fikkrah-logo {
+    background: url('../images/login/fikkrah-logo.png') no-repeat center center;
+    background-image: linear-gradient(transparent, transparent), url('../images/login/fikkrah-logo.svg');
+    background-size: 100%;
+    background-size: contain;
+    width: 128px;
+    height: 131px;
+    margin: 0 auto;
+}
+.fikkrah-login {
+    width: 365px;
+    margin: 25px auto;
+}
+.fikkrah-login>div{
+    position: relative;
+}
+.fikkrah-login>div>i{
+    background-color: #39b5e6;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    width: 52px;
+    height: calc(100% + 2px);
+}
+.fikkrah-login .username-field {
+    border: 1px solid #dcdcdc;
+    border-radius: 10px 10px 0 0;
+    border-bottom: none;
+    padding: 2px;
+    background-color: #fff;
+}
+.fikkrah-login .username-field input {
+    border: none;
+    color: #ababab;
+    font: 14px/46px 'JFFlatRegular';
+    width: 100%;
+    padding: 0 65px 0 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+    -webkit-appearance: none;
+}
+.fikkrah-login .username-field i{
+    background-image: url('../images/login/username-icon.png');
+    background-image: linear-gradient(transparent, transparent), url('../images/login/username-icon.svg');
+    border-radius: 0 10px  0 0;
+}
+.fikkrah-login .password-field {
+    border: 1px solid #dcdcdc;
+    border-radius: 0 0 10px 10px;
+    padding: 2px;
+    background-color: #fff;
+}
+.fikkrah-login .password-field input {
+    border: none;
+    color: #ababab;
+    font: 14px/46px 'JFFlatRegular';
+    width: 100%;
+    padding: 0 65px 0 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+    -webkit-appearance: none;
+}
+.fikkrah-login .password-field i{
+    background-image: url('../images/login/password-icon.png');
+    background-image: linear-gradient(transparent, transparent), url('../images/login/password-icon.svg');
+    border-radius: 0 0 10px 0px;
+}
+.fikkrah-login input:focus {
+    outline: none
+}
+.remember-me-option {
+    margin: 15px 0;
+    color: #787878;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: left;
+}
+.remember-me-option a {
+    color: #646464;
+}
+.login-button {
+    color: #39b5e6;
+    font: 24px 'JFFlatRegular';
+    text-align: center;
+    margin-top: 10px;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+}
+.fikrah-box {
+    width: 450px;
+    height: 450px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 100px;
+}
+.white-circle-big .inside.start{
+ 
+    opacity:0
+}
+.white-circle-big .inside{opacity:1;-webkit-transition: all .6s cubic-bezier(0.4, 0, 1, 1);transition: all .6s cubic-bezier(0.4, 0, 1, 1);-webkit-transition-delay: 3.55s;transition-delay: 3.55s;padding: 30px 0 20px 0;height: 450px;box-sizing: border-box;}
+.white-circle-big.start {
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+    opacity: 0;
+}
+.white-circle-big {
+    top: -51px;
+    left: 8px;
+    width: 450px;
+    height: 450px;
+    border-radius: 225px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 8;
+    opacity: 0;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+    -webkit-animation: orbitWhiteCircle 1.1s cubic-bezier(0.4, 0, 1, 1);
+    animation: orbitWhiteCircle 1.1s cubic-bezier(0.4, 0, 1, 1);
+    -webkit-animation-delay: 2.5s;
+    animation-delay: 2.5s;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    overflow: hidden;
+}
+@-webkit-keyframes orbitWhiteCircle {
+    from {
+        -webkit-transform: rotate(0deg) translatex(180px) scale(0.2);
+        transform: rotate(0deg) translatex(180px) scale(0.2);
+    }
+    to {
+        -webkit-transform: rotate(360deg) translatex(0px) scale(1);
+        transform: rotate(360deg) translatex(0px) scale(1);
+        top: 0;
+        left: 0;
+        opacity: 1
+    }
+}
+@keyframes orbitWhiteCircle {
+    from {
+        -webkit-transform: rotate(0deg) translatex(180px) scale(0.2);
+        transform: rotate(0deg) translatex(180px) scale(0.2);
+    }
+    to {
+        -webkit-transform: rotate(360deg) translatex(0px) scale(1);
+        transform: rotate(360deg) translatex(0px) scale(1);
+        top: 0;
+        left: 0;
+        opacity: 1
+    }
+}
+.blue-circle-big.start {
+    background-color: #78c6e7;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+.blue-circle-big {
+    width: 292px;
+    height: 292px;
+    border-radius: 146px;
+    background-color: #39aadc;
+    position: absolute;
+    bottom: 0;
+    left: -60px;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: all 3s cubic-bezier(0.4, 0, 1, 1);
+    transition: all 2005.1ms cubic-bezier(0.4, 0, 1, 1) 0ms;
+    z-index: 1;
+}
+.blue-circle.start {
+    background-color: #39aadc;
+    left: 50%;
+    top: 50%;
+    opacity: 0;
+    -webkit-transform: scale(2);
+    -ms-transform: scale(2);
+    transform: scale(2);
+}
+.blue-circle {
+    background-color: #78c6e7;
+    height: 64px;
+    width: 64px;
+    border-radius: 32px;
+    position: absolute;
+    top: -59px;
+    left: 71px;
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: all 3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 1499.93ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-transition-delay: 1.5s;
+    transition-delay: 1500ms;
+    z-index: 2;
+}
+.grey-circle.start {
+    -webkit-transform: perspective(500px) scale(0) translate3d(-50%, 50%, 200px);
+    transform: perspective(500px) scale(0) translate3d(-50%, 50%, 200px);
+    background-color: rgba(0, 0, 0, .50);
+}
+.grey-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 80px;
+    -webkit-transform: perspective(500px) scale(1) translate3d(0%, 0%, 0px);
+    transform: perspective(500px) scale(1) translate3d(0%, 0%, 0px);
+    background-color: rgba(0, 0, 0, .25);
+    position: absolute;
+    top: 10px;
+    left: -20px;
+    -webkit-transition: all 3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-transition-delay: 1s;
+    transition-delay: 1s;
+    z-index: 2;
+}
+.grey-circle-big.start {
+    -webkit-transform: perspective(500px) scale(0) translate3d(100%, 150%, 0px);
+    transform: perspective(500px) scale(0) translate3d(100%, 150%, 0px);
+    background-color: rgba(0, 0, 0, .0);
+}
+.grey-circle-big {
+    width: 218px;
+    height: 218px;
+    border-radius: 109px;
+    background-color: rgba(0, 0, 0, .25);
+    position: absolute;
+    top: 75px;
+    right: -60px;
+    -webkit-transform: perspective(500px) scale(1) translate3d(0%, 0%, 0px);
+    transform: perspective(500px) scale(1) translate3d(0%, 0%, 0px);
+    -webkit-transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-transition-delay: .5s;
+    transition-delay: .5s;
+    z-index: 1;
+}
+.dashed-circle.start {
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+.dashed-circle {
+    width: 378px;
+    height: 378px;
+    border: 1px dashed #484a4c;
+    border-radius: 189px;
+    top: -61px;
+    right: -10px;
+    position: absolute;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: -webkit-transform 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -ms-transition: -ms-transform 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0ms;
+    transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0ms;
+    z-index: 4;
+}
+.dotted-circle.start {
+    opacity: 0;
+    -webkit-transform: perspective(500px) translate3d(50%, 50%, 300px);
+    transform: perspective(500px) translate3d(50%, 50%, 300px);
+}
+.dotted-circle {
+    position: absolute;
+    margin: auto;
+    top: -91px;
+    right: -2px;
+    width: 258px;
+    height: 258px;
+    border-radius: 128px;
+    opacity: 1;
+    -webkit-transform: perspective(500px) translate3d(0%, 0%, 0px);
+    transform: perspective(500px) translate3d(0%, 0%, 0px);
+    background: url('../images/dotted-circles.png') no-repeat;
+    background-image: linear-gradient(transparent, transparent), url('../images/dotted-circles.svg');
+    -webkit-transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1s;
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1s;
+    z-index: 1;
+}
+.footer {
+    background-color: #39b5e6;
+    width: 100%;
+    height: 104px;
+    padding: 0 55px;
+    box-sizing: border-box;
+    color: #fff;
+    position: absolute;
+    font: normal 20px/104px 'JFFlatRegular';
+    bottom: 0;
+}
+.footer i.bulb {
+    background: url('../images/login/footer-bulb.png') no-repeat center center;
+    background-image: linear-gradient(transparent, transparent), url('../images/login/footer-bulb.svg');
+    background-size: 54px;
+    height: 104px;
+    width: 54px;
+    margin-left: 10px;
+    display: block;
+    float: right;
+}
+.footer a {
+    color: #fff
+}
+@media (max-width: 1024px) {
+    
+    .footer {
+        height: auto;
+        padding: 5px 10px;
+    }
+}
+@media (max-width:768px) {
+    
+    .page{
+        position:relative;
+        height: initial;
+    }
+     .footer {
+        padding: 10px 25px;
+        line-height: 70px;
+    }
+    .footer i.bulb {
+        height: 70px;
+        position: relative;
+    }
+}
+@media (max-width:600px) {
+    .fikrah-box{
+        width:100%;
+        height: 100%;
+        bottom: 0;
+    }
+    .white-circle-big{
+        -webkit-animation:none;
+        animation:none;
+        -webkit-animation-delay: 0s;
+        animation-delay: 0s;
+        transform: scale(1);
+        opacity: 1;
+        top: 0;
+        bottom: 0;
+        border-radius: 0px;
+        background-color: transparent;
+        width: 100%;
+        left: 0;
+        right: 0;
+        position: static;
+        margin: auto;
+        box-sizing: border-box;
+        height: 100%;
+        animation-fill-mode: none;
+        background-color: rgba(255,255,255,0.7);
+    }
+    .white-circle-big .inside{
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+        transition: none;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        height: 400px;
+        margin-top: 30px;
+    }
+    .fikkrah-login{
+        width:100%;
+    }
+    .blue-circle-big,
+.blue-circle,
+.grey-circle,
+.grey-circle-big,
+.dashed-circle,
+.dotted-circle,
+    .white-circle{
+        display:none;
+    }
+    .footer {
+        padding: 20px 10px;
+    }
+    .footer>div {
+        float: none;
+        text-align: right;
+        font-size: 13px;
+        line-height: 22px;
+        padding: 0 75px 0 0;
+    }
+    .footer i.bulb {
+        height: 70px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        margin: auto 20px auto auto;
+    }
+    .footer>div.floatRight {
+        padding-top: 5px;
+    }
+}
+@media (max-height: 500px) {
+    .head,.fikrah-box{
+        position: relative;
+        
+    }
+    .head{
+        overflow: hidden;
+    }
+    .footer{
+        position: relative;
+    }
+    
+}

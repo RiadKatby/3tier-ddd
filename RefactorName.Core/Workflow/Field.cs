@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Fields that may filled within the <see cref="Request"/> through out <see cref="Process"/>.
@@ -37,6 +37,8 @@ namespace RefactorName.Core.Workflow
         /// Gets length of this <see cref="Field"/> object.
         /// </summary>
         public int Length { get; private set; }
+
+        public Process Process { get; private set; }
 
         public Field() { }
 

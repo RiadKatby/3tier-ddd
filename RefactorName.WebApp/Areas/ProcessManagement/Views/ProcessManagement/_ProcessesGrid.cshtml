@@ -1,0 +1,43 @@
+﻿@using RefactorName.WebApp.Areas.Backend.Models
+@using MvcHtmlHelpers
+
+@model WebGridList<ProcessAddModel>
+
+@{
+    WebGrid ProcessesGrid = new WebGrid(canPage: true, canSort: true, rowsPerPage: Model.PageSize, ajaxUpdateContainerId: "grid_div");
+    ProcessesGrid.Bind(Model.List, autoSortAndPage: false, rowCount: Model.RowCount);
+}
+@*@Html.Partial("~/Views/Tenants/_TenantDetailsPartial.cshtml", Model)*@
+<div>
+    @if (Model.List == null || Model.RowCount == 0)
+    {
+        <div class="alert alert-warning" style="text-align: center">NO Data Found</div>
+    }
+    else
+    {
+        ProcessesGrid.PageIndex = Model.PageIndex - 1;
+        <div class="well well-sm center-block" style="text-align: center; max-width: 200px">Processes Number : @Model.RowCount</div>
+        <div id="grid_div" class="table-responsive">
+            @ProcessesGrid.GetTableWithPager(
+        tableStyle: "table table-striped ",
+        actionName: "GetProcessesList",
+        mode: WebGridPagerModes.All,
+        headerStyle: "", //"primary","light"
+        footerStyle: "footerGrid",
+           columns: ProcessesGrid.Columns(
+                    ProcessesGrid.Column("", header: "Number", style: "col60", format: item => Convert.ToString((ProcessesGrid.PageIndex * ProcessesGrid.RowsPerPage) + ProcessesGrid.Rows.IndexOf(item) + 1)),
+              ProcessesGrid.Column("Name", header: Html.DisplayNameFor(x => x.List.First().Name).ToString())
+              , ProcessesGrid.Column("", header: "Edit", style: "action col70", format: item =>
+                             Html.AcionLinkWithInnerHtml("<i class='fa fa-pencil-square-o fa-lg'></i>", "ManageProcess", "ProcessManagement",
+                             routeValues: new { Id = item.ProcessId },
+                             htmlAttributes: new { title = "Edit" }))
+              , ProcessesGrid.Column("", header: "Delete", style: "action col70", format: item =>
+                             Html.AcionLinkWithConfirm("<i class='fa fa-pencil-square-o fa-lg'></i>", "Delete","Are you sure?","Delete", "ProcessManagement",
+                             routeValues: new { Id = item.ProcessId },
+                             htmlAttributes: new { title = "Delete" }))))
+
+        </div>
+    }
+</div>
+
+

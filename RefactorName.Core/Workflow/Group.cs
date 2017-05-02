@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Group is a collection of Users that perform related functions.
@@ -22,6 +22,8 @@ namespace RefactorName.Core.Workflow
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="Group"/>.
         /// </summary>
         public int ProcessId { get; private set; }
+        [Associated]
+        public Process Process { get; private set; }
 
         /// <summary>
         /// Gets the name of this <see cref="Group"/>.
@@ -32,15 +34,22 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets list of <see cref="User"/>s that are Members of this <see cref="Group"/> object.
         /// </summary>
-        [Associated, Required]
-        public IList<User> Members { get; private set; }
+        [Associated]
+        public IList<User> Users { get; private set; }
+
+        //[Associated]
+        //public IList<Action> Actions { get; private set; }
+
+        public IList<ActionTarget> ActionTargets { get; private set; }
+
+        public IList<ActivityTarget> ActivityTargets { get; private set; }
 
         /// <summary>
         /// Instanciate empty <see cref="Group"/> object, this constructor used by infrastrcutre libraries only.
         /// </summary>
         public Group()
         {
-            this.Members = new List<User>();
+            this.Users = new List<User>();
         }
 
         /// <summary>
@@ -72,7 +81,9 @@ namespace RefactorName.Core.Workflow
         /// <returns>Current instance of <see cref="Group"/> object.</returns>
         public Group AddMember(User member)
         {
-            this.Members.Add(member);
+            var result = (from user in this.Users where user.Id == member.Id select user).ToList();
+            if (result.Count == 0)
+                this.Users.Add(member);
 
             return this;
         }
@@ -84,8 +95,20 @@ namespace RefactorName.Core.Workflow
         /// <returns>Current instance of <see cref="Group"/> object.</returns>
         public Group DeleteMember(User member)
         {
-            this.Members.Remove(member);
+            this.Users.Remove(member);
 
+            return this;
+        }
+
+        public Group RemoveMember(User member)
+        {
+            this.Users.Remove(member);
+            return this;
+        }
+
+        public Group UpdateName(string name)
+        {
+            this.Name = name;
             return this;
         }
     }

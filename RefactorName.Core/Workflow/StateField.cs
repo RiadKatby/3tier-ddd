@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Represent information of <see cref="Field"/> when a specific <see cref="State"/> is entered.

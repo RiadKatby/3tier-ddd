@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// A State is a position in the <see cref="Process"/> that a given <see cref="Request"/> can be in at any given moment. 
@@ -46,6 +46,8 @@ namespace RefactorName.Core.Workflow
         [Associated]
         public StateType StateType { get; private set; }
 
+        public Process Process { get; private set; }
+
         /// <summary>
         /// Gets all <see cref="Activity"/>s that must be executed when a <see cref="Request"/> enters this <see cref="State"/>.
         /// </summary>
@@ -55,12 +57,11 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets all <see cref="Field"/>s that need to be filled up when this <see cref="State"/> is entered.
         /// </summary>
-        [Owned]
         public IList<StateField> Fields { get; private set; }
 
-        public IList<Transition> Outgoing { get; private set; }
+        //public IList<Transition> Outgoing { get; private set; }
 
-        public IList<Transition> Ingoing { get; private set; }
+        //public IList<Transition> Ingoing { get; private set; }
 
         /// <summary>
         /// Instanciate empty <see cref="State"/> object, this constructor used by infrastrcutre libraries only.
@@ -68,8 +69,8 @@ namespace RefactorName.Core.Workflow
         public State()
         {
             this.Activities = new List<Activity>();
-            this.Outgoing = new List<Transition>();
-            this.Ingoing = new List<Transition>();
+            //this.Outgoing = new List<Transition>();
+            //this.Ingoing = new List<Transition>();
         }
 
         /// <summary>
@@ -95,7 +96,9 @@ namespace RefactorName.Core.Workflow
         /// <returns>Current instance of <see cref="State"/> object.</returns>
         public State AddActivity(Activity activity)
         {
-            this.Activities.Add(activity);
+            var result = (from stateActiviyt in this.Activities where stateActiviyt.ActivityId == activity.ActivityId select stateActiviyt).ToList();
+            if (result.Count == 0)
+                this.Activities.Add(activity);
 
             return this;
         }
@@ -142,6 +145,20 @@ namespace RefactorName.Core.Workflow
         public override string ToString()
         {
             return Name;
+        }
+
+        public State RemoveActivity(Activity activity)
+        {
+            this.Activities.Remove(activity);
+            return this;
+        }
+
+        public State Update(string name, string description,StateType stateType)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.StateType = stateType;
+            return this;
         }
     }
 }

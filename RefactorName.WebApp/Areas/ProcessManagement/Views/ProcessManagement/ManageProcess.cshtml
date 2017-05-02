@@ -1,0 +1,36 @@
+﻿@using RefactorName.WebApp.Areas.Backend.Models
+@using MvcHtmlHelpers
+@model ProcessAddModel
+
+@{
+    Layout = "~/Views/Shared/_ENLayout.cshtml";
+    ViewBag.Title = "Add Process";
+}
+@section breadcrumb
+{
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Main", "Index", "Main")</li>
+        <li>@Html.ActionLink("Process", "Index")</li>
+        <li class="active"><a href="#">Add Process</a></li>
+    </ol>
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/angulartree")
+}
+@section Styles
+{
+    @Styles.Render("~/Content/angulartree")
+}
+
+
+<div id="divStep">
+    @Html.Partial("_AddProcess", Model)
+    
+</div>
+@Html.ActionLink("Cancel", "Index")
+
+
+
+
+

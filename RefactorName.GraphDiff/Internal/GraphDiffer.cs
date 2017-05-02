@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using RefactorName.GraphDiff.Internal.Graph;
+using KellermanSoftware.CompareNetObjects;
 
 namespace RefactorName.GraphDiff.Internal
 {
@@ -57,8 +58,21 @@ namespace RefactorName.GraphDiff.Internal
                 // Perform recursive update
                 var entityManager = new EntityManager(_dbContext);
                 var changeTracker = new ChangeTracker(_dbContext, entityManager);
-                _root.Update(changeTracker, entityManager, persisted, updating);
+                ////This is the comparison class
+                //CompareLogic compareLogic = new CompareLogic()
+                //{
+                //    Config = new ComparisonConfig()
+                //    {
+                //        MaxStructDepth = 1000,
+                //        MaxDifferences=1000
+                //        //add other configurations
+                //    }
+                //};
 
+                //ComparisonResult result = compareLogic.Compare(persisted, updating);
+
+                _root.Update(changeTracker, entityManager, persisted, updating);
+                //result = compareLogic.Compare(persisted, updating);
                 return persisted;
             }
             finally

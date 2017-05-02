@@ -1,0 +1,41 @@
+﻿.message-box-container {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 3px;
+    z-index: 10;
+    height: 0;
+}
+
+.message-box {
+    height: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+    .message-box > a.closeall {
+        margin: 0 auto;
+        width: 150px;
+        color: #FFF !important;
+        display: block;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.28);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        font-size: 17px;
+    }
+
+        .message-box > a.closeall:hover {
+            text-decoration: none;
+            color: #FFF;
+            background: rgba(0, 0, 0, 0.68);
+        }
+
+    .message-box > div.alert {
+        display:none;
+        position: relative;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        margin-bottom: 3px;        
+        text-align:right;
+    }

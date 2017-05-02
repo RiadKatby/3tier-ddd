@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.SqlServerRepository</RootNamespace>
     <AssemblyName>RefactorName.SqlServerRepository</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,11 +32,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -49,8 +58,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppDbContext.cs" />
+    <Compile Include="GenericImplementation\GenericQueryRepository.cs" />
+    <Compile Include="GenericImplementation\GenericRepository.cs" />
+    <Compile Include="GenericImplementation\UnitOfWork.cs" />
+    <Compile Include="Identity\IdentityRoleRepository.cs" />
+    <Compile Include="Identity\IdentityUserRepository.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="MyDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\QueryConstraintsExtensions.cs" />
+    <Compile Include="ThrowHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -60,6 +77,14 @@
     <ProjectReference Include="..\RefactorName.Core\RefactorName.Core.csproj">
       <Project>{6923f1e7-e470-42b1-a24a-32693ca127f4}</Project>
       <Name>RefactorName.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.GraphDiff\RefactorName.GraphDiff.csproj">
+      <Project>{438efb89-7edd-499e-9b80-ad7a7d4cf21d}</Project>
+      <Name>RefactorName.GraphDiff</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.RepositoryInterface\RefactorName.RepositoryInterface.csproj">
+      <Project>{9426a0d0-cc64-45b0-bc4e-76304a50dc39}</Project>
+      <Name>RefactorName.RepositoryInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

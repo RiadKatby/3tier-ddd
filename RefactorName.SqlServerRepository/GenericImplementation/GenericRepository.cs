@@ -2,6 +2,7 @@
 using RefactorName.RepositoryInterface;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,12 @@ namespace RefactorName.SqlServerRepository
 
                 if (notifierContext == null)
                 {
+                    var added = context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
+                    var deleted = context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
+                    var modified = context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
+
+                    string dump = context.DumpTrackedEntities();
+
                     int erc = context.SaveChanges();
                     context.Dispose();
 

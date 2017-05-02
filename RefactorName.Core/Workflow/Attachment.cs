@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Represent only information about file or attachment which is releated to a Specific <see cref="Request"/>
@@ -36,6 +36,8 @@ namespace RefactorName.Core.Workflow
         /// </summary>
         public User CreatedBy { get; private set; }
 
+        public Request Request { get; private set; }
+
         /// <summary>
         /// Instanciate empty <see cref="Attachment"/> object, this constructor used by infrastrcutre libraries only.
         /// </summary>
@@ -48,7 +50,7 @@ namespace RefactorName.Core.Workflow
         public Attachment(User createdBy)
         {
             this.CreatedBy = createdBy;
-            this.CreatedById = createdBy.UserId;
+            this.CreatedById = createdBy.Id;
         }
 
         /// <summary>

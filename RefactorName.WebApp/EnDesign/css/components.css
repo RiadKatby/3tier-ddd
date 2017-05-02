@@ -1,0 +1,247 @@
+@font-face {
+	font-family: 'thiqah';
+	src:url('../fonts/thiqah.eot?6qp2g6');
+	src:url('../fonts/thiqah.eot?6qp2g6#iefix') format('embedded-opentype'),
+		url('../fonts/thiqah.ttf?6qp2g6') format('truetype'),
+		url('../fonts/thiqah.woff?6qp2g6') format('woff'),
+		url('../fonts/thiqah.svg?6qp2g6#thiqah') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.icon {
+    /* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'thiqah' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+	top:1px;
+}
+
+html[dir='rtl'] .icon {font-size: 14px;top:2px;}
+.icon-infomation-circle:before {
+	content: "\e92a";
+}
+
+.icon-all-caps:before {
+	content: "\e92b";
+}
+.icon-angle-brackets:before {
+	content: "\e92c";
+}
+.icon-arrange-letter:before {
+	content: "\e92d";
+}
+.icon-arrange-number:before {
+	content: "\e92e";
+}
+.icon-bold:before {
+	content: "\e92f";
+}
+.icon-copy-paste:before {
+	content: "\e930";
+}
+.icon-hash:before {
+	content: "\e931";
+}
+.icon-italic:before {
+	content: "\e932";
+}
+.icon-list-add:before {
+	content: "\e933";
+}
+.icon-list-bullets-1:before {
+	content: "\e934";
+}
+.icon-list-bullets-2:before {
+	content: "\e935";
+}
+.icon-list-bullets-3:before {
+	content: "\e936";
+}
+.icon-list-number:before {
+	content: "\e937";
+}
+.icon-list-subtract:before {
+	content: "\e938";
+}
+.icon-paragraph:before {
+	content: "\e939";
+}
+.icon-paragraph-left-to-right:before {
+	content: "\e93a";
+}
+.icon-paragraph-normal:before {
+	content: "\e93b";
+}
+.icon-paragraph-right-to-left:before {
+	content: "\e93c";
+}
+.icon-paragraph-two-columns:before {
+	content: "\e93d";
+}
+.icon-printer-view:before {
+	content: "\e93e";
+}
+.icon-redo:before {
+	content: "\e93f";
+}
+.icon-sigma:before {
+	content: "\e940";
+}
+.icon-superscript:before {
+	content: "\e941";
+}
+.icon-text:before {
+	content: "\e942";
+}
+.icon-text-bar:before {
+	content: "\e943";
+}
+.icon-text-input-1:before {
+	content: "\e944";
+}
+.icon-undo:before {
+	content: "\e945";
+}
+.icon-upload-2:before {
+	content: "\e946";
+}
+.icon-infomation-circle:before {
+	content: "\e92a";
+}
+.icon-report-problem-triangle:before {
+	content: "\e927";
+}
+.icon-check-circle-2:before {
+	content: "\e928";
+}
+.icon-bookmark-1:before {
+	content: "\e926";
+}
+.icon-arrow-down-10:before {
+	content: "\e918";
+}
+.icon-arrow-left-10:before {
+	content: "\e91e";
+}
+.icon-arrow-right-10:before {
+	content: "\e920";
+}
+.icon-arrow-up-10:before {
+	content: "\e925";
+}
+.icon-rank-army-star-22:before {
+	content: "\e906";
+}
+.icon-radio-11:before {
+	content: "\e91d";
+}
+.icon-checkbox-9-ex:before {
+	content: "\e91f";
+}
+.icon-checkbox-6-ex:before {
+	content: "\e921";
+}
+.icon-checkbox-2-ex:before {
+	content: "\e922";
+}
+.icon-checkbox-1-ex:before {
+	content: "\e923";
+}
+.icon-radio-5:before {
+	content: "\e924";
+}
+.icon-add-1:before {
+	content: "\e914";
+}
+.icon-add-box:before {
+	content: "\e915";
+}
+.icon-add-circle-1:before {
+	content: "\e90b";
+}
+.icon-remove-1:before {
+	content: "\e916";
+}
+.icon-remove-2:before {
+	content: "\e917";
+}
+.icon-remove-circle-1:before {
+	content: "\e929";
+}
+.icon-subtract-1:before {
+	content: "\e91c";
+}
+.icon-subtract-box:before {
+	content: "\e919";
+}
+.icon-navigation-show-more-1:before {
+	content: "\e91a";
+}
+.icon-navigation-show-more-2:before {
+	content: "\e91b";
+}
+.icon-home-1:before {
+	content: "\e90d";
+}
+.icon-bubble-chat-question-2:before {
+	content: "\e90e";
+}
+.icon-heart:before {
+	content: "\e900";
+}
+.icon-rank-army-star-2:before {
+	content: "\e901";
+}
+.icon-thumbs-down-1:before {
+	content: "\e902";
+}
+.icon-thumbs-up-1:before {
+	content: "\e903";
+}
+.icon-arrow-box-left-3:before {
+	content: "\e907";
+}
+.icon-arrow-box-right-3:before {
+	content: "\e908";
+}
+.icon-arrow-left-9:before {
+	content: "\e904";
+}
+.icon-arrow-left-12:before {
+	content: "\e910";
+}
+.icon-arrow-right-9:before {
+	content: "\e905";
+}
+.icon-arrow-right-12:before {
+	content: "\e911";
+}
+.icon-person-2:before {
+	content: "\e912";
+}
+.icon-email-compose:before {
+	content: "\e909";
+}
+.icon-cog:before {
+	content: "\e913";
+}
+.icon-check-12:before {
+	content: "\e90a";
+}
+.icon-close2:before {
+	content: "\e90c";
+}
+.icon-search:before {
+	content: "\e90f";
+}
+

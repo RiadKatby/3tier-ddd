@@ -1,0 +1,25 @@
+﻿@using IdeasBank.Core;
+
+
+<li secure-roles='@RoleNames.Users,@RoleNames.Admins'>
+
+    <a href='@Url.Action("AddIdea", "IdeaRequest")'>
+        <i class="fa fa-users"></i><span class="title">إضافة فكرة</span>
+    </a>
+</li>
+
+<li secure-roles='@RoleNames.Users,@RoleNames.Admins'>
+
+    <a href='@Url.Action("List", "IdeaRequest")'>
+        <i class="fa fa-users"></i><span class="title">أفكارى</span>
+    </a>
+</li>
+
+@*@if (User.IsInRole(RoleNames.Admins))
+{*@
+    <li secure-roles ='@RoleNames.Admins'>
+    <a href='@Url.Action("Index", "Users")'>
+        <i class="fa fa-users"></i><span class="title">الدخول للوحة التحكم</span>
+    </a>
+    </li>
+    @*}*@

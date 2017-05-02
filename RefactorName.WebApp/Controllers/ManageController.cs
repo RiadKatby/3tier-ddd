@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RefactorName.WebApp.Models;
 using RefactorName.WebApp.Infrastructure.Security;
+using RefactorName.WebApp.Areas.ProcessManagement.Controllers;
 
 namespace RefactorName.WebApp.Controllers
 {

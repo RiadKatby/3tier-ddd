@@ -1,0 +1,94 @@
+﻿@using RefactorName.WebApp.Areas.Backend.Models
+@using MvcHtmlHelpers
+@model List<ActionTargetAddModel>
+
+<div>
+    <div id="messageContainer" class="alert info" style='width:100%;display:@ViewBag.Style'>
+        <span class="closebtn" onclick='this.parentElement.style.display="none";'>&times;</span>
+        <strong>Info!</strong><span id="message"> @ViewBag.Message</span>
+    </div>
+    @using (Html.MCIBeginItemsCol(12))
+    {
+
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="panel panel-default">
+                    <div class="panel-heading">Manage Action Targets</div>
+                    <div class="panel-body">
+
+                        @using (Html.MCIBeginItemsRow())
+                        {
+                            @Html.MCIDropDownListItem(selectList: (SelectList)ViewBag.Actions, name: "ActionId", optionLabel: null, labelText: "Action", httmlAttributes: new { maxLength = "100", id = "ActionId", name = "ActionId", value = "" })
+                            @Html.MCIDropDownListItem(selectList: (SelectList)ViewBag.Targets, name: "TargetId", optionLabel: null, labelText: "Target", httmlAttributes: new { maxLength = "100", id = "TargetId", name = "TargetId", value = "" })
+                            @Html.MCIDropDownListItem(selectList: (SelectList)ViewBag.Groups, name: "GroupId", optionLabel: null, labelText: "Group", httmlAttributes: new { maxLength = "100", id = "GroupId", name = "GroupId", value = "" })
+                            <input type="hidden" id="ProcessId" value="@ViewBag.ProcessId" />
+
+                        }
+                        <button type="button" id="btnSave" class="btn btn-primary" onclick="Save(event)">Add</button>
+                    </div>
+
+                    @using (Html.MCIBeginItemsCol(12))
+                    {
+                        <div style="padding:10px">
+                            <div id="DivNoData" class="well well-sm center-block" style="position: relative; top: 50%; transform: translateY(0%);visibility:visible">No Data Found</div>
+                            <div id="grid_div" class="well well-sm center-block table-responsive" style="position: relative; top: 50%; transform: translateY(0%);visibility:hidden ">
+                                <table id="groups_table" class="table table-striped table-bordered table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <td style="display:none;width:0%">Index </td>
+                                            <td style="width:30%;text-align:center">Action </td>
+                                            <td style="width:30%;text-align:center">Target</td>
+                                            <td style="width:20%;text-align:center">Group</td>
+                                            <td style="width:10%;text-align:center">Delete</td>
+                                            <td style="width:10%;text-align:center">Edit</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody jput="actionTargetRows" jput-jsondata='[]'>
+                                        <tr>
+                                            <td style="display:none">{{index}}</td>
+                                            <td>{{json.ActionName}}</td>
+                                            <td>{{json.TargetName}}</td>
+                                            <td>{{json.GroupName}}</td>
+                                            <td>
+                                                <a href="#" onclick="DeleteActionTargetRow(event,{{index}})" id="delete">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="#" onclick="EditActionTargetRow(event,{{index}})" id="delete">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    <div class="panel-footer text-left" style="border: none;">
+                        <input type="button" value="Back" onclick="Back()" class="btn btn-primary" />
+                        <input type="button" value="Next" onclick="SubmitForm()" class="btn btn-primary" />
+                        <input type="button" value="Reload" onclick="Reload()" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
+        }
+    }
+    @{
+        var model = new System.Web.Script.Serialization.JavaScriptSerializer();
+        var modelJson = model.Serialize(Model);
+    }
+</div>
+
+<script src="~/EnDesign/js/jput-2.js"></script>
+
+
+<script type="text/javascript">
+    var model = JSON.parse('@Html.Raw(modelJson)')
+    var CreateActionTargetsURL = '@Url.Action("CreateActionTargets")';
+    var BackToActionsURL = '@Url.Action("BackToActions")';
+    var BackToActionTargetsURL = '@Url.Action("BackToActionTargets")';
+</script>
+<script src="~/WorkflowJS/ProcessManagement/ActionTargetManagement.js"></script>

@@ -1,6 +1,6 @@
 namespace RefactorName.SqlServerRepository.Migrations
 {
-    using RefactorName.Core;
+    using Core;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -10,29 +10,29 @@ namespace RefactorName.SqlServerRepository.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            ContextKey = "RefactorName.SqlServerRepository.MyDbContext";
         }
 
         protected override void Seed(RefactorName.SqlServerRepository.MyDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            context.ActionType.AddOrUpdate(ActionType.Approve);
+            context.ActionType.AddOrUpdate(ActionType.Cancel);
+            context.ActionType.AddOrUpdate(ActionType.Deny);
+            context.ActionType.AddOrUpdate(ActionType.Resolve);
+            context.ActionType.AddOrUpdate(ActionType.Restart);
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.ActivityType.AddOrUpdate(ActivityType.AddNote);
+            context.ActivityType.AddOrUpdate(ActivityType.AddStakeholders);
+            context.ActivityType.AddOrUpdate(ActivityType.RemoveStakeholders);
+            context.ActivityType.AddOrUpdate(ActivityType.SendEmail);
 
+            context.Target.AddOrUpdate(Target.Requester);
+            context.Target.AddOrUpdate(Target.GroupMemebers);
+            context.Target.AddOrUpdate(Target.Stakeholders);
+            context.Target.AddOrUpdate(Target.ProcessAdmins);
 
-
-
-            //Roles
-            
+            base.Seed(context);
         }
     }
 }

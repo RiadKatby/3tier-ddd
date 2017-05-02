@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فكرة</title>
+   
+    <link href="~/content/Images/favicon.ico" rel="icon" />
+    
+
+ @Styles.Render("~/Content/mainCss")
+@Styles.Render("~/Content/templateCss")
+<link rel="stylesheet" href="~/Content/style1.css" />
+<link rel="stylesheet" href="~/Content/internal.css" />
+@RenderSection("Styles", false)
+
+@Scripts.Render("~/bundles/layoutJquery")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/templateJquery")
+@Scripts.Render("~/bundles/datepicker")
+@RenderSection("Scripts", false)
+ 
+
+</head>
+<body>
+    <a id="root" href='@Url.Content("~/")' style="display: none"></a>
+    @Html.RenderMCIMessagesArea()
+    <div class="header-box">
+        <div class="top-section clearfix">
+            <a href="#" class="menu-bar"></a>
+            <ul class="main-menu clearfix floatRight">
+                <li>
+                    <a href="/" class="bulb-logo current">
+                    </a>
+                </li>
+                @*<li><a href="#">خطوات العمل</a></li>*@
+                <li><a href="@Url.Action("addidea", "IdeaRequest")" class="current">أضف فكرة</a></li>
+                <li><a href="@Url.Action("list", "IdeaRequest")">أفكاري</a></li>
+            </ul>
+@if (Request.IsAuthenticated)
+{
+            var userIdentity = User.Identity as UserProfileIdentity;
+            <div class="user-profile-side">
+                <a href="#">@userIdentity.GetClaimValue("FullName")</a>
+            </div>
+}
+        </div>
+        <div class="page-title">
+            <i class="bulb"></i>
+            <h1>
+                @if (ViewBag.Title != null)
+                {
+                    @ViewBag.Title
+                }
+            </h1>
+        </div>
+        <!--============================== breadcrumb =================================-->
+       
+
+            <div>
+                @RenderSection("breadcrumb", false)
+            </div>
+          
+        <!--============================== breadcrumb =================================-->
+    </div>
+   
+    <div class="page-body">
+        @RenderBody()
+    </div>
+
+    @*<div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <div class="row">
+                    <div class="sidebar-container">
+                        <!-- BEGIN SIDEBAR-->
+                        <div id="sidebar">
+                            <div class="sidebar-back"></div>
+                            <div class="sidebar-content">
+
+                                <!-- BEGIN MAIN MENU -->
+                                <ul class="main-menu">
+                                    @Html.MCIRenderUserMenuItems("_SideBarMenuItems")
+
+
+                                    @RenderSection("_SideBarCustomMenuItems", false)
+                                </ul><!--end .main-menu -->
+                                <!-- END MAIN MENU -->
+                            </div>
+                        </div>
+                        <!-- END SIDEBAR -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-10 main-content">
+                <!-- BODY -->
+                @RenderBody()
+                <!-- ./ BODY -->
+            </div>
+        </div>
+    </div>*@
+
+
+
+
+    <div class="footer clearfix">
+        <div class="floatRight">
+            <i class="bulb"></i> جميع الحقوق محفوظة <span></span>
+        </div>
+        <div class="floatLeft">
+            <a href="#">سياسة الخصوصية</a> | <a href="#">شروط الاستخدام</a>
+        </div>
+    </div>
+    <script src="~/Scripts/js/jquery.fancybox.pack.js"></script>
+    <script src="~/Scripts/js/jquery.fancybox-media.js"></script>
+    <script src="~/Scripts/js/jquery.waypoints.min.js"></script>
+    <script src="~/Scripts/js/modernizr.mq.js"></script>
+    <script src="~/Scripts/js/fikrah.js"></script>
+
+    @RenderSection("PostScripts", false)
+</body>
+</html>

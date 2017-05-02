@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
 
 namespace RefactorName.WebApp.Infrastructure.Security
 {
@@ -59,13 +60,12 @@ namespace RefactorName.WebApp.Infrastructure.Security
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
-            {
-                manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("ASP.NET Identity"));
-            }
+            //if (dataProtectionProvider != null)
+            //{
+            //    manager.UserTokenProvider =
+            //        new DataProtectorTokenProvider<User, int>(dataProtectionProvider.Create("ASP.NET Identity"));
+            //}
             return manager;
         }
-
     }
 }

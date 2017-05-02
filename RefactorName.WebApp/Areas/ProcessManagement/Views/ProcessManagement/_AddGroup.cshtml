@@ -1,0 +1,79 @@
+﻿@using RefactorName.WebApp.Areas.Backend.Models
+@using MvcHtmlHelpers
+@model List<GroupAddModel>
+
+<div>
+    <div id="messageContainer" class="alert info" style='width:100%;display:@ViewBag.Style'>
+        <span class="closebtn" onclick='this.parentElement.style.display="none";'>&times;</span>
+        <strong>Info!</strong><span id="message"> @ViewBag.Message</span>
+    </div>
+    @using (Html.MCIBeginItemsCol(12))
+    {
+
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="panel panel-default">
+                    <div class="panel-heading">Manage Groups</div>
+                    <div class="panel-body">
+
+                        @using (Html.MCIBeginItemsRow())
+                        {
+                            @Html.MCITextBoxItem(name: "GroupName", defaultValue: "", labelText: "Group Name", httmlAttributes: new { maxLength = "100", id = "GroupName", name = "GroupName", value = "", required = "true" })
+                            <input type="hidden" id="ProcessId" value="@ViewBag.ProcessId" />
+                        }
+                    </div>
+                    @using (Html.MCIBeginItemsCol(12))
+                        {
+                        <div>
+                            <fieldset class="group">
+                                <legend>Select Group Users</legend>
+                                <ul id="Users" class="checkbox"></ul>
+                                <button type="button" id="btnSave" class="btn btn-primary" onclick="Save(event);">Add</button>
+                            </fieldset>
+                        </div>
+                        <div id="DivNoData" class="well well-sm center-block" style="position: relative; top: 50%; transform: translateY(0%);visibility:visible">No Data Found</div>
+                            <div id="grid_div" class="well well-sm center-block table-responsive" style="position: relative; top: 50%; transform: translateY(0%);visibility:hidden ">
+                                <table id="groups_table" class="table table-striped table-bordered table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%;text-align:center">Group Name</th>
+                                            <th style="width: 60%;text-align:center">Users</th>
+                                            <th style="width: 10%;text-align:center">Delete</th>
+                                            <th style="width: 10%;text-align:center">Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                    }
+                    <div class="panel-footer text-left">
+                        <input type="button" value="Back" onclick="Back()" class="btn btn-primary" />
+                        <input type="button" value="Next" onclick="submitForm()" class="btn btn-primary" />
+                        <input type="button" value="Reload" onclick="Reload()" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
+        }
+    }
+    @{
+        var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+        var userInfoJson = jss.Serialize(ViewBag.Users);
+
+        var model = new System.Web.Script.Serialization.JavaScriptSerializer();
+        var modelJson = model.Serialize(Model);
+    }
+</div>
+<script src="~/EnDesign/js/jput-2.js"></script>
+
+<script type="text/javascript">
+
+    var model = JSON.parse('@Html.Raw(modelJson)')
+    var users = JSON.parse('@Html.Raw(userInfoJson)');
+    var CreateGroupsURL = '@Url.Action("CreateGroups")';
+    var BackToProcessURL = '@Url.Action("BackToProcess")';
+    var BackToGroupsURL = '@Url.Action("BackToGroups")';
+</script>
+
+<script src="~/WorkflowJS/ProcessManagement/GroupManagement.js"></script>

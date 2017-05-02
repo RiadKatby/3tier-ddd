@@ -1,0 +1,218 @@
+﻿
+
+html, body {
+    height: 100% !important;
+}
+
+body {
+    overflow-y: hidden;
+}
+
+.container-fluid {
+    padding: 0 !important;
+}
+
+.pageslide label {
+    color: #FFF !important;
+}
+
+.pageslide h2 {
+    padding: 4px;
+    margin: 0 auto 10px auto;
+    border-bottom: 1px solid #FFF;
+    text-align: center;
+    color: #FFF !important;
+}
+
+.pageslide label:before {
+    color: #FFF !important;
+    content: "\00BB \0020";
+}
+
+#infoBox {
+    direction: rtl;
+    /*border: 1px solid #EAEAEA;*/
+    background: #FFF;
+    padding: 5px;
+    border-radius: 7px;
+    box-shadow: 2px 2px 8px #000;
+}
+
+    #infoBox .content {
+        font-size: 12px;
+    }
+
+    #infoBox .title {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    #infoBox:after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        right: 30px;
+        border-bottom: 10px solid white;
+        border-top-color: inherit;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+    }
+
+    #infoBox .info-img {
+        margin-bottom: -20px;
+        /*float: left;*/
+    }
+
+.ins-markers {
+    margin: 0;
+    padding: 10px;
+    direction: rtl;
+    font-size: 14px;
+}
+
+    .ins-markers li {
+        margin: 4px 0;
+        list-style-type: none;
+        padding-right: 26px;
+        line-height: 26px;
+    }
+
+        .ins-markers li.draggable {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            cursor: move;
+            background: url("images/usermarker24_o.png") rgba(255, 255, 255, 0.15) no-repeat right center;
+        }
+
+        .ins-markers li.dragging {
+            color: #000;
+            opacity: 1;
+            background: url("images/usermarker_o.png") rgba(255, 255, 255, 0.15) no-repeat right center;
+            padding-right: 30px;
+            line-height: 32px;
+            text-shadow: 1px 1px #FFF;
+        }
+
+        .ins-markers li.onmap {
+            border: 1px dashed rgba(255, 255, 255, 0.0);
+            cursor: pointer;
+            background-image: url("images/usermarker24_g.png");
+            background-position: right center;
+            background-repeat: no-repeat;
+        }
+
+            .ins-markers li.onmap:hover {
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                background-color: #075C5A;
+            }
+
+
+.delete-menu {
+    position: absolute;
+    background: white;
+    padding: 3px;
+    color: #666;
+    font-weight: bold;
+    border: 1px solid #999;
+    font-family: sans-serif;
+    font-size: 12px;
+    box-shadow: 1px 3px 3px rgba(0, 0, 0, .3);
+    margin-top: -10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+    .delete-menu:hover {
+        background: #eee;
+    }
+
+.float-btn {
+    position: fixed;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+    line-height: 26px;
+    height: 26px;
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.14902);
+    border-collapse: collapse;
+    border-radius: 0px;
+    padding: 0 5px;
+    margin: 0px;
+    z-index: 333;
+    top: 55px;
+    right: 50%;
+}
+
+.toolbar-btn {
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+    line-height: 26px;
+    height: 26px;
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.14902);
+    border-collapse: collapse;
+    border-radius: 0px;
+    padding: 0 5px;
+    margin: 0px;
+}
+
+    .toolbar-btn:hover {
+        background: #EBEBEB;
+    }
+
+
+
+
+.navbar {
+    margin: 0;
+}
+
+#map-header {
+    height: auto;
+    background: #EEEEEE;
+    padding: 3px;
+    -webkit-box-shadow: inset 0 0 5px 5px #E6E6E6;
+    -moz-box-shadow: inset 0 0 5px 5px #E6E6E6;
+    box-shadow: inset 0 0 5px 5px #E6E6E6;
+    border-bottom: 1px solid #B9B9B9;
+}
+
+    #map-header h2 {
+        margin: 0 20px;
+    }
+
+    #map-header nav {
+        margin-right: 90px;
+        height: 40px;
+        line-height: 40px;
+        width: 200px;
+    }
+
+.map-key {
+    padding: 0;
+    margin: 0 20px 0 0;
+}
+
+    .map-key li {
+        font-size: 12px;
+        font-family: Tahoma,"Midan W20";
+        margin-left: 10px;
+        list-style-type: none;
+        line-height: 40px;
+        display: inline-block;
+    }
+
+#map-canvas {
+    direction: ltr;
+    height: 100%;
+}
+
+#tooltip_label {
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.35);
+    padding: 0px 3px;
+    box-shadow: 2px 2px 7px #393C3C;
+    font-size: 10px;
+}

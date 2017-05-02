@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.WebApp</RootNamespace>
     <AssemblyName>RefactorName.WebApp</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,32 +45,52 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="FoolproofValidation, Version=0.9.5851.39121, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Foolproof.0.9.4518\lib\net45\FoolproofValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.1.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grid.Mvc.3.1.0-ci1036\lib\net40\GridMvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.1.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    <Reference Include="MCI.Mvc.Validation.Core">
+      <HintPath>bin\MCI.Mvc.Validation.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MCI.Mvc.Validation.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\MCI.Mvc.Validation.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Mci.Security.Cryptography, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Mci.Security.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.1.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.2.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.1.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.2.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.1.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.2.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+    <Reference Include="Microsoft.AI.Web, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.2.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.2.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -77,19 +98,38 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mvc3Futures.3.0.20105.0\lib\Microsoft.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MvcContrib, Version=3.0.100.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcContrib.Mvc3-ci.3.0.100.0\lib\MvcContrib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc.Extensions, Version=1.0.9.0, Culture=neutral, PublicKeyToken=17e35335fc9f8fc8, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Web.Mvc.Extensions.Mvc.4.1.0.9\lib\net40\System.Web.Mvc.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -106,10 +146,6 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
@@ -130,6 +166,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -186,74 +223,803 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Areas\Workflow\Controllers\WorkflowController.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActionModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActionTypeModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActivityModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\ActivityTypeModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\FieldModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\FieldTypeModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\GroupModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\ProcessModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\StateModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\StateTypeModel.cs" />
-    <Compile Include="Areas\Workflow\Models\WorkflowModels\TransitionModel.cs" />
-    <Compile Include="Areas\Workflow\WorkflowAreaRegistration.cs" />
+    <Compile Include="Areas\ProcessManagement\Controllers\AccountController.cs" />
+    <Compile Include="Areas\ProcessManagement\Controllers\ChangeProfilePictureModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Controllers\ProcessManagementController.cs" />
+    <Compile Include="Areas\ProcessManagement\Controllers\UserController.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ActionExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ActionSearchCriteriaExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ActionTargetExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ActivityExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ActivitySearchCriteriaExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ActivityTargetExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\GroupExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\GroupSearchCriteria.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ProcessExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\ProcessSearchCriteriaExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\RolesTreeViewExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\StateExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\StateSearchCriteriaExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\TransitionExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\TransitionSearchCriteriaExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\UserExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\ModelExtensions\UserSearchCriteriaExtensions.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActionIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActionModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActionSearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActionTargetModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActivityIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActivityModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActivitySearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ActivityTargetModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\GroupIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\GroupModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\GroupSearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\IStepViewModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ProcessIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ProcessModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\ProcessSearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\RolesTreeViewModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\StateIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\StateModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\StateSearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\StepViewModelBinder.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\TransitionIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\TransitionModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\TransitionSearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\UserIndexModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\UserModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\UserSearchCriteriaModel.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\WebGridList.cs" />
+    <Compile Include="Areas\ProcessManagement\Models\WizardViewModel.cs" />
+    <Compile Include="Areas\ProcessManagement\ProcessManagementAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Filters\AjaxOnlyAttribute.cs" />
+    <Compile Include="Filters\InitializeIdentityMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EncryptedActionExtentions.cs" />
-    <Compile Include="Helpers\EncryptedLinkExtentions.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\EncryptedActionExtentions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\EncryptedInputExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\EncryptedLinkExtentions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\EncryptedSelectExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\Error.cs" />
+    <Compile Include="Helpers\HtmlHelpers\HtmlHelperClasses.cs" />
+    <Compile Include="Helpers\HtmlHelpers\HtmlHelperExt.cs" />
+    <Compile Include="Helpers\HtmlHelpers\HtmlHelpers.cs" />
+    <Compile Include="Helpers\HtmlHelpers\LinkExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\MvcResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MvcResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\MCI-Alerts.cs" />
+    <Compile Include="Helpers\MCILog.cs" />
     <Compile Include="Infrastructure\Encryption\ConfigurationBasedStringEncrypter.cs" />
+    <Compile Include="Infrastructure\Encryption\EncryptedActionParameterAttribute.cs" />
     <Compile Include="Infrastructure\Encryption\EncryptStringExtentions.cs" />
     <Compile Include="Infrastructure\Encryption\IEncryptString.cs" />
+    <Compile Include="Infrastructure\Encryption\SessionBasedStringEncrypter.cs" />
+    <Compile Include="Infrastructure\Encryption\StringEncrypter.cs" />
+    <Compile Include="Infrastructure\Extenstions.cs" />
     <Compile Include="Infrastructure\Security\AppSignInManager.cs" />
     <Compile Include="Infrastructure\Security\AppUserManager.cs" />
     <Compile Include="Infrastructure\Security\AppUserStore.cs" />
     <Compile Include="Infrastructure\Security\UserExtentions.cs" />
+    <Compile Include="Infrastructure\UserProfileIdentity.cs" />
+    <Compile Include="Infrastructure\UserProfilePrincipal.cs" />
+    <Compile Include="Infrastructure\WebGridExtensions.cs" />
+    <Compile Include="MainAuthorize.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\FileUploadModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\MciChartModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_Index.cshtml" />
+    <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />
+    <Content Include="Client Scripts\mvcfoolproof.unobtrusive.min.js" />
+    <Content Include="Client Scripts\MvcFoolproofJQueryValidation.js" />
+    <Content Include="Client Scripts\MvcFoolproofJQueryValidation.min.js" />
+    <Content Include="Client Scripts\MvcFoolproofValidation.js" />
+    <Content Include="Client Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="Content\1thiqah-icons %282%29.css" />
+    <Content Include="Content\1thiqah-icons %283%29.css" />
+    <Content Include="Content\1thiqah-icons.css" />
+    <Content Include="Content\21thiqah-icons.css" />
+    <Content Include="Content\9thiqah-icons.css" />
+    <Content Include="Content\all-1446562932.css" />
+    <Content Include="Content\angular-multi-select-tree-0.1.0.css" />
+    <Content Include="Content\baseLTR -b4 btn.css" />
+    <Content Include="Content\baseLTR.css" />
+    <Content Include="Content\baseRTL - b4 btn.css" />
+    <Content Include="Content\baseRTL - b4 font.css" />
+    <Content Include="Content\baseRTL.css" />
+    <Content Include="Content\bootstrap-multiselect.css" />
+    <Content Include="Content\bootstrap-tour.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\color-theme.css" />
+    <Content Include="Content\components.css" />
+    <Content Include="Content\fin-uploader.css" />
+    <Content Include="Content\flexslider.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\icon.css" />
+    <Content Include="Content\images\03-Slide_06.jpg" />
+    <Content Include="Content\images\accent.png" />
+    <Content Include="Content\images\active.png" />
+    <Content Include="Content\images\activetab_bg.png" />
+    <Content Include="Content\images\add.png" />
+    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\androidapp.png" />
+    <Content Include="Content\images\animated-overlay.gif" />
+    <Content Include="Content\images\appscorner.png" />
+    <Content Include="Content\images\archive_bg.png" />
+    <Content Include="Content\images\arrow_left.png" />
+    <Content Include="Content\images\arrow_right.png" />
+    <Content Include="Content\images\back_button.png" />
+    <Content Include="Content\images\bbapp.png" />
+    <Content Include="Content\images\bc_arrow.png" />
+    <Content Include="Content\images\bc_bg_title.png" />
+    <Content Include="Content\images\bgf.png" />
+    <Content Include="Content\images\bgf_l.png" />
+    <Content Include="Content\images\bg_body_box.png" />
+    <Content Include="Content\images\bg_body_repeated.png" />
+    <Content Include="Content\images\bg_footer.png" />
+    <Content Include="Content\images\bg_header.png" />
+    <Content Include="Content\images\bg_hover.png" />
+    <Content Include="Content\images\bg_left_box.png" />
+    <Content Include="Content\images\bg_nav_title.png" />
+    <Content Include="Content\images\bg_page_title.png" />
+    <Content Include="Content\images\bg_pointer.png" />
+    <Content Include="Content\images\bg_sub.png" />
+    <Content Include="Content\images\bg_top_menu.png" />
+    <Content Include="Content\images\blank.gif" />
+    <Content Include="Content\images\body_box_bullet.png" />
+    <Content Include="Content\images\bullet.png" />
+    <Content Include="Content\images\calendar.gif" />
+    <Content Include="Content\images\calendar.png" />
+    <Content Include="Content\images\calendar_r.png" />
+    <Content Include="Content\images\check_button.png" />
+    <Content Include="Content\images\close_small.png" />
+    <Content Include="Content\images\comercial.png" />
+    <Content Include="Content\images\contribute.png" />
+    <Content Include="Content\images\copyright_line.png" />
+    <Content Include="Content\images\default_image.png" />
+    <Content Include="Content\images\delete-icon.png" />
+    <Content Include="Content\images\delete.png" />
+    <Content Include="Content\images\ecc_contributionside.png" />
+    <Content Include="Content\images\ecc_ministerside.png" />
+    <Content Include="Content\images\ecc_realstat.png" />
+    <Content Include="Content\images\eserviceiconbig.png" />
+    <Content Include="Content\images\eservices-watermark.png" />
+    <Content Include="Content\images\eservicesheadimage.png" />
+    <Content Include="Content\images\eservicesheadtext.png" />
+    <Content Include="Content\images\eservicesimportant.png" />
+    <Content Include="Content\images\eserviceslogo.png" />
+    <Content Include="Content\images\eservicesmenutitle.png" />
+    <Content Include="Content\images\factory.png" />
+    <Content Include="Content\images\fancybox_buttons.png" />
+    <Content Include="Content\images\fancybox_loading%402x.gif" />
+    <Content Include="Content\images\fancybox_loading.gif" />
+    <Content Include="Content\images\fancybox_overlay.png" />
+    <Content Include="Content\images\fancybox_sprite%402x.png" />
+    <Content Include="Content\images\fancybox_sprite.png" />
+    <Content Include="Content\images\faqs_arrow_down.png" />
+    <Content Include="Content\images\faqs_arrow_top.png" />
+    <Content Include="Content\images\faqs_right_line.png" />
+    <Content Include="Content\images\fineuploader\loading.gif" />
+    <Content Include="Content\images\fineuploader\processing.gif" />
+    <Content Include="Content\images\footer-bg.jpg" />
+    <Content Include="Content\images\footer_arrow.png" />
+    <Content Include="Content\images\forms_login.png" />
+    <Content Include="Content\images\form_right.png" />
+    <Content Include="Content\images\form_search_button.png" />
+    <Content Include="Content\images\glyphicons-halflings-rtl.png" />
+    <Content Include="Content\images\glyphicons-halflings-white-rtl.png" />
+    <Content Include="Content\images\help.png" />
+    <Content Include="Content\images\help_icon.png" />
+    <Content Include="Content\images\help_l.png" />
+    <Content Include="Content\images\heroAccent.png" />
+    <Content Include="Content\images\hint-icon.png" />
+    <Content Include="Content\images\home.png" />
+    <Content Include="Content\images\home_icon.png" />
+    <Content Include="Content\images\ico16.png" />
+    <Content Include="Content\images\ico33.png" />
+    <Content Include="Content\images\img.png" />
+    <Content Include="Content\images\individual.png" />
+    <Content Include="Content\images\inter_body_bottom.png" />
+    <Content Include="Content\images\inter_footer_bg.png" />
+    <Content Include="Content\images\int_arrow.png" />
+    <Content Include="Content\images\ipadapp.png" />
+    <Content Include="Content\images\iphoneapp.png" />
+    <Content Include="Content\images\leftlisthr.png" />
+    <Content Include="Content\images\legal.png" />
+    <Content Include="Content\images\list_arrow.png" />
+    <Content Include="Content\images\list_arrow_white.png" />
+    <Content Include="Content\images\loader.gif" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\loading20.gif" />
+    <Content Include="Content\images\loading32.gif" />
+    <Content Include="Content\images\loading3d.gif" />
+    <Content Include="Content\images\loadings.gif" />
+    <Content Include="Content\images\lock-icon.png" />
+    <Content Include="Content\images\login-bg.jpg" />
+    <Content Include="Content\images\Login-logo.png" />
+    <Content Include="Content\images\login_title.png" />
+    <Content Include="Content\images\Logo.png" />
+    <Content Include="Content\images\marker.png" />
+    <Content Include="Content\images\marker24.png" />
+    <Content Include="Content\images\marker24_b.png" />
+    <Content Include="Content\images\marker24_o.png" />
+    <Content Include="Content\images\marker24_r.png" />
+    <Content Include="Content\images\marker_b.png" />
+    <Content Include="Content\images\marker_o.png" />
+    <Content Include="Content\images\marker_r.png" />
+    <Content Include="Content\images\marker_user.png" />
+    <Content Include="Content\images\mci-footer.png" />
+    <Content Include="Content\images\mc_archive.png" />
+    <Content Include="Content\images\minister.png" />
+    <Content Include="Content\images\modal-back.png" />
+    <Content Include="Content\images\more.png" />
+    <Content Include="Content\images\more_bg.png" />
+    <Content Include="Content\images\m_new.png" />
+    <Content Include="Content\images\m_no.png" />
+    <Content Include="Content\images\m_ok.png" />
+    <Content Include="Content\images\nav_transparent.png" />
+    <Content Include="Content\images\na_sp.png" />
+    <Content Include="Content\images\news_bg_details.png" />
+    <Content Include="Content\images\news_bg_green.png" />
+    <Content Include="Content\images\next.png" />
+    <Content Include="Content\images\nonactivetab_bg.png" />
+    <Content Include="Content\images\orderedList0.png" />
+    <Content Include="Content\images\orderedList1.png" />
+    <Content Include="Content\images\orderedList2.png" />
+    <Content Include="Content\images\orderedList3.png" />
+    <Content Include="Content\images\orderedList4.png" />
+    <Content Include="Content\images\orderedList5.png" />
+    <Content Include="Content\images\orderedList6.png" />
+    <Content Include="Content\images\orderedList7.png" />
+    <Content Include="Content\images\orderedList8.png" />
+    <Content Include="Content\images\orderedList9.png" />
+    <Content Include="Content\images\photo.jpg" />
+    <Content Include="Content\images\pixel.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\contentPattern.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\contentPattern.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_square\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_square\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\default\default_thumb.png" />
+    <Content Include="Content\images\prettyPhoto\default\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\default\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_next.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_prev.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_x.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_y.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternBottom.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternLeft.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternRight.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternTop.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\facebook\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\facebook\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\light_square\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\light_square\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\light_square\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\light_square\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\light_square\sprite.png" />
+    <Content Include="Content\images\prev.png" />
+    <Content Include="Content\images\profilePic.jpg" />
+    <Content Include="Content\images\refresh.jpg" />
+    <Content Include="Content\images\required.png" />
+    <Content Include="Content\images\rightlisthr.png" />
+    <Content Include="Content\images\right_menu_bg.png" />
+    <Content Include="Content\images\right_menu_bg_title.png" />
+    <Content Include="Content\images\searchbox.png" />
+    <Content Include="Content\images\search_icon.png" />
+    <Content Include="Content\images\select2-spinner.gif" />
+    <Content Include="Content\images\select2.png" />
+    <Content Include="Content\images\select2x2.png" />
+    <Content Include="Content\images\site_bg.png" />
+    <Content Include="Content\images\small_icons.png" />
+    <Content Include="Content\images\sprite.png" />
+    <Content Include="Content\images\tab.png" />
+    <Content Include="Content\images\tabfieldmenubottom_bg.png" />
+    <Content Include="Content\images\tabfieldmenu_bg.png" />
+    <Content Include="Content\images\tab_content_bg.png" />
+    <Content Include="Content\images\tab_hover.png" />
+    <Content Include="Content\images\tick.png" />
+    <Content Include="Content\images\top_form_bg.png" />
+    <Content Include="Content\images\top_menu_arrow.png" />
+    <Content Include="Content\images\top_menu_sp.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_35_024947_500x100.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_55_0B625F_500x100.png" />
+    <Content Include="Content\images\user-login-icon.png" />
+    <Content Include="Content\images\usermarker24_b.png" />
+    <Content Include="Content\images\usermarker24_d.png" />
+    <Content Include="Content\images\usermarker24_g.png" />
+    <Content Include="Content\images\usermarker24_o.png" />
+    <Content Include="Content\images\usermarker24_r.png" />
+    <Content Include="Content\images\usermarker_b.png" />
+    <Content Include="Content\images\usermarker_d.png" />
+    <Content Include="Content\images\usermarker_g.png" />
+    <Content Include="Content\images\usermarker_o.png" />
+    <Content Include="Content\images\usermarker_r.png" />
+    <Content Include="Content\images\vote_btn_bg.png" />
+    <Content Include="Content\images\vote_btn_l.png" />
+    <Content Include="Content\images\web-bg.jpg" />
+    <Content Include="Content\images\workflow.jpg" />
+    <Content Include="Content\images\youtube.png" />
+    <Content Include="Content\images\youtube_icon.png" />
+    <Content Include="Content\img\1.png" />
+    <Content Include="Content\img\180S.png" />
+    <Content Include="Content\img\2.png" />
+    <Content Include="Content\img\3.png" />
+    <Content Include="Content\img\4.png" />
+    <Content Include="Content\img\5.png" />
+    <Content Include="Content\img\6.png" />
+    <Content Include="Content\img\7.png" />
+    <Content Include="Content\img\8.png" />
+    <Content Include="Content\img\arrow.png" />
+    <Content Include="Content\img\assets\deslike.png" />
+    <Content Include="Content\img\assets\email-form-icon.png" />
+    <Content Include="Content\img\assets\error-box-icon.png" />
+    <Content Include="Content\img\assets\error-close.png" />
+    <Content Include="Content\img\assets\error-form-icon.png" />
+    <Content Include="Content\img\assets\favicon-114.png" />
+    <Content Include="Content\img\assets\favicon-16.png" />
+    <Content Include="Content\img\assets\favicon-57.png" />
+    <Content Include="Content\img\assets\favicon-72.png" />
+    <Content Include="Content\img\assets\icon-line.svg" />
+    <Content Include="Content\img\assets\icon-solid.svg" />
+    <Content Include="Content\img\assets\info-box-icon.png" />
+    <Content Include="Content\img\assets\info-close.png" />
+    <Content Include="Content\img\assets\info-form-icon.png" />
+    <Content Include="Content\img\assets\like.png" />
+    <Content Include="Content\img\assets\logo-dark-bg.png" />
+    <Content Include="Content\img\assets\logo-white-bg.png" />
+    <Content Include="Content\img\assets\logomark-whitebg-1.png" />
+    <Content Include="Content\img\assets\logomark-whitebg.png" />
+    <Content Include="Content\img\assets\Pagination-arrow-2-left.png" />
+    <Content Include="Content\img\assets\Pagination-arrow-2-right.png" />
+    <Content Include="Content\img\assets\Pagination-arrow-left.png" />
+    <Content Include="Content\img\assets\Pagination-arrow-right.png" />
+    <Content Include="Content\img\assets\phone-form-icon.png" />
+    <Content Include="Content\img\assets\search-form-icon.png" />
+    <Content Include="Content\img\assets\slider arrow end.png" />
+    <Content Include="Content\img\assets\slider arrow left-1.png" />
+    <Content Include="Content\img\assets\slider arrow left.png" />
+    <Content Include="Content\img\assets\slider arrow start.png" />
+    <Content Include="Content\img\assets\slider dot avtive.png" />
+    <Content Include="Content\img\assets\slider dot.png" />
+    <Content Include="Content\img\assets\success-box-icon.png" />
+    <Content Include="Content\img\assets\success-form-icon.png" />
+    <Content Include="Content\img\assets\text less.png" />
+    <Content Include="Content\img\assets\text more.png" />
+    <Content Include="Content\img\assets\toggle-off.png" />
+    <Content Include="Content\img\assets\toggle-on-1.png" />
+    <Content Include="Content\img\assets\toggle-on.png" />
+    <Content Include="Content\img\assets\user-avatar-1.png" />
+    <Content Include="Content\img\assets\user-avatar-2.png" />
+    <Content Include="Content\img\assets\user-avatar-3.png" />
+    <Content Include="Content\img\assets\user-avatar-4.png" />
+    <Content Include="Content\img\assets\warning-box-icon.png" />
+    <Content Include="Content\img\assets\warning-close.png" />
+    <Content Include="Content\img\assets\warning-form-icon.png" />
+    <Content Include="Content\img\bg.png" />
+    <Content Include="Content\img\bread-crump-bg.jpg" />
+    <Content Include="Content\img\check-box-selected.png" />
+    <Content Include="Content\img\check-box.png" />
+    <Content Include="Content\img\coc-logo.png" />
+    <Content Include="Content\img\coc-logos-1.png" />
+    <Content Include="Content\img\coc-logos-2.jpg" />
+    <Content Include="Content\img\controls.png" />
+    <Content Include="Content\img\download.jpg" />
+    <Content Include="Content\img\eservices-watermark-partial.png" />
+    <Content Include="Content\img\eservices-watermark.png" />
+    <Content Include="Content\img\header-bg-1.jpg" />
+    <Content Include="Content\img\header-bg.jpg" />
+    <Content Include="Content\img\i-call.png" />
+    <Content Include="Content\img\key-features.png" />
+    <Content Include="Content\img\larg-img.png" />
+    <Content Include="Content\img\login-img.jpg" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logo.svg" />
+    <Content Include="Content\img\step1.png" />
+    <Content Include="Content\img\step2.png" />
+    <Content Include="Content\img\step3.png" />
+    <Content Include="Content\img\step4.png" />
+    <Content Include="Content\img\user-avatar-2.png" />
+    <Content Include="Content\internal.css" />
+    <Content Include="Content\jquery.bxslider.css" />
+    <Content Include="Content\jquery.calendars.picker.css" />
+    <Content Include="Content\jquery.fancybox-buttons.css" />
+    <Content Include="Content\jquery.fancybox-thumbs.css" />
+    <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Content\jquery.pageslide.css" />
+    <Content Include="Content\jquery.signature.css" />
+    <Content Include="Content\layout - Copy.css" />
+    <Content Include="Content\layout.css" />
+    <Content Include="Content\loading.gif" />
+    <Content Include="Content\login.css" />
+    <Content Include="Content\Main.css" />
+    <Content Include="Content\MCI-Alerts.css" />
+    <Content Include="Content\MCIMap.css" />
+    <Content Include="Content\normalize.css" />
+    <Content Include="Content\prettyPhoto.css" />
+    <Content Include="Content\select2.css" />
+    <Content Include="Content\star-rating.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="Content\style1.css" />
+    <Content Include="Content\style_alt.css" />
+    <Content Include="Content\template.css" />
+    <Content Include="Content\thiqah-icons.css" />
+    <Content Include="Content\typeahead.css" />
+    <Content Include="Content\webslidemenu - Copy.css" />
+    <Content Include="EnDesign\css\baseLTR.css" />
+    <Content Include="EnDesign\css\baseRTL.css" />
+    <Content Include="EnDesign\css\components.css" />
+    <Content Include="EnDesign\css\font-awesome.min.css" />
+    <Content Include="EnDesign\css\layout-ltr.css" />
+    <Content Include="EnDesign\css\layout.css" />
+    <Content Include="EnDesign\css\simple.datagrid.css" />
+    <Content Include="EnDesign\css\style.css" />
+    <Content Include="EnDesign\css\table-images\back.png" />
+    <Content Include="EnDesign\css\table-images\blurry.jpg" />
+    <Content Include="EnDesign\css\table-images\botleft.png" />
+    <Content Include="EnDesign\css\table-images\botright.png" />
+    <Content Include="EnDesign\css\table-images\gradback.png" />
+    <Content Include="EnDesign\css\table-images\gradhead.png" />
+    <Content Include="EnDesign\css\table-images\gradhover.png" />
+    <Content Include="EnDesign\css\table-images\header.jpg" />
+    <Content Include="EnDesign\css\table-images\left.png" />
+    <Content Include="EnDesign\css\table-images\pattern-head.png" />
+    <Content Include="EnDesign\css\table-images\pattern.gif" />
+    <Content Include="EnDesign\css\table-images\pattern.png" />
+    <Content Include="EnDesign\css\table-images\patternb-head.png" />
+    <Content Include="EnDesign\css\table-images\patternb.png" />
+    <Content Include="EnDesign\css\table-images\right.png" />
+    <Content Include="EnDesign\fonts\554595948-Midan.html" />
+    <Content Include="EnDesign\fonts\554595948-Midan.svg" />
+    <Content Include="EnDesign\fonts\959625245-Midan-Black.html" />
+    <Content Include="EnDesign\fonts\959625245-Midan-Black.svg" />
+    <Content Include="EnDesign\fonts\bpreplay-webfont.svg" />
+    <Content Include="EnDesign\fonts\fontawesome-webfont.svg" />
+    <Content Include="EnDesign\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="EnDesign\fonts\icon\linea-music-10.svg" />
+    <Content Include="EnDesign\fonts\thiqah.svg" />
+    <Content Include="EnDesign\img\1.png" />
+    <Content Include="EnDesign\img\2.png" />
+    <Content Include="EnDesign\img\3.png" />
+    <Content Include="EnDesign\img\arrow.png" />
+    <Content Include="EnDesign\img\assets\deslike.png" />
+    <Content Include="EnDesign\img\assets\email-form-icon.png" />
+    <Content Include="EnDesign\img\assets\error-box-icon.png" />
+    <Content Include="EnDesign\img\assets\error-close.png" />
+    <Content Include="EnDesign\img\assets\error-form-icon.png" />
+    <Content Include="EnDesign\img\assets\favicon-114.png" />
+    <Content Include="EnDesign\img\assets\favicon-16.png" />
+    <Content Include="EnDesign\img\assets\favicon-57.png" />
+    <Content Include="EnDesign\img\assets\favicon-72.png" />
+    <Content Include="EnDesign\img\assets\icon-line.svg" />
+    <Content Include="EnDesign\img\assets\icon-solid.svg" />
+    <Content Include="EnDesign\img\assets\info-box-icon.png" />
+    <Content Include="EnDesign\img\assets\info-close.png" />
+    <Content Include="EnDesign\img\assets\info-form-icon.png" />
+    <Content Include="EnDesign\img\assets\like.png" />
+    <Content Include="EnDesign\img\assets\logo-dark-bg.png" />
+    <Content Include="EnDesign\img\assets\logo-white-bg.png" />
+    <Content Include="EnDesign\img\assets\logomark-whitebg-1.png" />
+    <Content Include="EnDesign\img\assets\logomark-whitebg.png" />
+    <Content Include="EnDesign\img\assets\Pagination-arrow-2-left.png" />
+    <Content Include="EnDesign\img\assets\Pagination-arrow-2-right.png" />
+    <Content Include="EnDesign\img\assets\Pagination-arrow-left.png" />
+    <Content Include="EnDesign\img\assets\Pagination-arrow-right.png" />
+    <Content Include="EnDesign\img\assets\phone-form-icon.png" />
+    <Content Include="EnDesign\img\assets\search-form-icon.png" />
+    <Content Include="EnDesign\img\assets\slider arrow end.png" />
+    <Content Include="EnDesign\img\assets\slider arrow left-1.png" />
+    <Content Include="EnDesign\img\assets\slider arrow left.png" />
+    <Content Include="EnDesign\img\assets\slider arrow start.png" />
+    <Content Include="EnDesign\img\assets\slider dot avtive.png" />
+    <Content Include="EnDesign\img\assets\slider dot.png" />
+    <Content Include="EnDesign\img\assets\success-box-icon.png" />
+    <Content Include="EnDesign\img\assets\success-form-icon.png" />
+    <Content Include="EnDesign\img\assets\text less.png" />
+    <Content Include="EnDesign\img\assets\text more.png" />
+    <Content Include="EnDesign\img\assets\toggle-off.png" />
+    <Content Include="EnDesign\img\assets\toggle-on-1.png" />
+    <Content Include="EnDesign\img\assets\toggle-on.png" />
+    <Content Include="EnDesign\img\assets\user-avatar-1.png" />
+    <Content Include="EnDesign\img\assets\user-avatar-2.png" />
+    <Content Include="EnDesign\img\assets\user-avatar-3.png" />
+    <Content Include="EnDesign\img\assets\user-avatar-4.png" />
+    <Content Include="EnDesign\img\assets\warning-box-icon.png" />
+    <Content Include="EnDesign\img\assets\warning-close.png" />
+    <Content Include="EnDesign\img\assets\warning-form-icon.png" />
+    <Content Include="EnDesign\img\bg1.jpg" />
+    <Content Include="EnDesign\img\bread-crump-bg.jpg" />
+    <Content Include="EnDesign\img\check-box-selected.png" />
+    <Content Include="EnDesign\img\check-box.png" />
+    <Content Include="EnDesign\img\controls.png" />
+    <Content Include="EnDesign\img\eservices-watermark-partial.png" />
+    <Content Include="EnDesign\img\eservices-watermark.png" />
+    <Content Include="EnDesign\img\fd.png" />
+    <Content Include="EnDesign\img\fuel-icon.png" />
+    <Content Include="EnDesign\img\header-bg-1.jpg" />
+    <Content Include="EnDesign\img\header-bg.jpg" />
+    <Content Include="EnDesign\img\i-call.png" />
+    <Content Include="EnDesign\img\icon-payment.png" />
+    <Content Include="EnDesign\img\login-img.jpg" />
+    <Content Include="EnDesign\img\logo.png" />
+    <Content Include="EnDesign\img\sadad.png" />
+    <Content Include="EnDesign\img\Untitled-2-Recovered_03.png" />
+    <Content Include="EnDesign\img\Untitled-2-Recovered_07.png" />
+    <Content Include="EnDesign\img\Untitled-2-Recovered_09.png" />
+    <Content Include="EnDesign\img\Untitled-2-Recovered_13.png" />
+    <Content Include="EnDesign\img\user-avatar-2.png" />
+    <Content Include="EnDesign\js\bootstrap-checkbox.js" />
+    <Content Include="EnDesign\js\bootstrap-checkbox.min.js" />
+    <Content Include="EnDesign\js\bootstrap-tour.min.js" />
+    <Content Include="EnDesign\js\bootstrap.js" />
+    <Content Include="EnDesign\js\bootstrap.min.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.picker-ar.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.picker-en.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.picker.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.plus.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.ummalqura-ar.js" />
+    <Content Include="EnDesign\js\cal\jquery.calendars.ummalqura.min.js" />
+    <Content Include="EnDesign\js\cal\jquery.plugin.js" />
+    <Content Include="EnDesign\js\chosen.jquery.js" />
+    <Content Include="EnDesign\js\color-theme.css" />
+    <Content Include="EnDesign\js\jput-2.js" />
+    <Content Include="EnDesign\js\jput-2.prod.js" />
+    <Content Include="EnDesign\js\jput.min.js" />
+    <Content Include="EnDesign\js\jquery.bxslider.min.js" />
+    <Content Include="EnDesign\js\jquery.min.js" />
+    <Content Include="EnDesign\js\jquery.slimscroll.js" />
+    <Content Include="EnDesign\js\js\bootstrap-tour.min.js" />
+    <Content Include="EnDesign\js\js\bootstrap.js" />
+    <Content Include="EnDesign\js\js\jquery-1.10.2.js" />
+    <Content Include="EnDesign\js\js\script.js" />
+    <Content Include="EnDesign\js\mega-menu.js" />
+    <Content Include="EnDesign\js\select2_locale_ar.js" />
+    <Content Include="EnDesign\js\sidebar.js" />
+    <Content Include="EnDesign\js\simple.datagrid.js" />
+    <Content Include="EnDesign\js\star-rating.js" />
+    <Content Include="EnDesign\js\sticky-menu.js" />
+    <Content Include="EnDesign\js\template-js.js" />
+    <Content Include="EnDesign\js\tour-script.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\angular-multi-select-tree-0.1.0-main.js" />
+    <Content Include="Scripts\angular-multi-select-tree-0.1.0.js" />
+    <Content Include="Scripts\angular-multi-select-tree-0.1.0.tpl.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap-checkbox.js" />
+    <Content Include="Scripts\bootstrap-checkbox.min.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
+    <Content Include="Scripts\bootstrap-tour.js" />
+    <Content Include="Scripts\bootstrap-tour.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Areas\Workflow\Views\web.config" />
-    <Content Include="Areas\Workflow\Views\Workflow\Index.cshtml" />
-    <Content Include="Areas\Workflow\Views\Workflow\CreateProcess.cshtml" />
-    <Content Include="Areas\Workflow\Views\Workflow\_CreateField.cshtml" />
-    <Content Include="Areas\Workflow\Views\Workflow\_CreateStates.cshtml" />
-    <Content Include="Areas\Workflow\Views\Workflow\_CreateTransitions.cshtml" />
-    <Content Include="Areas\Workflow\Views\Workflow\_CreateActions.cshtml" />
-    <Content Include="Areas\Workflow\Views\Workflow\_CreateActivity.cshtml" />
+    <Content Include="EnDesign\fonts\554595948-Midan.eot" />
+    <Content Include="EnDesign\fonts\554595948-Midan.ttf" />
+    <Content Include="EnDesign\fonts\554595948-Midan.woff" />
+    <Content Include="EnDesign\fonts\959625245-Midan-Black.eot" />
+    <Content Include="EnDesign\fonts\959625245-Midan-Black.ttf" />
+    <Content Include="EnDesign\fonts\959625245-Midan-Black.woff" />
+    <Content Include="EnDesign\fonts\bpreplay-webfont.eot" />
+    <Content Include="EnDesign\fonts\bpreplay-webfont.ttf" />
+    <Content Include="EnDesign\fonts\bpreplay-webfont.woff" />
+    <Content Include="EnDesign\fonts\fontawesome-webfont.eot" />
+    <Content Include="EnDesign\fonts\fontawesome-webfont.ttf" />
+    <Content Include="EnDesign\fonts\fontawesome-webfont.woff" />
+    <Content Include="EnDesign\fonts\fontawesome-webfont.woff2" />
+    <Content Include="EnDesign\fonts\FontAwesome.otf" />
+    <Content Include="EnDesign\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="EnDesign\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="EnDesign\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="EnDesign\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="EnDesign\fonts\icon\.DS_Store" />
+    <Content Include="EnDesign\fonts\icon\linea-music-10.eot" />
+    <Content Include="EnDesign\fonts\icon\linea-music-10.ttf" />
+    <Content Include="EnDesign\fonts\icon\linea-music-10.woff" />
+    <Content Include="EnDesign\fonts\Midan.ttf" />
+    <Content Include="EnDesign\fonts\thiqah.eot" />
+    <Content Include="EnDesign\fonts\thiqah.ttf" />
+    <Content Include="EnDesign\fonts\thiqah.woff" />
+    <Content Include="EnDesign\js\.git\config" />
+    <Content Include="EnDesign\js\.git\description" />
+    <Content Include="EnDesign\js\.git\HEAD" />
+    <Content Include="EnDesign\js\.git\hooks\applypatch-msg.sample" />
+    <Content Include="EnDesign\js\.git\hooks\commit-msg.sample" />
+    <Content Include="EnDesign\js\.git\hooks\post-update.sample" />
+    <Content Include="EnDesign\js\.git\hooks\pre-applypatch.sample" />
+    <Content Include="EnDesign\js\.git\hooks\pre-commit.sample" />
+    <Content Include="EnDesign\js\.git\hooks\pre-push.sample" />
+    <Content Include="EnDesign\js\.git\hooks\pre-rebase.sample" />
+    <Content Include="EnDesign\js\.git\hooks\prepare-commit-msg.sample" />
+    <Content Include="EnDesign\js\.git\hooks\update.sample" />
+    <Content Include="EnDesign\js\.git\info\exclude" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddProcess.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddGroup.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddActivity.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddAction.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddState.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddTransition.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddActionTarget.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_AddActivityTarget.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\web.config" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\ManageProcess.cshtml" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.fr.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="workflowCSS\workflow.css" />
+    <Content Include="WorkflowJS\ProcessManagement\ActionManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\ActionTargetManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\ActivityManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\ActivityTargetManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\GroupManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\ProcessManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\StateManagement.js" />
+    <Content Include="WorkflowJS\ProcessManagement\TransitionManagement.js" />
+    <Content Include="Grid.mvc.readme" />
+    <Content Include="Areas\ProcessManagement\Views\User\AddUser.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\User\Index.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\User\_UsersGrid.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\User\EditUser.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\Account\ChangePassword.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\Account\Login.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\Account\ChangeProfilePic.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\Index.cshtml" />
+    <Content Include="Areas\ProcessManagement\Views\ProcessManagement\_ProcessesGrid.cshtml" />
+    <None Include="Properties\PublishProfiles\Shaban.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\calendar\jquery.calendars-ar.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.picker-ar.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.picker-en.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.picker.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.plus.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.ummalqura-ar.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.ummalqura.js" />
+    <Content Include="Scripts\calendar\jquery.calendars.ummalqura.min.js" />
+    <Content Include="Scripts\calendar\jquery.plugin.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\fin-uploader\ajax.requester.js" />
+    <Content Include="Scripts\fin-uploader\button.js" />
+    <Content Include="Scripts\fin-uploader\deletefile.ajax.requester.js" />
+    <Content Include="Scripts\fin-uploader\dnd.js" />
+    <Content Include="Scripts\fin-uploader\features.js" />
+    <Content Include="Scripts\fin-uploader\handler.base.js" />
+    <Content Include="Scripts\fin-uploader\handler.form.js" />
+    <Content Include="Scripts\fin-uploader\handler.xhr.js" />
+    <Content Include="Scripts\fin-uploader\header.js" />
+    <Content Include="Scripts\fin-uploader\iframe.xss.response.js" />
+    <Content Include="Scripts\fin-uploader\instance.js" />
+    <Content Include="Scripts\fin-uploader\jquery-dnd.js" />
+    <Content Include="Scripts\fin-uploader\jquery-plugin.js" />
+    <Content Include="Scripts\fin-uploader\paste.js" />
+    <Content Include="Scripts\fin-uploader\promise.js" />
+    <Content Include="Scripts\fin-uploader\uploader.basic.js" />
+    <Content Include="Scripts\fin-uploader\uploader.js" />
+    <Content Include="Scripts\fin-uploader\util.js" />
+    <Content Include="Scripts\fin-uploader\window.receive.message.js" />
+    <Content Include="Scripts\handlebars.js" />
+    <Content Include="Scripts\html5shiv.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.bxslider.js" />
+    <Content Include="Scripts\jquery.easing.js" />
+    <Content Include="Scripts\jquery.fancybox-buttons.js" />
+    <Content Include="Scripts\jquery.fancybox-media.js" />
+    <Content Include="Scripts\jquery.fancybox-thumbs.js" />
+    <Content Include="Scripts\jquery.fancybox.js" />
+    <Content Include="Scripts\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\jquery.filter_input.js" />
+    <Content Include="Scripts\jQuery.glob.ar-SA.js" />
+    <Content Include="Scripts\jquery.glob.js" />
+    <Content Include="Scripts\jquery.inputmask.bundle.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.mousewheel-3.0.6.pack.js" />
+    <Content Include="Scripts\jquery.pageslide.js" />
+    <Content Include="Scripts\jquery.placholder.js" />
+    <Content Include="Scripts\jquery.slimscroll.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\fikrah.js" />
+    <Content Include="Scripts\js\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\js\jquery.fancybox-media.js" />
+    <Content Include="Scripts\js\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\js\jquery.waypoints.min.js" />
+    <Content Include="Scripts\js\modernizr.mq.js" />
+    <Content Include="Scripts\js\vunit-0.2.0.min.js" />
+    <Content Include="Scripts\maploader.js" />
+    <Content Include="Scripts\Maps\infobox.js" />
+    <Content Include="Scripts\Maps\markerclusterer.js" />
+    <Content Include="Scripts\Maps\oms.min.js" />
+    <Content Include="Scripts\Maps\richmarker.js" />
+    <Content Include="Scripts\MCI-Alerts.js" />
+    <Content Include="Scripts\MCI.Maps.js" />
+    <Content Include="Scripts\MCI.Validations.js" />
+    <Content Include="Scripts\mciCharts\MciCharts-1.0.js" />
+    <Content Include="Scripts\mciCharts\MciCharts-Methods-1.0.js" />
+    <Content Include="Scripts\mciCharts\MciCharts-Settings-1.0.js" />
+    <Content Include="Scripts\mega-menu.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\mvcfoolproof.unobtrusive.js" />
+    <Content Include="Scripts\MvcFoolproofJQueryValidation.js" />
+    <Content Include="Scripts\MvcFoolproofValidation.js" />
+    <Content Include="Scripts\prettify.min.js" />
+    <Content Include="Scripts\prettyPhoto.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.ar.js" />
+    <Content Include="Scripts\select2.full.js" />
+    <Content Include="Scripts\select2_locale_ar.js" />
+    <Content Include="Scripts\sidebar.js" />
+    <Content Include="Scripts\signiture\excanvas.js" />
+    <Content Include="Scripts\signiture\jquery-ui-1.10.4.custom.js" />
+    <Content Include="Scripts\signiture\jquery.signature.js" />
+    <Content Include="Scripts\signiture\jquery.ui.touch-punch.js" />
+    <Content Include="Scripts\star-rating-defaults.js" />
+    <Content Include="Scripts\star-rating.js" />
+    <Content Include="Scripts\step-form-wizard.min.js" />
+    <Content Include="Scripts\sticky-menu.js" />
+    <Content Include="Scripts\template-js.js" />
+    <Content Include="Scripts\tour-script.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\wizard.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -287,10 +1053,31 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_ENLayout.cshtml" />
+    <Content Include="Scripts\js\.DS_Store" />
+    <Content Include="Views\Shared\_AdminSideBarMenuItems.cshtml" />
+    <Content Include="Views\Shared\_CleanLayout.cshtml" />
+    <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\Unauthorized.cshtml" />
+    <Content Include="Views\Shared\_ENUserMenuItem.cshtml" />
+    <Content Include="Views\Shared\_LayoutDemo.cshtml" />
+    <Content Include="Views\Shared\_PortalLayout.cshtml" />
+    <Content Include="Views\Shared\_SideBarMenuItems.cshtml" />
+    <Content Include="Views\Shared\_SideBarMenuItemsDemo.cshtml" />
+    <Content Include="Views\Shared\_SocialMenuItems.cshtml" />
+    <Content Include="Views\Shared\_TopNavMenuItems.cshtml" />
+    <Content Include="Views\Shared\_UserMenuItem.cshtml" />
+    <Content Include="Views\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Shared\_Grid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Workflow\Views\Shared\" />
+    <Folder Include="Areas\ProcessManagement\Views\Shared\" />
+    <Folder Include="Content\images\TempImages\" />
+    <Folder Include="EnDesign\js\.git\objects\info\" />
+    <Folder Include="EnDesign\js\.git\objects\pack\" />
+    <Folder Include="EnDesign\js\.git\refs\heads\" />
+    <Folder Include="EnDesign\js\.git\refs\tags\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -301,9 +1088,31 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Helpers\HtmlHelpers\MvcResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MvcResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RefactorName.Core\RefactorName.Core.csproj">
       <Project>{6923f1e7-e470-42b1-a24a-32693ca127f4}</Project>
       <Name>RefactorName.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.Domain\RefactorName.Domain.csproj">
+      <Project>{934eab3d-15c3-41c3-87ff-4acac0af9439}</Project>
+      <Name>RefactorName.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.GraphDiff\RefactorName.GraphDiff.csproj">
+      <Project>{438efb89-7edd-499e-9b80-ad7a7d4cf21d}</Project>
+      <Name>RefactorName.GraphDiff</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.RepositoryInterface\RefactorName.RepositoryInterface.csproj">
+      <Project>{9426a0d0-cc64-45b0-bc4e-76304a50dc39}</Project>
+      <Name>RefactorName.RepositoryInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.SqlServerRepository\RefactorName.SqlServerRepository.csproj">
+      <Project>{dc02110d-9f36-4e62-82d3-6d4e859482ed}</Project>
+      <Name>RefactorName.SqlServerRepository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

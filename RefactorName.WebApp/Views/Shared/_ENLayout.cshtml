@@ -1,0 +1,327 @@
+﻿@using RefactorName.Core
+@using MvcHtmlHelpers
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.6s;
+            margin-bottom: 15px;
+        }
+
+            .alert.success {
+                background-color: #4CAF50;
+            }
+
+            .alert.info {
+                background-color: #2196F3;
+            }
+
+            .alert.warning {
+                background-color: #ff9800;
+            }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .closebtn:hover {
+                color: black;
+            }
+
+        .hidden {
+            display: none;
+        }
+        /* Outer */
+        .popup {
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            background: rgba(0,0,0,0.75);
+        }
+
+        /* Inner */
+        .popup-inner {
+            max-width: 700px;
+            width: 90%;
+            padding: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0,0,0,1);
+            border-radius: 3px;
+            background: #fff;
+        }
+
+        /* Close Button */
+        .popup-close {
+            width: 30px;
+            height: 30px;
+            padding-top: 4px;
+            display: inline-block;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            transition: ease 0.25s all;
+            -webkit-transform: translate(50%, -50%);
+            transform: translate(50%, -50%);
+            border-radius: 1000px;
+            background: rgba(0,0,0,0.8);
+            font-family: Arial, Sans-Serif;
+            font-size: 20px;
+            text-align: center;
+            line-height: 100%;
+            color: #fff;
+        }
+
+            .popup-close:hover {
+                -webkit-transform: translate(50%, -50%) rotate(180deg);
+                transform: translate(50%, -50%) rotate(180deg);
+                background: rgba(0,0,0,1);
+                text-decoration: none;
+            }
+
+        fieldset.group {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 1.25em;
+            padding: .125em;
+        }
+
+            fieldset.group legend {
+                margin: 0;
+                padding: 0;
+                font-weight: bold;
+                margin-left: 0px;
+                font-size: 100%;
+                color: black;
+            }
+
+
+        ul.checkbox {
+            margin: 0;
+            padding: 0;
+            margin-left: 20px;
+            list-style: none;
+        }
+
+            ul.checkbox li input {
+                margin-right: .25em;
+            }
+
+            ul.checkbox li {
+                border: 1px transparent solid;
+                display: inline-block;
+                width: 12em;
+            }
+
+                ul.checkbox li label {
+                    /*margin-left:;*/
+                }
+
+                ul.checkbox li:hover,
+                ul.checkbox li.focus {
+                    /*background-color: lightyellow;*/
+                    /*border: 1px gray solid;*/
+                    width: 12em;
+                }
+    </style>
+    <meta charset="UTF-8">
+    <!--Meta Tag-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Meta Tag-->
+    <title>Thiqah.Workflow</title>
+    <link href="~/EnDesign/css/layout-ltr.css" type="text/css" rel="stylesheet" />
+
+    <link href="~/EnDesign/css/baseLTR.css" rel="stylesheet" type="text/css">
+    <link href="~/EnDesign/css/components.css" type="text/css" rel="stylesheet" />
+    <link href="~/EnDesign/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/Scripts/jquery-1.10.2.js" type="text/javascript" rel="preload" />
+    <link href="~/Scripts/jquery-1.10.2.min.js" type="text/javascript" rel="preload" />
+
+
+
+
+
+    @Styles.Render("~/Content/templateCss")
+    @RenderSection("Styles", false)
+
+    @Scripts.Render("~/bundles/layoutJquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/templateJquery")
+    @Scripts.Render("~/bundles/datepicker")
+    @RenderSection("Scripts", false)
+
+
+    <script type="text/javascript">
+        @if (ViewBag.FocusOn != null)
+        {
+            string selector = "#" + ViewBag.FocusOn.ToString();
+         <text>
+        $(document).ready(function () {
+            $('@selector').focus();
+        });
+        </text>
+        }
+        else
+        {
+            <text>
+        $(document).ready(function () {
+            $(".focus").focus();
+        });
+        </text>
+        }
+    </script>
+
+
+
+</head>
+
+<body ng-app="mciTemplate">
+    <a id="root" href='@Url.Content("~/")' style="display: none"></a>
+    @Html.RenderMCIMessagesArea()
+    <div class="wsmenucontainer clearfix">
+        <div class="wsmenucontent overlapblackbg"></div>
+        <div class="wsmenuexpandermain slideRight">
+            <a id="navToggle" class="animated-arrow slideLeft"><span></span></a>
+            <a href="#" class="smallogo"><img src="~/EnDesign/img/logo.png" width="120" alt="" /></a>
+
+        </div>
+
+        <div class="header">
+            <div class="container">
+                <div class="wrapper clearfix bigmegamenu">
+
+                    <div class="logo clearfix"><a href="#" title="Responsive Slide Menus"><img src="~/EnDesign/img/logo.png" alt="" /></a></div>
+                    <!--Main Menu HTML Code-->
+                    <div class="hidden-xs" style="height:28px;"></div>
+                    <nav class="wsmenu slideLeft clearfix">
+                        <ul class="mobile-sub wsmenu-list">
+                            @*@Html.Partial("_TopNavMenuItems")
+                            @RenderSection("_TopNavMenuItemsCustom", false)*@
+                            @Html.Partial("_UserMenuItem")
+                        </ul>
+                    </nav>
+                    <!--Menu HTML Code-->
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="bread-crump-bg">
+        <div class="container">
+            <div class="row">
+
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="row">
+                @RenderSection("breadcrumb", false)
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <div class="row">
+                    <div class="sidebar-container">
+                        <!-- BEGIN SIDEBAR-->
+                        <div id="sidebar">
+                            <div class="sidebar-back"></div>
+                            <div class="sidebar-content">
+
+                                <!-- BEGIN MAIN MENU -->
+                                <ul class="main-menu">
+                                    <!-- Menu Dashboard -->
+                                    @Html.MCIRenderUserMenuItems("_AdminSideBarMenuItems")
+                                    @*@RenderSection("_SideBarCustomMenuItems", false)*@
+
+                                </ul><!--end .main-menu -->
+                                <!-- END MAIN MENU -->
+                            </div>
+                        </div>
+                        <!--end #sidebar-->
+                        <!-- END SIDEBAR -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-10 main-content">
+                @RenderBody()
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--//footer container -->
+    <div id="footer">
+        <div class="container">
+            <div class="col-md-5 col-sm-6">
+
+                <ul class="social-link pull-right" style="width:100%; margin-bottom:0px;">
+                    <li class="tw-col"><a href="#" target="_blank" title="" class="fa fa-twitter"></a></li>
+                    <li class="fa-col"><a href="#" target="_blank" title="" class="fa fa-facebook"></a></li>
+                    <li class="yt-col"><a href="#" target="_blank" title="" class="fa fa-youtube-play"></a></li>
+                    <li class="gp-col"><a href="#" target="_blank" title="" class="fa fa-google-plus"></a></li>
+                    <li class="in-col"><a href="#" target="_blank" title="" class="fa fa-linkedin"></a></li>
+                </ul>
+
+                <p class="c-rights pull-left text-center" style="margin-bottom:0px;"> CopyRights  MCI  © 2017 </p>
+
+            </div>
+            <div class="col-md-7 col-sm-6 hidden-xs">
+                <img src="~/EnDesign/img/i-call.png" class="pull-right" style="margin-top:6px;margin-left:5px">
+                <div class="c-service i-call pull-right hidden-xs">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contact Us <span>920000667</span></div>
+                <div class="clearfix"></div>
+
+            </div>
+        </div>
+
+    </div>
+    <div id="dialog_loader" style="display: none">
+        <div class="modal-backdrop fade in" style="z-index:1060;"></div>
+        <div style="position: fixed; left: 50%; top: 30%; z-index: 1061">
+            <div style="position: relative; left: -50%;">
+                <div class="waiting-modal">
+                    <img src='@Url.Content("~/Content/images/loading3d.gif")' alt="Please Wait" title="Please Wait" />
+                    <span>Please Wait...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//end of footer container -->
+    <!-- Javascript -->
+    @*<script src="http://flexslider.woothemes.com/js/jquery.flexslider.js"></script>*@ <!-- flexslider jquery -->
+    @*<script type="text/javascript" src="http://dreyescat.github.io/bootstrap-rating/bootstrap-rating.js"></script>*@
+    <script src="~/EnDesign/js/bootstrap-checkbox.js"></script>
+
+    @RenderSection("PostScripts", false)
+</body>
+</html>

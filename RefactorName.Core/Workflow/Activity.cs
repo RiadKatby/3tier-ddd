@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Activities are things that can happen as a result of a <see cref="Request"/> entering a <see cref="State"/> or following a <see cref="Transition"/>.
@@ -21,12 +22,22 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="Activity"/>.
         /// </summary>
+        
         public int ProcessId { get; private set; }
+
+        [Associated]
+        public Process Process { get; private set; }
+
+        //[Associated]
+        public IList<Transition> Transitions { get; private set; }
+
+        //[Associated]
+        public IList<State> States { get; private set; }
 
         /// <summary>
         /// Gets idenitity number of the group that this <see cref="Activity"/> belong to.
         /// </summary>
-        public int ActivityTypeId { get; private set; }
+        //public int ActivityTypeId { get; private set; }
 
         /// <summary>
         /// Gets the name of this <see cref="Activity"/>.
@@ -43,13 +54,21 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets <see cref="ActivityType"/> object that determin the group of this <see cref="Activity"/>.
         /// </summary>
+        /// 
+        public int ActivityTypeId { get; private set; }
         [Associated]
+        [ForeignKey("ActivityTypeId")]
         public ActivityType ActivityType { get; private set; }
+
+        //[Associated]
+        public IList<ActivityTarget> ActivityTargets { get; private set; }
 
         /// <summary>
         /// Instanciate empty <see cref="Activity"/> object, this constructor used by infrastrcutre libraries only.
         /// </summary>
-        public Activity() { }
+        public Activity()
+        {
+        }
 
         /// <summary>
         /// Instanciate custom <see cref="Activity"/> object.
@@ -63,7 +82,7 @@ namespace RefactorName.Core.Workflow
             this.Description = description;
 
             this.ActivityType = activityType;
-            this.ActivityTypeId = activityType.ActivityTypeId;
+            //this.ActivityTypeId = activityType.ActivityTypeId;
         }
 
         /// <summary>
@@ -79,7 +98,7 @@ namespace RefactorName.Core.Workflow
             this.Description = description;
 
             this.ActivityType = activityType;
-            this.ActivityTypeId = activityType.ActivityTypeId;
+            //this.ActivityTypeId = activityType.ActivityTypeId;
 
             return this;
         }

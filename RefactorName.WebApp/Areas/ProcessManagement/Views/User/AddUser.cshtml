@@ -1,0 +1,109 @@
+﻿@using MvcHtmlHelpers
+@model RefactorName.WebApp.UserAddModel
+
+@{
+    Layout = "~/Views/Shared/_EnLayout.cshtml";
+    ViewBag.Title = "Add User";
+}
+
+@section breadcrumb
+{
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("Main", "Index", "Home")</li>
+        <li>@Html.ActionLink("Users", "Index")</li>
+        <li class="active"><a href="#">Add User</a></li>
+    </ol>
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/angulartree")
+}
+@section Styles
+{
+    @Styles.Render("~/Content/angulartree")
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div class="panel-heading">Add User</div>
+        <div class="panel-body">
+            @*@Html.MCICheckBoxItemFor(m => m.IsADUser, "Yes", spanOf12: 2)*@
+        
+            @Html.MCITextBoxItemFor(m => m.Email, httmlAttributes: new { maxLength = "256" })
+            @*@Html.MCITextBoxItemFor(m => m.UserName, httmlAttributes: new { maxLength = "256" })*@
+            @using (Html.MCIBeginItemsRow(new { id = "divPassword" }))
+            {
+                @Html.MCIPasswordItemFor(m => m.Password, httmlAttributes: new { maxLength = "256" })
+                @Html.MCIPasswordItemFor(m => m.PasswordConfirm, httmlAttributes: new { maxLength = "256" })
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCITextBoxItemFor(m => m.FullName, httmlAttributes: new { maxLength = "256" })
+                @Html.MCITextBoxItemFor(m => m.PhoneNumber, httmlAttributes: new { @class = "only-number", maxLength = "10" })
+                @Html.MCICheckBoxItemFor(m => m.IsActive, "Active")
+                @Html.MCIListBoxtItemFor(m => m.Roles, new MultiSelectList(Model.RoleNames, "Key", "Value"), 12)
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("Save", htmlAttributes: new { @class = "btn btn-primary" })
+            @Html.AcionLinkWithInnerHtml("Cancel", "Index", routeValues: new { ls = true }, htmlAttributes: new { @class = "btn btn-default" })
+        </div>
+    </div>
+}
+<script>
+
+    $(document).ready(function () {
+        //$('#divPassword').hide();
+        //$("#IsADUser").prop("checked", true);
+        $("#IsActive").prop("checked", true);
+        
+        //$("#IsADUser").prop("disabled", "disabled");
+    });
+
+    $(function () {
+        //$("#Roles").select2()
+        //IsADUserChanged();
+
+        //$('#IsADUser').change(function () {
+        //    IsADUserChanged();
+        //});
+    });
+
+    function IsADUserChanged() {
+        //var IsADUser = $('#IsADUser').prop('checked');
+        //if (IsADUser) {
+        //    $('#divPassword').hide();
+        //    $('#divBtnADCheck').show();
+        //}
+        //else {
+        //    $('#divPassword').show();
+        //    $('#divBtnADCheck').hide();
+        //}
+    }
+
+    function GetUserProfileDataProvider() {
+        return {
+            'userName': $('#UserName').val()
+        };
+    }
+
+    function GetUserProfileOnSuccess(result) {
+        $('#FullName').val(result.DisplayName);
+        $('#Email').val(result.Email);
+        $('#Mobile').val(result.Mobile);
+    };
+
+    function GetUserProfileOnBegin() {
+        var $element1 = $('#UserName');
+        if ($element1.val().trim() == '') {
+            if ($element1.val().trim() == '')
+                showValidationErrorMessageFor($element1[0], 'إسم المستخدم مطلوب');
+            return false;
+        }
+    }
+</script>
+

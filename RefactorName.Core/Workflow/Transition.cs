@@ -1,11 +1,12 @@
 ﻿using RefactorName.GraphDiff.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// A Transition is a path between two <see cref="State"/>s that shows how a <see cref="Request"/> can travel between them.
@@ -22,6 +23,8 @@ namespace RefactorName.Core.Workflow
         /// </summary>
         public int ProcessId { get; private set; }
 
+
+        public Process Process { get; private set; }
         /// <summary>
         /// Gets identity number of starting <see cref="State"/> that this <see cref="Transition"/> start from.
         /// </summary>
@@ -36,17 +39,20 @@ namespace RefactorName.Core.Workflow
         /// Gets the <see cref="State"/> that this <see cref="Transition"/> start from.
         /// </summary>
         [Associated]
+        [ForeignKey("CurrentStateId")]
         public State CurrentState { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="State"/> that this <see cref="Transition"/> will take a <see cref="Request"/> to it.
         /// </summary>
         [Associated]
+        [ForeignKey("NextStateId")]
         public State NextState { get; private set; }
 
         /// <summary>
         /// Gets all <see cref="Activity"/>s that must be executed when a <see cref="Request"/> followed this <see cref="Transition"/>.
         /// </summary>
+        /// 
         [Associated]
         public IList<Activity> Activities { get; private set; }
 
@@ -55,6 +61,15 @@ namespace RefactorName.Core.Workflow
         /// </summary>
         [Associated]
         public IList<Action> Actions { get; private set; }
+
+        [NotMapped]
+        public string Name
+        {
+            get
+            {
+                return this.ToString();
+            }
+        }
 
         /// <summary>
         /// Instanciate empty <see cref="Transition"/> object, this constructor used by infrastrcutre libraries only.
@@ -73,11 +88,20 @@ namespace RefactorName.Core.Workflow
         public Transition(State currentState, State nextState)
             : this()
         {
+
             this.CurrentState = currentState;
             this.CurrentStateId = currentState.StateId;
 
             this.NextState = nextState;
             this.NextStateId = nextState.StateId;
+        }
+
+        public Transition AddAction(Action action)
+        {
+            var result = (from transitionActions in this.Actions where transitionActions.ActionId == action.ActionId select transitionActions).ToList();
+            if (result.Count == 0)
+                this.Actions.Add(action);
+            return this;
         }
 
         /// <summary>
@@ -87,7 +111,9 @@ namespace RefactorName.Core.Workflow
         /// <returns>Current instance of <see cref="Transition"/> object.</returns>
         public Transition AddActivity(Activity activity)
         {
-            this.Activities.Add(activity);
+            var result = (from transitionActiviyt in this.Activities where transitionActiviyt.ActivityId == activity.ActivityId select transitionActiviyt).ToList();
+            if (result.Count == 0)
+                this.Activities.Add(activity);
 
             return this;
         }
@@ -114,9 +140,63 @@ namespace RefactorName.Core.Workflow
             return true;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override string ToString()
         {
-            return string.Format("{0}:[{1}] -> [{2}]", string.Join(", ", Actions.Select(x => x.Name)), CurrentState.Name, NextState.Name);
+            return string.Format("[{0}] -> [{1}]", CurrentState.Name, NextState.Name);
+        }
+
+        public Transition RemoveActivity(Activity activity)
+        {
+            this.Activities.Remove(activity);
+            return this;
+        }
+
+        public Transition RemoveAction(Action action)
+        {
+            this.Actions.Remove(action);
+            return this;
+        }
+
+        public Transition Update(State currentState, State nextState)
+        {
+            this.CurrentState = currentState;
+            //if (this.CurrentState != null)
+            //{
+            //    if (this.CurrentState.StateId != currentState.StateId)
+            //    {
+            //        this.CurrentStateId = currentState.StateId;
+            //        this.CurrentState = currentState;
+            //    }
+            //}
+            this.NextState = nextState;
+            //if (this.NextState != null)
+            //{
+            //    if (this.NextState.StateId != nextState.StateId)
+            //    {
+            //        this.NextStateId = nextState.StateId;
+            //        this.NextState = nextState;
+            //    }
+            //}
+
+            return this;
+        }
+
+        public Transition RemoveActions(List<Action> actions)
+        {
+            foreach (Action action in actions)
+                this.Actions.Remove(action);
+            return this;
+        }
+        public Transition RemoveActivities(List<Activity> activities)
+        {
+            foreach (Activity activity in activities)
+                this.Activities.Remove(activity);
+            return this;
         }
     }
 }

@@ -1,0 +1,127 @@
+@font-face {
+	font-family: 'thiqah';
+	src:url('../fonts/thiqah.eot?cpepzq');
+	src:url('../fonts/thiqah.eot?cpepzq#iefix') format('embedded-opentype'),
+		url('../fonts/thiqah.ttf?cpepzq') format('truetype'),
+		url('../fonts/thiqah.woff?cpepzq') format('woff'),
+		url('../fonts/thiqah.svg?cpepzq#thiqah') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.icon {
+    /* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'thiqah' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-rank-army-star-22:before {
+	content: "\e906";
+}
+.icon-radio-11:before {
+	content: "\e91d";
+}
+.icon-checkbox-9-ex:before {
+	content: "\e91f";
+}
+.icon-checkbox-6-ex:before {
+	content: "\e921";
+}
+.icon-checkbox-2-ex:before {
+	content: "\e922";
+}
+.icon-checkbox-1-ex:before {
+	content: "\e923";
+}
+.icon-radio-5:before {
+	content: "\e924";
+}
+.icon-add-1:before {
+	content: "\e914";
+}
+.icon-add-box:before {
+	content: "\e915";
+}
+.icon-add-circle-1:before {
+	content: "\e90b";
+}
+.icon-remove-1:before {
+	content: "\e916";
+}
+.icon-remove-2:before {
+	content: "\e917";
+}
+.icon-subtract-1:before {
+	content: "\e91c";
+}
+.icon-subtract-box:before {
+	content: "\e919";
+}
+.icon-navigation-show-more-1:before {
+	content: "\e91a";
+}
+.icon-navigation-show-more-2:before {
+	content: "\e91b";
+}
+.icon-home-1:before {
+	content: "\e90d";
+}
+.icon-bubble-chat-question-2:before {
+	content: "\e90e";
+}
+.icon-heart:before {
+	content: "\e900";
+}
+.icon-rank-army-star-2:before {
+	content: "\e901";
+}
+.icon-thumbs-down-1:before {
+	content: "\e902";
+}
+.icon-thumbs-up-1:before {
+	content: "\e903";
+}
+.icon-arrow-box-left-3:before {
+	content: "\e907";
+}
+.icon-arrow-box-right-3:before {
+	content: "\e908";
+}
+.icon-arrow-left-9:before {
+	content: "\e904";
+}
+.icon-arrow-left-12:before {
+	content: "\e910";
+}
+.icon-arrow-right-9:before {
+	content: "\e905";
+}
+.icon-arrow-right-12:before {
+	content: "\e911";
+}
+.icon-person-2:before {
+	content: "\e912";
+}
+.icon-email-compose:before {
+	content: "\e909";
+}
+.icon-cog:before {
+	content: "\e913";
+}
+.icon-check-12:before {
+	content: "\e90a";
+}
+.icon-close2:before {
+	content: "\e90c";
+}
+
+../

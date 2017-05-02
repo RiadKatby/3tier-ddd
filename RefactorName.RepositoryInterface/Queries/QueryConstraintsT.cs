@@ -42,7 +42,7 @@ namespace RefactorName.RepositoryInterface.Queries
         public QueryConstraints()
         {
             ModelType = typeof(T);
-            PageSize = 50;
+            PageSize = int.MaxValue;
             PageNumber = 1;
             sortOrder = new List<SortOrderEntry>();
             includePaths = new List<string>();

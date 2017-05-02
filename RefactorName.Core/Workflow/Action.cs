@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Actions are things a user can perform upon a Request. which can cause the Request to go to the next state
@@ -24,6 +24,8 @@ namespace RefactorName.Core.Workflow
         /// Gets identity number of the <see cref="Process"/> which has this <see cref="Action"/>.
         /// </summary>
         public int ProcessId { get; private set; }
+
+        public Process Process { get; private set; }
 
         /// <summary>
         /// Gets idenitity number of the <see cref="ActionType"/> that this <see cref="Action"/> belong to.
@@ -51,12 +53,18 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets all <see cref="Transition"/>s that may be followed as a result of performing this <see cref="Action"/>.
         /// </summary>
+        [Associated]
         public IList<Transition> Transitions { get; private set; }
+
+        //[Associated]
+        public IList<ActionTarget> ActionTargets { get; private set; }
 
         /// <summary>
         /// Instanciate empty <see cref="Action"/> object, this constructor used by infrastrcutre libraries only.
         /// </summary>
-        public Action() { }
+        public Action()
+        {
+        }
 
         /// <summary>
         /// Instanciate custom <see cref="Action"/> object.
@@ -64,13 +72,13 @@ namespace RefactorName.Core.Workflow
         /// <param name="name">name of action</param>
         /// <param name="description">description of action</param>
         /// <param name="actionType">actionType of action.</param>
-        public Action(string name, string description, ActionType actionType)
+        public Action(string name, string description, ActionType actionType):this()
         {
             this.Name = name;
             this.Description = description;
 
             this.ActionType = actionType;
-            this.ActionTypeId = actionType.ActionTypeId;
+            this.ActionTypeId = actionType.ActionTypeId;            
         }
 
         /// <summary>
@@ -100,10 +108,20 @@ namespace RefactorName.Core.Workflow
 
             return true;
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         public override string ToString()
         {
             return Name;
+        }
+
+        public Action addActionTarget(ActionTarget actionTarget)
+        {
+            this.ActionTargets.Add(actionTarget);
+            return this;
         }
     }
 }

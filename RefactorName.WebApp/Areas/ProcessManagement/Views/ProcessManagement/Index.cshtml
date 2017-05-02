@@ -1,0 +1,71 @@
+﻿@using MvcHtmlHelpers
+@model RefactorName.WebApp.Areas.Backend.Models.ProcessIndexModel  
+@{
+    Layout = "~/Views/Shared/_ENLayout.cshtml";
+    ViewBag.Title = "Process Management";
+}
+@section breadcrumb
+{
+    <ol class="breadcrumb">
+        @*<li>@Html.ActionLink("Main", "Index", "Main")</li>*@
+        @*<li class="active"><a href="#">Processes</a></li>*@
+    </ol>
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.MCIBeginItemsRow())
+        {
+            using (Html.MCIBeginItemsCol(12))
+            {
+                @:Processes
+                @Html.AcionLinkWithInnerHtml("New Process <i class='fa fa-plus'></i>", "ManageProcess",
+                     htmlAttributes: new { @class = "btn btn-primary btn-sm pull-right " })
+            }
+        }
+    </div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsCol(12))
+        {
+            using (Ajax.BeginForm("GetProcessesList", null,
+                new AjaxOptions
+                {
+                    HttpMethod = "GET",
+                    LoadingElementId = "dialog_loader",
+                    OnFailure = "onFailureDefault",
+                    UpdateTargetId = "divProcessesGrid"
+                }, new { id = "frmSProcesses" }))
+            {
+                using (Html.MCIBeginItemsRow())
+                {
+                    @Html.MCITextBoxItemFor(m => m.processSearchCriteriaModel.Name, httmlAttributes: new { maxLength = "100" })
+                }
+                using (Html.MCIBeginItemsCol(12, new { @class = "text-left" }))
+                {
+                        @Html.MCISubmitButton("<i class='fa fa-search'></i>", htmlAttributes: new { @class = "btn btn-primary" })
+                        <button id="btnClear" type="button" class="btn btn-default">Cancel</button>
+                }
+            }
+        }
+        @using (Html.MCIBeginItemsCol(12))
+        {
+            <div id="divProcessesGrid">
+                @Html.Partial("_ProcessesGrid", Model.Items)
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#btnClear').click(function () {
+                clearForm('#frmSProcesses');
+            });
+
+            //$('#userSearchCriteriaModel_RoleName').select2()
+        });
+
+    </script>
+}
+    

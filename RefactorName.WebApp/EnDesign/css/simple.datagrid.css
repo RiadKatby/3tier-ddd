@@ -1,0 +1,102 @@
+.simple-data-grid {
+    border-collapse: collapse;
+}
+
+.simple-data-grid thead th,
+.simple-data-grid tbody tr:hover {
+    background: #dfdfdf;
+    background: -webkit-gradient(linear, left top, left bottom, from(#eaeaea), to(#d3d3d3));
+    background: -moz-linear-gradient(top, #eaeaea, #d3d3d3);
+    background: -ms-linear-gradient(top, #eaeaea, #d3d3d3);
+    background: -o-linear-gradient(top, #eaeaea, #d3d3d3);
+}
+
+.simple-data-grid thead th {
+    font-weight: bold;
+    padding: 0.5em;
+    border-right: solid 1px #ccc;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.simple-data-grid thead th a {
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.simple-data-grid thead th a .sdg-sort {
+    margin-left: 1em;
+    font-size: 12px;
+}
+
+.simple-data-grid thead .sdg-sorted:hover {
+    cursor: pointer;
+}
+
+.simple-data-grid thead th:last-child {
+    border-right: none;
+}
+
+.simple-data-grid thead th:hover {
+    background: #e4e4e4;
+    background: -webkit-gradient(linear, left top, left bottom, from(#d3d3d3), to(#eaeaea));
+    background: -moz-linear-gradient(top, #d3d3d3, #eaeaea);
+    background: -ms-linear-gradient(top, #d3d3d3, #eaeaea);
+    background: -o-linear-gradient(top, #d3d3d3, #eaeaea);
+}
+
+.simple-data-grid tbody td {
+    padding: 0.5em;
+    vertical-align: top;
+}
+
+.simple-data-grid tbody tr {
+    border-bottom: solid 1px #ddd;
+}
+
+.simple-data-grid tbody .sdg-selected,
+.simple-data-grid tbody .sdg-selected:hover {
+    background: #97bdd6;
+    background: -webkit-gradient(linear, left top, left bottom, from(#bee0f5), to(#89afca));
+    background: -moz-linear-gradient(top, #bee0f5, #89afca);
+    background: -ms-linear-gradient(top, #bee0f5, #89afca);
+    background: -o-linear-gradient(top, #bee0f5, #89afca);
+}
+
+.simple-data-grid tfoot td {
+    padding: 0.5em;
+}
+
+.simple-data-grid tfoot .sdg-pagination {
+    background: #eaeaea;
+    text-align: center;
+}
+
+.simple-data-grid tfoot .sdg-pagination ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    float: none;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.simple-data-grid tfoot .sdg-pagination li {
+    float: left;
+}
+
+.simple-data-grid tfoot .sdg-pagination a {
+    padding: 0 0.5em;
+}
+
+.simple-data-grid tfoot .sdg-pagination li.sdg-disabled a,
+.simple-data-grid tfoot .sdg-pagination li.sdg-disabled a:hover,
+.simple-data-grid tfoot .sdg-pagination li.sdg-active a,
+.simple-data-grid tfoot .sdg-pagination li.sdg-active a:hover {
+    cursor: default;
+    text-decoration: none;
+    color: #000;
+}

@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+
+<html dir="rtl">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/ico" href="~/favicon.ico" />
+
+    <title>
+        وزارة التجارة والصناعة
+        @if (ViewBag.Title != null)
+        {
+            @ViewBag.Title
+        }
+    </title>
+
+    @Styles.Render("~/Content/mainCss")
+    @Styles.Render("~/Content/templateCss")
+    @RenderSection("Styles", false)
+
+    @Scripts.Render("~/bundles/layoutJquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/templateJquery")
+    @Scripts.Render("~/bundles/datepicker")
+    @RenderSection("Scripts", false)
+
+    <script type="text/javascript">
+        @if (ViewBag.FocusOn != null)
+        {
+            string selector = "#" + ViewBag.FocusOn.ToString();
+         <text>
+        $(document).ready(function () {
+            $('@selector').focus();
+        });
+        </text>
+        }
+        else
+        {
+            <text>
+        $(document).ready(function () {
+            $(".focus").focus();
+        });
+        </text>
+        }
+    </script>
+</head>
+
+<body ng-app="mciTemplate">
+    <!--This is for the uploader to work-->
+    <a id="root" href='@Url.Content("~/")' style="display: none"></a>
+    @Html.RenderMCIMessagesArea()
+
+    <!--============================== header =================================-->
+    <div class="wsmenucontainer clearfix">
+        <div class="wsmenucontent overlapblackbg"></div>
+        <div class="wsmenuexpandermain slideRight">
+            <a id="navToggle" class="animated-arrow slideLeft"><span></span></a>
+            <a href="#" class="smallogo"><img src="@Url.Content("~/Content/img/logo.svg")" width="120" alt="" /></a>
+        </div>
+
+        <div class="header">
+            <div class="container">
+                <div class="wrapper clearfix bigmegamenu">
+                    <div class="logo clearfix"><a href="http://www.mci.gov.sa" title="Responsive Slide Menus" target="_blank"><img src="@Url.Content("~/Content/img/logo.svg")" alt="" /></a></div>
+                    <ul class="top-social-link pull-left hidden-sm">
+                        @Html.Partial("_SocialMenuItems")
+                    </ul>
+                    <!--Main Menu HTML Code-->
+                    <nav class="wsmenu slideLeft clearfix">
+                        <ul class="mobile-sub wsmenu-list">
+                            @Html.Partial("_TopNavMenuItems")
+                            @RenderSection("_TopNavMenuItemsCustom", false)
+                            @Html.Partial("_UserMenuItem")
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--============================== header =================================-->
+    <!--============================== breadcrumb =================================-->
+    <div class="bread-crump-bg">
+        <div class="container">
+            <div class="row">
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="row">
+                @RenderSection("breadcrumb", false)
+            </div>
+        </div>
+    </div>
+    <!--============================== breadcrumb =================================-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <div class="row">
+                    <div class="sidebar-container">
+                        <!-- BEGIN SIDEBAR-->
+                        <div id="sidebar">
+                            <div class="sidebar-back"></div>
+                            <div class="sidebar-content">
+
+                                <!-- BEGIN MAIN MENU -->
+                                <ul class="main-menu">
+                                    @Html.Partial("_SideBarMenuItemsDemo")
+                                    @RenderSection("_SideBarCustomMenuItems", false)
+                                </ul><!--end .main-menu -->
+                                <!-- END MAIN MENU -->
+                            </div>
+                        </div>
+                        <!-- END SIDEBAR -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-10 main-content">
+                <!-- BODY -->
+                @RenderBody()
+                <!-- ./ BODY -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- start footer -->
+    <div id="footer">
+        <div class="container">
+            <div class="col-md-5 col-sm-6">
+
+                <ul class="social-link pull-right" style="width:100%; margin-bottom:0px;">
+                    @Html.Partial("_SocialMenuItems")
+                </ul>
+
+                <p class="c-rights pull-right text-center" style="margin-bottom:0px;"> جميع الحقوق محفوظة وزارة التجارة والصناعة  © @DateTime.Now.Year.ToString() </p>
+
+            </div>
+            <div class="col-md-7 col-sm-6 hidden-xs">
+                <img src="@Url.Content("~/Content/img/i-call.png")" class="pull-left" style=" margin-top: 12px; margin-right: 5px;">
+                <div class="c-service i-call pull-left hidden-xs">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; الهــاتف الموحد <span>920000667</span></div>
+                <div class="clearfix"></div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- end footer -->
+
+    <div id="dialog_loader" style="display: none">
+        <div class="modal-backdrop fade in" style="z-index:1060;"></div>
+        <div style="position: fixed; left: 50%; top: 30%; z-index: 1061">
+            <div style="position: relative; left: -50%;">
+                <div class="waiting-modal">
+                    <img src='@Url.Content("~/Content/images/loading3d.gif")' alt="الرجاء الانتظار" title="الرجاء الانتظار" />
+                    <span>الرجـاء الإنتـظــار...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("PostScripts", false)
+
+</body>
+</html>

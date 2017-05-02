@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.RepositoryInterface</RootNamespace>
     <AssemblyName>RefactorName.RepositoryInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -54,6 +54,8 @@
     <Compile Include="GenericRepository\IGenericQueryRepository.cs" />
     <Compile Include="GenericRepository\IGenericRepository.cs" />
     <Compile Include="IActiveDirectoryRepository.cs" />
+    <Compile Include="Identity\IIdentityRoleRepository.cs" />
+    <Compile Include="Identity\IIdentityUserRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\IQueryConstraints.cs" />
@@ -64,13 +66,15 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Identity\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\RefactorName.Core\RefactorName.Core.csproj">
       <Project>{6923f1e7-e470-42b1-a24a-32693ca127f4}</Project>
       <Name>RefactorName.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RefactorName.GraphDiff\RefactorName.GraphDiff.csproj">
+      <Project>{438efb89-7edd-499e-9b80-ad7a7d4cf21d}</Project>
+      <Name>RefactorName.GraphDiff</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

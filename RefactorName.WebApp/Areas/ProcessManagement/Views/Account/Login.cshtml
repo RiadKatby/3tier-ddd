@@ -1,0 +1,31 @@
+﻿@model RefactorName.WebApp.Models.LoginViewModel
+@using MvcHtmlHelpers
+@{
+    Layout = "~/Views/Shared/_CleanLayout.cshtml";
+}
+
+<div class="container login-container">
+    <div class="col-md-6">
+        <div class="login-img-box">
+            <div class="col-md-6 text-center padding-top-30"><h1 class="text-primary">اسم النظام</h1></div>
+            <div class="col-md-6 text-center"><img src="@Url.Content("~/Content/img/login-img.jpg")" class="img-responsive pull-left"></div>
+        </div>
+        <div class="login-text-box hidden-xs">
+            وصف بسيط عن النظام          
+        </div>
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, null))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.MCITextBoxItemFor(m => m.Email, 12, new { @class = "focus", @maxlength = "50", placeholder = "اسم المستخدم" })
+            @Html.MCIPasswordItemFor(m => m.Password, 12, new { @maxlength = "50", placeholder = "كلمة المرور" }, true)
+            using (Html.MCIBeginItemsCol(12))
+            {
+                @Html.MCISubmitButton("الدخول", "", "", new { @class = "btn btn-default pull-left" })
+                @*<a href="#" class="pull-right text-primary">تسجيل مستخدم جديد</a>&nbsp;|&nbsp;<a href="#" class="text-primary">نسيت كلمة المرور</a>*@
+            }
+        }
+    </div>
+</div>

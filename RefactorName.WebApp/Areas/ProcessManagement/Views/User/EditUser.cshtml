@@ -1,0 +1,47 @@
+﻿@model UserEditModel
+@using MvcHtmlHelpers
+
+@{
+    Layout = "~/Views/Shared/_EnLayout.cshtml";
+    ViewBag.Title = "Edit User";
+}
+
+@section breadcrumb
+{
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("الرئيسية", "Index", "Home")</li>
+        <li>@Html.ActionLink("المستخدمين", "Index")</li>
+        <li class="active"><a href="#">تعديل مستخدم</a></li>
+    </ol>
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/angulartree")
+}
+@section Styles
+{
+    @Styles.Render("~/Content/angulartree")
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div class="panel-heading">تعديل المستخدم</div>
+        <div class="panel-body">
+            @Html.EncryptedHiddenFor(m => m.Email)
+
+            @Html.MCITextBoxItemFor(m => m.FullName, httmlAttributes: new { maxLength = "256" })
+            @Html.MCITextBoxItemFor(m => m.Email, httmlAttributes: new { maxLength = "256" })
+            @Html.MCITextBoxItemFor(m => m.PhoneNumber, httmlAttributes: new { @class = "only-number", maxLength = "10" })
+            @Html.MCICheckBoxItemFor(m => m.IsActive, "نعم")
+            @Html.MCIMultiSelectAngularTreeItemFor(m => m.Roles, new MultiSelectList(Model.RoleNames, "Key", "Value"), 12)
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("حفظ", htmlAttributes: new { @class = "btn btn-primary" })
+            @Html.AcionLinkWithInnerHtml("إلغاء", "Index", routeValues: new { ls = true }, htmlAttributes: new { @class = "btn btn-default" })
+        </div>
+    </div>
+}

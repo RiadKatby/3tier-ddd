@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefactorName.Core.Workflow
+namespace RefactorName.Core
 {
     /// <summary>
     /// Requests are unique to Processes; a Request may only exist in a single Process
@@ -42,7 +42,7 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets <see cref="User"/> who created this <see cref="Request"/>.
         /// </summary>
-        public User UserRequested { get; private set; }
+        //public User UserRequested { get; private set; }
 
         
         /// <summary>
@@ -66,8 +66,8 @@ namespace RefactorName.Core.Workflow
         /// <summary>
         /// Gets list of Users that are to receive periodic updates about the Request.
         /// </summary>
-        [Associated]
-        public IList<User> Stakeholders { get; private set; }
+        //[Associated]
+        //public IList<User> Stakeholders { get; private set; }
 
         /// <summary>
         /// Gets all physical files that relate to this <see cref="Request"/>.
@@ -81,6 +81,9 @@ namespace RefactorName.Core.Workflow
         [Owned]
         public IList<RequestAction> RequestActions { get; private set; }
 
+
+        [Owned]
+        public IList<RequestNote> RequestNotes { get; private set; }
         /// <summary>
         /// Instanciate empty <see cref="Request"/> object, this constructor used by infrastrcutre libraries only.
         /// </summary>
@@ -104,7 +107,7 @@ namespace RefactorName.Core.Workflow
                                        where action.Equals(x.Action) && x.IsActive
                                        select x;
 
-            List<RequestAction> temp = new List<Workflow.RequestAction>();
+            List<RequestAction> temp = new List<RequestAction>();
 
             foreach (var activeAction in activeRequestActions)
             {
@@ -129,9 +132,9 @@ namespace RefactorName.Core.Workflow
             this.CurrentState = newState;
             this.CurrentStateId = newState.StateId;
 
-            foreach (var transition in CurrentState.Outgoing)
-                foreach (var action in transition.Actions)
-                    RequestActions.Add(new RequestAction(action, transition));
+            //foreach (var transition in CurrentState.Outgoing)
+            //    foreach (var action in transition.Actions)
+            //        RequestActions.Add(new RequestAction(action, transition));
         }
 
         public override string ToString()

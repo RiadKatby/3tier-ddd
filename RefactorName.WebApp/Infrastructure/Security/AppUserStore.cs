@@ -5,15 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
+using RefactorName.Domain;
 
 namespace RefactorName.WebApp.Infrastructure.Security
 {
-    public class AppUserStore : IUserStore<User, int>, IUserPasswordStore<User, int>, IUserLoginStore<User, int>, IUserSecurityStampStore<User, int>, IUserLockoutStore<User, int>
+    public class AppUserStore : IUserStore<User, int>, IUserPasswordStore<User, int>, IUserLoginStore<User, int>, IUserSecurityStampStore<User, int>, IUserLockoutStore<User, int>, IUserEmailStore<User,int>
     {
         public static List<User> users = new List<User>
         {
-            new User { UserId = 1, UserName = "morikapt@gmail.com", Email = "morikapt@gmail.com" },
-            new User { UserId = 2, UserName = "morikapt@hotmail.com", Email = "morikapt@hotmail.com" }
+            new User { Id = 1, UserName = "morikapt@gmail.com", Email = "morikapt@gmail.com" },
+            new User { Id = 2, UserName = "morikapt@hotmail.com", Email = "morikapt@hotmail.com" }
         };
 
         #region IUserStore<User, int> Interface Members
@@ -34,7 +35,7 @@ namespace RefactorName.WebApp.Infrastructure.Security
 
         public Task<User> FindByIdAsync(int userId)
         {
-            return Task.Factory.StartNew<User>(() => { return users.FirstOrDefault(x => x.UserId == userId); });
+            return Task.Factory.StartNew<User>(() => { return users.FirstOrDefault(x => x.Id == userId); });
         }
 
         public Task<User> FindByNameAsync(string userName)
@@ -129,6 +130,36 @@ namespace RefactorName.WebApp.Infrastructure.Security
         public Task SetLockoutEndDateAsync(User user, DateTimeOffset lockoutEnd)
         {
             return Task.Factory.StartNew(() => { });
+        }
+
+        public Task SetEmailAsync(User user, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetEmailAsync(User user)
+        {
+            return Task.FromResult<string>(user.Email);
+        }
+
+        public Task<bool> GetEmailConfirmedAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetEmailConfirmedAsync(User user, bool confirmed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> FindByEmailAsync(string email)
+        {
+            return Task.FromResult<User>(UserService.Obj.FindByEmail(email));
+        }
+
+        public Task<User> FindByIdAsync(string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

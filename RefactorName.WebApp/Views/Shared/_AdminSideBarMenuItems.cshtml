@@ -1,0 +1,47 @@
+﻿
+@using RefactorName.Core;
+
+
+<!-- Menu UI -->
+<li  secure-roles='@RoleNames.SuperAdministrator, @RoleNames.ProcessManagementAdmin'>
+    <a href='@Url.Action("Index", "ProcessManagement", new { Area = "ProcessManagement" })'>
+        <i class="fa fa-users"></i><span class="title">Process Management</span>
+    </a>
+</li>
+
+
+@*<li>
+    <a href='@Url.Action("Index", "State", new { Area = "Backend" })'>
+        <i class="fa fa-users"></i><span class="title">State Management</span>
+    </a>
+</li>
+
+<li>
+    <a href='@Url.Action("Index", "Transition", new { Area = "Backend" })'>
+        <i class="fa fa-users"></i><span class="title">Transition Management</span>
+    </a>
+</li>
+
+<li>
+    <a href='@Url.Action("Index", "Action", new { Area = "Backend" })'>
+        <i class="fa fa-users"></i><span class="title">Action Management</span>
+    </a>
+</li>
+
+<li>
+    <a href='@Url.Action("Index", "Activity", new { Area = "Backend" })'>
+        <i class="fa fa-users"></i><span class="title">Activity Management</span>
+    </a>
+</li>
+
+<li>
+    <a href='@Url.Action("Index", "Group", new { Area = "Backend" })'>
+        <i class="fa fa-users"></i><span class="title">Group Management</span>
+    </a>
+</li>*@
+
+<li  secure-roles='@RoleNames.SuperAdministrator, @RoleNames.ProcessManagementAdmin'>
+    <a href='@Url.Action("Index", "User", new { Area = "ProcessManagement" })'>
+        <i class="fa fa-users"></i><span class="title">User Management</span>
+    </a>
+</li>
