@@ -15,6 +15,7 @@ namespace RefactorName.GraphDiff.Aggregates
     public sealed class AggregateConfiguration
     {
         private static readonly AggregateConfiguration _aggregates = new AggregateConfiguration();
+
         public static AggregateConfiguration Aggregates
         {
             get
@@ -25,7 +26,7 @@ namespace RefactorName.GraphDiff.Aggregates
 
         private IAggregateRegister _register;
 
-        private AggregateConfiguration() 
+        private AggregateConfiguration()
         {
             _register = new AggregateRegister(new CacheProvider());
         }

@@ -1,5 +1,6 @@
 ﻿using RefactorName.GraphDiff;
 using RefactorName.RepositoryInterface;
+using RefactorName.SqlServerRepository.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,116 +11,118 @@ namespace RefactorName.SqlServerRepository
 {
     public class GenericRepository : IGenericRepository
     {
-        private MyDbContext notifierContext;
-
-        public GenericRepository() { }
-
-        public GenericRepository(MyDbContext context)
-        {
-            this.notifierContext = context;
-        }
-
         #region IGenericRepository Members
 
-        public virtual TBizEntity Create<TBizEntity>(TBizEntity entity) where TBizEntity : class, new()
+        public virtual TBusinessEntity Create<TBusinessEntity>(TBusinessEntity entity)
+            where TBusinessEntity : class, new()
         {
             try
             {
-                MyDbContext context = notifierContext ?? new MyDbContext();
-
-                TBizEntity updatedEntity = context.UpdateGraph<TBizEntity>(entity);
-
-                if (notifierContext == null)
+                using (AppDbContext context = new AppDbContext())
                 {
+                    TBusinessEntity updatedEntity = context.UpdateGraph(entity);
+
                     int erc = context.SaveChanges();
 
-                    context.Dispose();
-                    return erc > 0 ? updatedEntity : null;
+                    var result = erc > 0 ? updatedEntity : null;
+
+                    if (result != null)
+                    {
+                        // update the generation
+                        Cache.NextGeneration<TBusinessEntity>();
+                    }
+
+                    return result;
                 }
-
-                // else the management of the context is being done by the UnitOfWork
-
-                return updatedEntity;
             }
             catch (Exception ex)
             {
-                throw ThrowHelper.ReThrow(ex);
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 
-        public virtual TBizEntity Update<TBizEntity>(TBizEntity entity) where TBizEntity : class, new()
+        public virtual TBusinessEntity Update<TBusinessEntity>(TBusinessEntity entity)
+            where TBusinessEntity : class, new()
         {
             try
             {
-                MyDbContext context = notifierContext ?? new MyDbContext();
-
-                TBizEntity updatedEntity = context.UpdateGraph<TBizEntity>(entity);
-
-                if (notifierContext == null)
+                using (AppDbContext context = new AppDbContext())
                 {
+                    TBusinessEntity updatedEntity = context.UpdateGraph<TBusinessEntity>(entity);
+
                     int erc = context.SaveChanges();
-                    context.Dispose();
 
-                    return erc > 0 ? updatedEntity : null;
+                    var result = erc > 0 ? updatedEntity : null;
+
+                    if (result != null)
+                    {
+                        // update the generation
+                        Cache.NextGeneration<TBusinessEntity>();
+                    }
+
+                    return result;
                 }
-                // else the management of the context is being done by the UnitOfWork
-
-                return updatedEntity;
             }
             catch (Exception ex)
             {
-                throw ThrowHelper.ReThrow(ex);
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 
-        public virtual bool Delete<T>(T entity) where T : class, new()
+        public virtual bool Delete<TBusinessEntity>(TBusinessEntity entity)
+            where TBusinessEntity : class, new()
         {
-            int erc = 0;
-
             try
             {
-                MyDbContext context = notifierContext ?? new MyDbContext();
-
-                context.Set<T>().Attach(entity);
-                context.Set<T>().Remove(entity);
-
-                if (notifierContext == null)
+                using (AppDbContext context = new AppDbContext())
                 {
-                    erc = context.SaveChanges();
-                    context.Dispose();
+                    context.Set<TBusinessEntity>().Attach(entity);
+                    context.Set<TBusinessEntity>().Remove(entity);
+
+                    int erc = context.SaveChanges();
+
+                    var result = erc > 0;
+
+                    if (result == true)
+                    {
+                        // update the generation
+                        Cache.NextGeneration<TBusinessEntity>();
+                    }
+
+                    return result;
                 }
-
-                // else the management of the context is being done by the UnitOfWork
-
-                return erc > 0;
             }
             catch (Exception ex)
             {
-                throw ThrowHelper.ReThrow(ex);
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 
-        public bool Delete<T>(IEnumerable<T> entities) where T : class, new()
+        public bool Delete<TBusinessEntity>(IEnumerable<TBusinessEntity> entities)
+            where TBusinessEntity : class, new()
         {
-            int erc = 0;
-
             try
             {
-                MyDbContext context = notifierContext ?? new MyDbContext();
-                context.Set<T>().RemoveRange(entities);
-                if (notifierContext == null)
+                using (AppDbContext context = new AppDbContext())
                 {
-                    erc = context.SaveChanges();
-                    context.Dispose();
+                    context.Set<TBusinessEntity>().RemoveRange(entities);
+
+                    int erc = context.SaveChanges();
+
+                    var result = erc > 0;
+
+                    if (result == true)
+                    {
+                        // update the generation
+                        Cache.NextGeneration<TBusinessEntity>();
+                    }
+
+                    return result;
                 }
-
-                // else the management of the context is being done by the UnitOfWork
-
-                return erc > 0;
             }
             catch (Exception ex)
             {
-                throw ThrowHelper.ReThrow(ex);
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 

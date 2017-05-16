@@ -75,7 +75,7 @@ namespace RefactorName.GraphDiff.Internal.GraphBuilders
 
                 var node = GraphNodeFactory.Create(parent, property.Accessor, isCollection, property.IsOwned);
                 parent.Members.Push(node);
-                
+
                 if (property.IsOwned)
                 {
                     if (IsVisited(visited, node))

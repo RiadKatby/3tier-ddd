@@ -4,37 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace RefactorName.SqlServerRepository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private IGenericRepository repository;
-        private IGenericQueryRepository queryRepository;
-        private MyDbContext context;
+        private TransactionScope scope;
 
         public UnitOfWork()
         {
-            context = new MyDbContext();
-            repository = new GenericRepository(context);
-            queryRepository = new GenericQueryRepository(context);
+            scope = new TransactionScope();
         }
 
         #region IUnitOfWork Members
 
-        public IGenericRepository Repository
+        public void Complete()
         {
-            get { return repository; }
-        }
+            if (scope == null)
+                throw new InvalidOperationException("Complete method need UnitOfWork that support MultiCommit.");
 
-        public IGenericQueryRepository QueryRepository
-        {
-            get { return queryRepository; }
-        }
-
-        public int Commit()
-        {
-            return context.SaveChanges();
+            scope.Complete();
         }
 
         #endregion
@@ -43,8 +33,11 @@ namespace RefactorName.SqlServerRepository
 
         public void Dispose()
         {
-            context.Dispose();
-            context = null;
+            if (scope != null)
+            {
+                scope.Dispose();
+                scope = null;
+            }
         }
 
         #endregion

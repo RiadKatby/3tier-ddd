@@ -1,0 +1,36 @@
+﻿@model RefactorName.WebApp.Models.TestEntity
+
+@using (Ajax.BeginForm("Edit", new AjaxOptions()
+{
+    UpdateTargetId = "DataList",
+    LoadingElementId = "dialog_loader",
+    OnSuccess = "OnEdit",
+    OnFailure = "OnEditFail"
+}))
+{
+    using (Html.MCIBeginModal())
+    {
+        using (Html.MCIBeginModalHeader())
+        {
+            <h4 class="modal-title" id="myModalLabel">تعديل بيانات @Model.Name</h4>
+        }
+        using (Html.MCIBeginModalBody())
+        {
+            using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCITextBoxItemFor(m => m.Name)
+                @Html.MCITextBoxItemFor(m => m.Age)
+            }
+        }
+        using (Html.MCIBeginModalFooter())
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+        }
+    }
+}
+<script>
+    $(function () {
+        init_validators();
+    });
+</script>

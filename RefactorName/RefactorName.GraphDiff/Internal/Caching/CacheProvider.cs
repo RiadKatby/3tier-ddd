@@ -63,7 +63,7 @@ namespace RefactorName.GraphDiff.Internal.Caching
                 result = onCacheMissed();
                 _cache.Add(fullKey, result, new CacheItemPolicy());
             }
-            
+
             return (T)result;
         }
 

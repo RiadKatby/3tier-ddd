@@ -1,0 +1,39 @@
+﻿@model RefactorName.WebApp.Models.Company
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Select2";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">Select2</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>Reference: <a href="https://select2.github.io/examples.html" target="_blank">https://select2.github.io/examples.html</a></li>
+                </ul>
+            }
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIDropDownListItem("select21", ViewBag.CompanyTypes as SelectList, "Simple single select")
+                @Html.MCIListBoxtItem("select22", ViewBag.CompanyTypes as SelectList, "multi-select with search")
+
+
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("إرسال", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+
+}
+
+<script>
+    $(function () {
+        $('#select21, #select22').select2();
+    });
+</script>

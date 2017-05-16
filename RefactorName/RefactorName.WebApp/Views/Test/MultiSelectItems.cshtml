@@ -1,0 +1,41 @@
+﻿@model RefactorName.WebApp.Models.Company
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "MultiSelect Items";
+}
+
+@using (Ajax.BeginForm(
+    new AjaxOptions()
+    {
+        LoadingElementId = "dialog_loader",
+        HttpMethod = "Post",
+        UpdateTargetId = "MultiSelectUpdateTarget"
+    }))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">MultiSelect Items</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIListBoxtItem("selectedOwners1", new MultiSelectList(Model.Owners, "ID", "Name", Model.SelectedOwners), "simple list", hint: "(not mapped to model property)", httmlAttributes: new { style = "height:200px;" })
+                @Html.MCIListBoxtItemFor(m => m.SelectedOwners, new MultiSelectList(Model.Owners, "ID", "Name", Model.SelectedOwners), hint: "(mapped to model property)", httmlAttributes: new { style = "height:200px;" })
+            }
+
+            @using (Html.MCIBeginItemsRow())
+            {
+                <div class="col-sm-6" id="MultiSelectUpdateTarget"></div>
+            }
+
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("submit", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
+
+@*<script>
+        $(function () {
+            $('#selectedOwners1, #SelectedOwners').select2();
+        });
+    </script>*@

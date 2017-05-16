@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{438EFB89-7EDD-499E-9B80-AD7A7D4CF21D}</ProjectGuid>
+    <ProjectGuid>{70DB4D52-37CA-48FF-94C9-53E8469D793F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.GraphDiff</RootNamespace>

@@ -14,9 +14,6 @@ namespace RefactorName.Core
         [PermissionCaption("مدير كامل النظام")]
         public const string SuperAdministrator = "/";
 
-        [PermissionCaption("إدارة المستخدمين")]
-        public const string Users = "/Users";
-
         [PermissionCaption("عرض المستخدمين")]
         public const string UsersView = "/Users/View";
 
@@ -52,16 +49,6 @@ namespace RefactorName.Core
 
             return result;
         }
-
-        public static IEnumerable<string> GetAllParentRoles(string childRole)
-        {
-            foreach (var role in RoleNames.GetRolesWithCaptions())
-            {
-                if (childRole.StartsWith(role.Key.ToString()))
-                    yield return role.Key.ToString();
-            }
-        }
-
     }
 
     [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = true)]

@@ -16,20 +16,20 @@ namespace RefactorName.Core
         /// Determines if current business object has no validation issue or error.
         /// </summary>
         [NotMapped]
-        public bool IsValid { get; protected set; }
+        public bool IsValid { get; private set; }
 
         /// <summary>
         /// Represents all the validation result of current business object.
         /// This property is influenced by Validate method call.
         /// </summary>
         [NotMapped]
-        public ObservableCollection<ValidationResult> ValidationResults { get; protected set; }
+        public ObservableCollection<ValidationResult> ValidationResults { get; private set; }
 
         /// <summary>
         /// Validates all properties of current business object.
         /// This method influence IsValid, and ValidationResults properties.
         /// </summary>
-        public virtual bool Validate()
+        public bool Validate()
         {
             ValidationResults = new ObservableCollection<ValidationResult>();
 

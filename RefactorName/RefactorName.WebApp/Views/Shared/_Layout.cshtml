@@ -1,45 +1,246 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/ico" href="~/favicon.ico" />
 
+    <title>
+        وزارة التجارة والصناعة
+        @LayoutModel.Title ?? "";
+    </title>
+
+    @* //Scripts *@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryhelpers")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/MvcFoolproofjqueryval")
+    @*@Scripts.Render("~/bundles/prettyPhoto")*@
+    @Scripts.Render("~/bundles/datepicker")
+    @*@Scripts.Render("~/bundles/finuploader")*@
+    @Scripts.Render("~/bundles/common")
+    @RenderSection("Scripts", false)
+
+    @* //Styles *@
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/datepicker")
+    @*@Styles.Render("~/Content/prettyPhoto")*@
+    @*@Styles.Render("~/Content/finuploader")*@
+    @RenderSection("Styles", false)
+
+    <script type="text/javascript">
+        $(window).load(function () {
+            $("body").css("overflow", "auto");
+            $(".LoadingOverlay , .LoadingOverlay .spinner").fadeOut(1000);
+        });
+
+        @if (ViewBag.FocusOn != null)
+        {
+            string selector = "#" + ViewBag.FocusOn.ToString();
+         <text>
+        $(document).ready(function () {
+            $('@selector').focus();
+        });
+        </text>
+        }
+        else
+        {
+            <text>
+        $(document).ready(function () {
+            $(".focus").focus();
+        });
+        </text>
+        }
+    </script>
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+<body ng-app="RefactorName">
+    <!--This is for the uploader to work-->
+    <a id="root" href='@Url.Content("~/")' style="display: none"></a>
+    <!--============================== header =================================-->
+    <header>
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <nav class="navbar yamm navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="#" class="navbar-brand"><img src="@Url.Content("~/Images/logo.png")" width="193" height="44"></a>
+                    </div>
+                    <div class="collapse navbar-collapse js-navbar-collapse">
+                        <ul class="nav yamm navbar-nav">
+                            @Html.Partial("_TopNavMenuItems")
+                            @RenderSection("_TopNavMenuItemsCustom", false)
+                            @Html.Partial("_UserMenuItem")
+                        </ul>
+                    </div><!-- /.nav-collapse -->
+                </div>
+            </nav>
+            <!-- /.nav-collapse -->
+        </div>
+    </header>
+
+    @Html.SnackbarsArea(LayoutModel.Snackbars)
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-xs-1">
+                <!-- BEGIN SIDEBAR-->
+                <div id="sidebar">
+                    <div class="sidebar-back">
+                        <span class="Shehada_gray visible-lg">وزارة التجارة والصناعة</span>
+                    </div>
+                    <div class="sidebar-content">
+                        <!-- BEGIN MAIN MENU -->
+                        <ul class="main-menu">
+                            @Html.MCIRenderUserMenuItems("_SideBarMenuItems")
+                            @RenderSection("_SideBarCustomMenuItems", false)
+                        </ul><!--end .main-menu -->
+                        <!-- END MAIN MENU -->
+                    </div>
+                </div>
+                <!-- END SIDEBAR -->
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+
+
+            <div class="col-md-9 col-xs-11">
+                <div class="col-md-12">
+                    @RenderSection("breadcrumb", false)
+                </div>
+
+                <div class="col-md-12 col-xs-12">
+                    <!-- BODY -->
+                    @RenderBody()
+                    <!-- ./ BODY -->
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <!--============================== footer =================================-->
+    <!-- start footer -->
+    <div id="footer">
+        <div class="container">
+            <div class="col-md-9 col-md-offset-3">
+                <div class="pull-right copy-rt">جميع الحقوق محفوظة ، وزارة التجارة و الصناعة  © 2015</div>
+                <div class="share-container clearfix">
+
+                    <!-- Buttons start here. Copy this ul to your document. -->
+                    <ul class="rrssb-buttons clearfix rrssb-1 small-format">
+                        <li class="facebook small" data-initwidth="4.285714285714286" data-size="59" style="width: 4.285714285714286%;">
+                            <!-- Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header:
+                            http://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+                            <a href="http://www.facebook.com/" class="popup">
+                                <span class="icon">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                                    <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                                        c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                                        c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"></path>
+                                </svg>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="linkedin small" data-initwidth="4.285714285714286" data-size="47" style="width: 4.285714285714286%;">
+                            <!-- Replace href with your meta and URL information -->
+                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://kurtnoble.com/labs/rrssb/index.html&amp;title=Ridiculously%20Responsive%20Social%20Sharing%20Buttons&amp;summary=Responsive%20social%20icons%20by%20KNI%20Labs" class="popup">
+                                <span class="icon">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                                    <path d="M25.424,15.887v8.447h-4.896v-7.882c0-1.979-0.709-3.331-2.48-3.331c-1.354,0-2.158,0.911-2.514,1.803
+                                        c-0.129,0.315-0.162,0.753-0.162,1.194v8.216h-4.899c0,0,0.066-13.349,0-14.731h4.899v2.088c-0.01,0.016-0.023,0.032-0.033,0.048
+                                        h0.033V11.69c0.65-1.002,1.812-2.435,4.414-2.435C23.008,9.254,25.424,11.361,25.424,15.887z M5.348,2.501
+                                        c-1.676,0-2.772,1.092-2.772,2.539c0,1.421,1.066,2.538,2.717,2.546h0.032c1.709,0,2.771-1.132,2.771-2.546
+                                        C8.054,3.593,7.019,2.501,5.343,2.501H5.348z M2.867,24.334h4.897V9.603H2.867V24.334z"></path>
+                                </svg>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="twitter small" data-initwidth="4.285714285714286" data-size="47" style="width: 4.285714285714286%;">
+                            <!-- Replace href with your Meta and URL information  -->
+                            <a href="http://twitter.com/home?status=Ridiculously%20Responsive%20Social%20Sharing%20Buttons%20by%20@joshuatuscan%20and%20@dbox%20http://kurtnoble.com/labs/rrssb" class="popup">
+                                <span class="icon">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                                    <path d="M24.253,8.756C24.689,17.08,18.297,24.182,9.97,24.62c-3.122,0.162-6.219-0.646-8.861-2.32
+                                    c2.703,0.179,5.376-0.648,7.508-2.321c-2.072-0.247-3.818-1.661-4.489-3.638c0.801,0.128,1.62,0.076,2.399-0.155
+                                    C4.045,15.72,2.215,13.6,2.115,11.077c0.688,0.275,1.426,0.407,2.168,0.386c-2.135-1.65-2.729-4.621-1.394-6.965
+                                    C5.575,7.816,9.54,9.84,13.803,10.071c-0.842-2.739,0.694-5.64,3.434-6.482c2.018-0.623,4.212,0.044,5.546,1.683
+                                    c1.186-0.213,2.318-0.662,3.329-1.317c-0.385,1.256-1.247,2.312-2.399,2.942c1.048-0.106,2.069-0.394,3.019-0.851
+                                    C26.275,7.229,25.39,8.196,24.253,8.756z"></path>
+                                </svg>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="googleplus small" data-initwidth="4.285714285714286" data-size="51" style="width: 4.285714285714286%;">
+                            <!-- Replace href with your meta and URL information.  -->
+                            <a href="http://plus.google.com/share?url=Check%20out%20how%20ridiculously%20responsive%20these%20social%20buttons%20are%20http://kurtnoble.com/labs/rrssb/index.html" class="popup">
+                                <span class="icon">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                                    <g>
+                                    <g>
+                                    <path d="M14.703,15.854l-1.219-0.948c-0.372-0.308-0.88-0.715-0.88-1.459c0-0.748,0.508-1.223,0.95-1.663
+                                                c1.42-1.119,2.839-2.309,2.839-4.817c0-2.58-1.621-3.937-2.399-4.581h2.097l2.202-1.383h-6.67c-1.83,0-4.467,0.433-6.398,2.027
+                                                C3.768,4.287,3.059,6.018,3.059,7.576c0,2.634,2.022,5.328,5.604,5.328c0.339,0,0.71-0.033,1.083-0.068
+                                                c-0.167,0.408-0.336,0.748-0.336,1.324c0,1.04,0.551,1.685,1.011,2.297c-1.524,0.104-4.37,0.273-6.467,1.562
+                                                c-1.998,1.188-2.605,2.916-2.605,4.137c0,2.512,2.358,4.84,7.289,4.84c5.822,0,8.904-3.223,8.904-6.41
+                                                c0.008-2.327-1.359-3.489-2.829-4.731H14.703z M10.269,11.951c-2.912,0-4.231-3.765-4.231-6.037c0-0.884,0.168-1.797,0.744-2.511
+                                                c0.543-0.679,1.489-1.12,2.372-1.12c2.807,0,4.256,3.798,4.256,6.242c0,0.612-0.067,1.694-0.845,2.478
+                                                c-0.537,0.55-1.438,0.948-2.295,0.951V11.951z M10.302,25.609c-3.621,0-5.957-1.732-5.957-4.142c0-2.408,2.165-3.223,2.911-3.492
+                                                c1.421-0.479,3.25-0.545,3.555-0.545c0.338,0,0.52,0,0.766,0.034c2.574,1.838,3.706,2.757,3.706,4.479
+                                                c-0.002,2.073-1.736,3.665-4.982,3.649L10.302,25.609z"></path>
+                                    <polygon points="23.254,11.89 23.254,8.521 21.569,8.521 21.569,11.89 18.202,11.89 18.202,13.604 21.569,13.604 21.569,17.004
+                                                23.254,17.004 23.254,13.604 26.653,13.604 26.653,11.89      "></polygon>
+                                        </g>
+                                    </g>
+                                </svg>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="youtube small" data-initwidth="4" data-size="57" style="width: 4%;">
+                            <a href="#">
+                                <span class="icon">
+                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                                    <path d="M27.688,8.512c0-2.268-1.825-4.093-4.106-4.093H4.389c-2.245,0-4.076,1.825-4.076,4.093v10.976 c0,2.268,1.825,4.093,4.076,4.093h19.192c2.274,0,4.106-1.825,4.106-4.093V8.512z M11.263,18.632V8.321l7.817,5.155L11.263,18.632z" />
+                                </svg>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Buttons end here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end footer -->
+
+    <div id="dialog_loader" style="display: none">
+        <div class="modal-backdrop fade in"></div>
+        <div style="position: fixed; left: 50%; top: 30%; z-index: 1050">
+            <div style="position: relative; left: -50%;">
+                <div class="waiting-modal">
+                    <img src='@Url.Content("~/Content/images/loading3d.gif")' alt="الرجاء الانتظار" title="الرجاء الانتظار" />
+                    <span>الرجـاء الإنتـظــار...</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <section class="LoadingOverlay">
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </section>
+
+    @RenderSection("PostScripts", false)
 </body>
 </html>

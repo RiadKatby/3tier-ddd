@@ -1,0 +1,42 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Input Filter";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Input Filter</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+        {
+            <ul>
+                <li>Reference: <a href="http://www.thimbleopensource.com/tutorials-snippets/jquery-plugin-filter-text-input" target="_blank">http://www.thimbleopensource.com/tutorials-snippets/jquery-plugin-filter-text-input</a></li>
+                <li>You can use your regex or use the predefined classes in common.js file:</li>
+                <ul>
+                    <li>only-number: Accept only degits.</li>
+                    <li>double: Accept Numeric input.</li>
+                    <li>arabic: Accept only arabic characters.</li>
+                    <li>arabicNS: Accept arabic, numbers and special characters.</li>
+                    <li>username: Accept english and numbers and under-score character.</li>
+                    <li>english: Accept english characters only.</li>
+                    <li>englishN: Accept english characters and numbers.</li>
+                    <li>englishNS: Accept english, numbers and special characters.</li>
+                </ul>
+            </ul>
+        }
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            using (Html.MCIBeginItemsCol())
+            {
+                @Html.MCITextBoxItem("filterInput1", "", "Numbers", 12, new { @class = "only-number" })
+                @Html.MCITextBoxItem("filterInput2", "", "double", 12, new { @class = "double" })
+                @Html.MCITextBoxItem("filterInput3", "", "arabic", 12, new { @class = "arabic" })
+                @Html.MCITextBoxItem("filterInput4", "", "arabicNS", 12, new { @class = "arabicNS" })
+                @Html.MCITextBoxItem("filterInput5", "", "username", 12, new { @class = "username" })
+                @Html.MCITextBoxItem("filterInput6", "", "english", 12, new { @class = "english" })
+                @Html.MCITextBoxItem("filterInput7", "", "englishN", 12, new { @class = "englishN" })
+                @Html.MCITextBoxItem("filterInput8", "", "englishNS", 12, new { @class = "englishNS" })
+            }
+        }
+    </div>
+</div>

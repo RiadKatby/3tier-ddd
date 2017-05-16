@@ -9,7 +9,7 @@ using System.Web.Routing;
 namespace RefactorName.WebApp.Helpers
 {
     /// <summary>
-    /// Defines extention method for <see cref="UrlHelper"/> to generate encrypted Urls.
+    /// Defines extension method for <see cref="UrlHelper"/> to generate encrypted URLs.
     /// </summary>
     public static class EncryptedActionExtentions
     {
@@ -20,6 +20,7 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="actionName">The name of the action method.</param>
         /// <param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <returns>The fully qualified and encrypted URL to an action method.</returns>
         public static string EncryptedAction(this UrlHelper helper, string actionName, object routeValues)
         {
@@ -32,6 +33,7 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="actionName">The name of the action method.</param>
         /// <param name="routeValues">An object that contains the parameters for a route.</param>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <returns>The fully qualified and encrypted URL to an action method.</returns>
         public static string EncryptedAction(this UrlHelper helper, string actionName, RouteValueDictionary routeValues)
         {
@@ -45,6 +47,7 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="actionName">The name of the action method.</param>
         /// <param name="controllerName">The name of the controller.</param>
         /// <param name="routeValues">An object that contains the parameters for a route which will be encrypted.</param>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <returns>The fully qualified and encrypted URL to an action method.</returns>
         public static string EncryptedAction(this UrlHelper helper, string actionName, string controllerName, RouteValueDictionary routeValues)
         {
@@ -58,6 +61,7 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="actionName">The name of the action method.</param>
         /// <param name="controllerName">The name of the controller.</param>
         /// <param name="routeValues">An object that contains the parameters for a route which will be encrypted. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <returns>The fully qualified and encrypted URL to an action method.</returns>
         public static string EncryptedAction(this UrlHelper helper, string actionName, string controllerName, object routeValues)
         {
@@ -72,6 +76,7 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="controllerName">The name of the controller.</param>
         /// <param name="routeValues">An object that contains the parameters for a route which will be encrypted. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
         /// <param name="protocol">The protocol for the URL, such as "http" or "https".</param>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <returns>The fully qualified and encrypted URL to an action method.</returns>
         public static string EncryptedAction(this UrlHelper helper, string actionName, string controllerName, object routeValues, string protocol)
         {
@@ -88,6 +93,7 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="routeValues">An object that contains the parameters for a route which will be encrypted.</param>
         /// <param name="protocol">The protocol for the URL, such as "http" or "https".</param>
         /// <param name="hostName">The host name for the URL.</param>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
         /// <returns>The fully qualified and encrypted URL to an action method.</returns>
         public static string EncryptedAction(this UrlHelper helper, string actionName, string controllerName, RouteValueDictionary routeValues, string protocol, string hostName)
         {

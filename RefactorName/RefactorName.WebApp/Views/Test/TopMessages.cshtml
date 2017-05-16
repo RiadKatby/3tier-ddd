@@ -1,0 +1,80 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Top Messages";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Top Messages and client Alerts</div>
+    <div class="panel-body">
+        -How to use top MCI Messages and client Alerts:
+
+        <fieldset class="mci-fieldset">
+            <legend>Client side</legend>
+            <div class="form-group">
+                <button id="btn1" type="button" class="btn btn-danger">Error message</button>
+                <button id="btn11" type="button" class="btn btn-danger">sticked one</button>
+            </div>
+            <div class="form-group">
+                <button id="btn2" type="button" class="btn btn-warning">Warning message</button>
+            </div>
+            <div class="form-group">
+                <button id="btn3" type="button" class="btn btn-info">Info message</button>
+            </div>
+            <div class="form-group">
+                <button id="btn4" type="button" class="btn btn-primary">Success message</button>
+            </div>
+            <div class="form-group">
+                <button id="btn5" type="button" class="btn btn-default">Alert</button>
+            </div>
+        </fieldset>
+
+        <fieldset class="mci-fieldset">
+            <legend>Server side</legend>
+            @using (Html.BeginForm())
+            {
+                <div class="form-group">
+                    @Html.MCISubmitButton("Error message", "action", "error", new { @class = "btn btn-danger" })
+                    @Html.MCISubmitButton("sticked one", "action", "sError", new { @class = "btn btn-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.MCISubmitButton("Warning message", "action", "warning", new { @class = "btn btn-warning" })
+                </div>
+                <div class="form-group">
+                    @Html.MCISubmitButton("Info message", "action", "info", new { @class = "btn btn-info" })
+                </div>
+                <div class="form-group">
+                    @Html.MCISubmitButton("Success message", "action", "success", new { @class = "btn btn-primary" })
+                </div>
+            }
+        </fieldset>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $('#btn1').click(function () {
+            snackbar('Error message', snackbarType.Danger);
+        });
+
+        $('#btn11').click(function () {
+            snackbar('Sticked error message', snackbarType.Danger, 0);
+        });
+
+        $('#btn2').click(function () {
+            snackbar('Warning message', snackbarType.Warning);
+        });
+
+        $('#btn3').click(function () {
+            snackbar('Info message', snackbarType.Info);
+        });
+
+        $('#btn4').click(function () {
+            snackbar('Success message', snackbarType.Success);
+        });
+
+        $('#btn5').click(function () {
+            MCIAlert('Alert', 'My Alert');
+        });
+    });
+</script>

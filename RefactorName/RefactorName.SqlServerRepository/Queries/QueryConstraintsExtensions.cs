@@ -135,12 +135,11 @@ namespace RefactorName.SqlServerRepository.Queries
                 throw new ArgumentNullException("propertyName");
 
             var type = typeof(T);
+            var property = type.GetProperty(propertyName);
             var parameter = Expression.Parameter(type, "p");
-            Expression aggregateExpression = propertyName.Split('.').Aggregate(parameter as Expression, Expression.Property);
-            Type rightPropertyType = aggregateExpression.Type;
-            var orderByExp = Expression.Lambda(aggregateExpression, parameter);
-
-            var resultExp = Expression.Call(typeof(Queryable), "OrderBy", new[] { type, rightPropertyType }, source.Expression, Expression.Quote(orderByExp));
+            var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+            var orderByExp = Expression.Lambda(propertyAccess, parameter);
+            var resultExp = Expression.Call(typeof(Queryable), "OrderBy", new[] { type, property.PropertyType }, source.Expression, Expression.Quote(orderByExp));
 
             return source.Provider.CreateQuery<T>(resultExp) as IOrderedQueryable<T>;
         }
@@ -162,11 +161,11 @@ namespace RefactorName.SqlServerRepository.Queries
                 throw new ArgumentNullException("propertyName");
 
             var type = typeof(T);
+            var property = type.GetProperty(propertyName);
             var parameter = Expression.Parameter(type, "p");
-            Expression aggregateExpression = propertyName.Split('.').Aggregate(parameter as Expression, Expression.Property);
-            Type rightPropertyType = aggregateExpression.Type;
-            var orderByExp = Expression.Lambda(aggregateExpression, parameter);
-            var resultExp = Expression.Call(typeof(Queryable), "OrderByDescending", new[] { type, rightPropertyType }, source.Expression, Expression.Quote(orderByExp));
+            var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+            var orderByExp = Expression.Lambda(propertyAccess, parameter);
+            var resultExp = Expression.Call(typeof(Queryable), "OrderByDescending", new[] { type, property.PropertyType }, source.Expression, Expression.Quote(orderByExp));
 
             return source.Provider.CreateQuery<T>(resultExp) as IOrderedQueryable<T>;
         }
@@ -180,11 +179,11 @@ namespace RefactorName.SqlServerRepository.Queries
                 throw new ArgumentNullException("propertyName");
 
             var type = typeof(T);
+            var property = type.GetProperty(propertyName);
             var parameter = Expression.Parameter(type, "p");
-            Expression aggregateExpression = propertyName.Split('.').Aggregate(parameter as Expression, Expression.Property);
-            Type rightPropertyType = aggregateExpression.Type;
-            var thenByExp = Expression.Lambda(aggregateExpression, parameter);
-            var resultExp = Expression.Call(typeof(Queryable), "ThenBy", new[] { type, rightPropertyType }, source.Expression, Expression.Quote(thenByExp));
+            var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+            var thenByExp = Expression.Lambda(propertyAccess, parameter);
+            var resultExp = Expression.Call(typeof(Queryable), "ThenBy", new[] { type, property.PropertyType }, source.Expression, Expression.Quote(thenByExp));
 
             return source.Provider.CreateQuery<T>(resultExp) as IOrderedQueryable<T>;
         }
@@ -198,11 +197,11 @@ namespace RefactorName.SqlServerRepository.Queries
                 throw new ArgumentNullException("propertyName");
 
             var type = typeof(T);
+            var property = type.GetProperty(propertyName);
             var parameter = Expression.Parameter(type, "p");
-            Expression aggregateExpression = propertyName.Split('.').Aggregate(parameter as Expression, Expression.Property);
-            Type rightPropertyType = aggregateExpression.Type;
-            var thenByExp = Expression.Lambda(aggregateExpression, parameter);
-            var resultExp = Expression.Call(typeof(Queryable), "ThenByDescending", new[] { type, rightPropertyType }, source.Expression, Expression.Quote(thenByExp));
+            var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+            var thenByExp = Expression.Lambda(propertyAccess, parameter);
+            var resultExp = Expression.Call(typeof(Queryable), "ThenByDescending", new[] { type, property.PropertyType }, source.Expression, Expression.Quote(thenByExp));
 
             return source.Provider.CreateQuery<T>(resultExp) as IOrderedQueryable<T>;
         }

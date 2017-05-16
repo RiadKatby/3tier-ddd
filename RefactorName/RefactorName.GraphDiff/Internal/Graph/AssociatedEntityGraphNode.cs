@@ -7,7 +7,7 @@ namespace RefactorName.GraphDiff.Internal.Graph
     internal class AssociatedEntityGraphNode : GraphNode
     {
         internal AssociatedEntityGraphNode(GraphNode parent, PropertyInfo accessor)
-                : base(parent, accessor)
+            : base(parent, accessor)
         {
         }
 

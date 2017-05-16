@@ -86,19 +86,19 @@ namespace RefactorName.GraphDiff.Internal.GraphBuilders
                 if (fieldInfo != null)
                 {
                     dynamic value = fieldInfo.GetValue(container);
-                    accessor = (PropertyInfo) value.Body.Member;
+                    accessor = (PropertyInfo)value.Body.Member;
                 }
 
                 var info = member as PropertyInfo;
                 if (info != null)
                 {
                     dynamic value = info.GetValue(container, null);
-                    accessor = (PropertyInfo) value.Body.Member;
+                    accessor = (PropertyInfo)value.Body.Member;
                 }
             }
             else
             {
-                accessor = (PropertyInfo) memberExpression.Member;
+                accessor = (PropertyInfo)memberExpression.Member;
             }
 
             if (accessor == null)

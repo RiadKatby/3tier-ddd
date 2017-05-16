@@ -1,0 +1,49 @@
+﻿@model RefactorName.WebApp.Models.Company
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Checkbox Items";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Checkbox Items</div>
+    <div class="panel-body">
+        <fieldset class="mci-fieldset">
+            <legend>Checkboxes</legend>
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCICheckBoxItem("chk1", "Simple Checkbox item")
+                @Html.MCICheckBoxItem("chk2", "As button", isChecked: true, displayAsButton: true, cbLabel: "Choose me")
+
+                @Html.MCICheckBoxItemFor(m => m.IsActive, hint: "(mapped to model property)")
+                @Html.MCICheckBoxItemFor(m => m.IsActive, hint: "(mapped to model property)", displayAsButton: true, cbLabel: "Active")
+
+                @Html.MCICheckBoxItem_Multi("options1", ViewBag.CompanyTypes as SelectList, " inside one form item", style: CheckBoxStyles.Inline)
+                @Html.MCICheckBoxItem_Multi("options1", ViewBag.CompanyTypes as SelectList, "ButtonGroup style", style: CheckBoxStyles.ButtonGroup)
+                @Html.MCICheckBoxItem_Multi("options2", ViewBag.CompanyTypes as SelectList, "Buttons style", style: CheckBoxStyles.Buttons)
+                @Html.MCICheckBoxItem_Multi("options3", ViewBag.CompanyTypes as SelectList, "Vertical view", style: CheckBoxStyles.Vertical)
+
+                @Html.MCICheckBoxItemFor_Multi("multi-checkboxes mapped to multiple model properties", 8, CheckBoxStyles.ButtonGroup, "", m => m.IsActive, m => m.IsBig)
+            }
+        </fieldset>
+
+        <fieldset class="mci-fieldset">
+            <legend>Radio buttons</legend>
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIRadioButtonItem("radioSample1", "simple", ViewBag.CompanyTypes as SelectList)
+                @Html.MCIRadioButtonItem("radioSample2", "button group style", ViewBag.CompanyTypes as SelectList, 6, RadioButtonStyle.ButtonGroup)
+                @Html.MCIRadioButtonItemFor(m => m.TypeID, ViewBag.CompanyTypes as SelectList, style: RadioButtonStyle.ButtonGroup, hint: "(mapped to model property)")
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                <div class="center-block col300">
+                    <span>without label</span>
+                    @*@Html.MCIRadioButtonFor(m => m.StatusID, ViewBag.CompanyStatuses as SelectList)*@                    
+                    @Html.MCIRadioButtons("radio2", ViewBag.CompanyStatuses as SelectList, RadioButtonStyle.ButtonGroup)
+                </div>
+            }
+
+        </fieldset>
+    </div>
+</div>

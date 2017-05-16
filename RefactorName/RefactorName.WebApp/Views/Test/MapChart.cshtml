@@ -1,0 +1,30 @@
+﻿@model RefactorName.WebApp.Models.MciChart
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/mcicharts")
+}
+
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Map Chart";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Map Chart</div>
+    <div class="panel-body">
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MciChart(Model, MciChartType.MapChart, "divMapChart1", 12, "400px", new RefactorName.WebApp.Models.MciChartOptions() { Map_Bubble = true })
+
+            @Html.MciChart(Model, MciChartType.MapChart, "divMapChart2", 12, "400px", new RefactorName.WebApp.Models.MciChartOptions() { Map_Bubble = false })
+
+        }
+
+
+    </div>
+</div>
+
+

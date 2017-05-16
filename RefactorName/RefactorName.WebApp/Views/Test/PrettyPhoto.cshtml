@@ -1,0 +1,42 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Pretty Photo";
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/prettyPhoto")
+}
+
+@section Styles{
+    @Styles.Render("~/Content/prettyPhoto")
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Pretty Photo</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+        {
+            <ul>
+                <li>Reference: <a href="http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/" target="_blank">http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/</a></li>
+                <li>Include Script bundle:("~/bundles/prettyPhoto") and style bundle:("~/Content/prettyPhoto")</li>
+            </ul>
+        }
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            using (Html.MCIBeginItemsCol())
+            {
+                <a href="~/Images/default_image.png" target="_blank" rel="prettyPhoto">Simple one</a>
+                <br />
+                @Html.MCIAcionLink("Get Sample Photo From Server", "GetSamplePhoto", htmlAttributes: new { target="_blank", rel="prettyPhoto" })
+            }
+        }
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("a[rel^='prettyPhoto']").prettyPhoto({ social_tools: '<span></span>' });
+    });
+</script>
+

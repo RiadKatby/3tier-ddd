@@ -8,7 +8,9 @@ using System.Reflection;
 
 namespace RefactorName.GraphDiff.Internal
 {
-    /// <summary>Db load queries</summary>
+    /// <summary>
+    /// Db load queries
+    /// </summary>
     internal interface IQueryLoader
     {
         T LoadEntity<T>(T entity, IEnumerable<string> includeStrings, QueryMode queryMode) where T : class;
@@ -82,4 +84,5 @@ namespace RefactorName.GraphDiff.Internal
             return Expression.Equal(Expression.Property(parameter, keyProperty), Expression.Constant(keyProperty.GetValue(entity, null), keyProperty.PropertyType));
         }
     }
+
 }

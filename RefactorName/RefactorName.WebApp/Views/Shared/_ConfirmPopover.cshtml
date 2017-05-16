@@ -1,0 +1,7 @@
+﻿@model ConfirmInfo
+
+<div class="popover-footer">
+    @Model.Message
+    <button id="noButton_@Model.ConfirmId" class="btn btn-default btn-sm noButton">@Model.NegativeButton</button>
+    <button id="okButton_@Model.ConfirmId" class="bnt btn-primary btn-sm okButton">@Model.PositiveButton</button>
+</div>

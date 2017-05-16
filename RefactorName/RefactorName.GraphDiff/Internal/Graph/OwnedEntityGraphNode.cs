@@ -6,7 +6,7 @@ namespace RefactorName.GraphDiff.Internal.Graph
     internal class OwnedEntityGraphNode : GraphNode
     {
         internal OwnedEntityGraphNode(GraphNode parent, PropertyInfo accessor)
-                : base(parent, accessor)
+            : base(parent, accessor)
         {
         }
 

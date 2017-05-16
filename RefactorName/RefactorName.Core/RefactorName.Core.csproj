@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6923F1E7-E470-42B1-A24A-32693CA127F4}</ProjectGuid>
+    <ProjectGuid>{5DBDC2B4-2F5A-446A-87C4-161765BF38F4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.Core</RootNamespace>
@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,54 +52,43 @@
   <ItemGroup>
     <Compile Include="Basis\AuditableEntity.cs" />
     <Compile Include="Basis\BaseEntity.cs" />
+    <Compile Include="Basis\BusinessRule.cs" />
+    <Compile Include="Basis\Factory.cs" />
     <Compile Include="Basis\IEntity.cs" />
     <Compile Include="Basis\IQueryResult.cs" />
+    <Compile Include="Basis\ISettingsProvider.cs" />
     <Compile Include="Basis\QueryResult.cs" />
     <Compile Include="Basis\RoleNames.cs" />
     <Compile Include="Basis\SearchCriteria.cs" />
-    <Compile Include="Basis\WebGridSortOrder.cs" />
+    <Compile Include="Basis\Settings.cs" />
+    <Compile Include="Basis\SortOrderEnum.cs" />
+    <Compile Include="Basis\Tracer.cs" />
     <Compile Include="Exceptions\BusinessRuleException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="Exceptions\ErrorCode.cs" />
     <Compile Include="Exceptions\PermissionException.cs" />
     <Compile Include="Exceptions\RepositoryException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
-    <Compile Include="Exceptions\WebServiceException.cs" />
+    <Compile Include="Identity\IdentityRole.cs" />
+    <Compile Include="Identity\IdentityRoleClaim.cs" />
+    <Compile Include="Identity\IdentityUser.cs" />
+    <Compile Include="Identity\IdentityUserClaim.cs" />
+    <Compile Include="Identity\IdentityUserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\ActiveDirectoryUserInfo.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="Workflow\Action.cs" />
-    <Compile Include="Workflow\ActionType.cs" />
-    <Compile Include="Workflow\Activity.cs" />
-    <Compile Include="Workflow\ActivityType.cs" />
-    <Compile Include="Workflow\Attachment.cs" />
-    <Compile Include="Workflow\Field.cs" />
-    <Compile Include="Workflow\FieldType.cs" />
-    <Compile Include="Workflow\Group.cs" />
-    <Compile Include="Workflow\Process.cs" />
-    <Compile Include="Workflow\Request.cs" />
-    <Compile Include="Workflow\RequestAction.cs" />
-    <Compile Include="Workflow\RequestData.cs" />
-    <Compile Include="Workflow\RequestNote.cs" />
-    <Compile Include="Workflow\State.cs" />
-    <Compile Include="Workflow\StateField.cs" />
-    <Compile Include="Workflow\StateType.cs" />
-    <Compile Include="Workflow\Transition.cs" />
+    <Compile Include="Security\User.cs" />
+    <Compile Include="SMS.cs" />
+    <Compile Include="UserSearchCriteria.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RefactorName.GraphDiff\RefactorName.GraphDiff.csproj">
-      <Project>{438efb89-7edd-499e-9b80-ad7a7d4cf21d}</Project>
-      <Name>RefactorName.GraphDiff</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Workflow\WorkflowClassDiagram.cd" />
+    <Content Include="Assemblies\MCI.Mvc.Validation.Core.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assemblies\MCI.Mvc.Validation.Core.dll" />
+    <ProjectReference Include="..\RefactorName.GraphDiff\RefactorName.GraphDiff.csproj">
+      <Project>{70db4d52-37ca-48ff-94c9-53e8469d793f}</Project>
+      <Name>RefactorName.GraphDiff</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RefactorName.WebApp.Infrastructure
 {
     /// <summary>
-    /// Represents Encryption and Decryption mechanism of strings.
+    /// Represents Encryption, Decryption and Hashing mechanism of strings.
     /// </summary>
     public interface IEncryptString
     {
@@ -25,8 +26,30 @@ namespace RefactorName.WebApp.Infrastructure
         string Decrypt(string value);
 
         /// <summary>
+        /// Hashing the specified string.
+        /// </summary>
+        /// <param name="value">value to be hashed.</param>
+        /// <returns>Hashed string.</returns>
+        string Hash(string value);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hashedText"></param>
+        /// <param name="plainText"></param>
+        /// <returns></returns>
+        bool CompaireHash(string hashedText, string plainText);
+
+        /// <summary>
         /// Gets prefix value that inserted in front of HTML controls to state it's value is encrypted.
         /// </summary>
         string Prefix { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int HashIterationCounts { get; }
+
+        bool IsEncryptionKeyExists { get; }
     }
 }

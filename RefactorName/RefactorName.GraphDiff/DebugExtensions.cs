@@ -57,14 +57,14 @@ namespace RefactorName.GraphDiff
                 Dictionary<string, object> inner = outerIsOriginal ? entity.Current : entity.Original;
 
                 var propertyValues = from fd in outer
-                    join pd in inner on fd.Key equals pd.Key into joinedT
-                    from pd in joinedT.DefaultIfEmpty()
-                    select new
-                    {
-                        fd.Key,
-                        OriginalValue = outerIsOriginal ? fd.Value : pd.Value,
-                        CurrentValue = outerIsOriginal ? pd.Value : fd.Value
-                    };
+                                     join pd in inner on fd.Key equals pd.Key into joinedT
+                                     from pd in joinedT.DefaultIfEmpty()
+                                     select new
+                                     {
+                                         fd.Key,
+                                         OriginalValue = outerIsOriginal ? fd.Value : pd.Value,
+                                         CurrentValue = outerIsOriginal ? pd.Value : fd.Value
+                                     };
 
                 foreach (var propertyValue in propertyValues)
                 {

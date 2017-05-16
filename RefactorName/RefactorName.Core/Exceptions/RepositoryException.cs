@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace RefactorName.Core
@@ -23,73 +24,90 @@ namespace RefactorName.Core
         /// لا يمكن اضافة سجل مرتين
         /// </summary>
         DuplicateValue,
-        ValidationError
+        ValidationError,
+        ModifiedbyAnotherUserCheckUpdates,
+        DeleteReferencedRecord,
+        ConcurrencyCheckFailed,
+        NotificationServiceError = 50301,
+        DatabaseError = 50102
     }
 
+    /// <summary>
+    /// Represents error that occurs during persisting or retrieving information from Repository.
+    /// </summary>
     [Serializable]
     public class RepositoryException : Exception
     {
-        public ErrorCode ErrorCode { get; private set; }
+        /// <summary>
+        /// Gets generic classification of access repository error.
+        /// </summary>
         public ErrorTypeEnum ErrorType { get; private set; }
 
-        public string BusinessEntityName { get; private set; }
+        /// <summary>
+        /// Gets business entity name that being persisted or retrieved.
+        /// </summary>
+        public string EntityName { get; private set; }
 
+        public string Title
+        {
+            get { return "Retrieving or Persisting Entity Error"; }
+        }
+
+        public string Description
+        {
+            get { return "You may have an error while accessing external persistence media (Database or Web Service)."; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RepositoryException"/> class.
+        /// </summary>
         public RepositoryException()
         {
         }
 
-        public RepositoryException(string message)
-            : base(message)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RepositoryException"/> class with specified business entity name, and error type.
+        /// </summary>
+        /// <param name="entityName">business entity name that being persisted or retrieved.</param>
+        /// <param name="errorType">generic classification of errors.</param>
+        public RepositoryException(string entityName, ErrorTypeEnum errorType)
+            : base(string.Format("Error [{0}] has been occurred while retrieving or persisting [{1}] entity.", entityName, errorType))
         {
-        }
-        public RepositoryException(string message, ErrorCode errorCode)
-            : base(message)
-        {
-            this.ErrorCode = errorCode;
-        }
-
-        public RepositoryException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-        public RepositoryException(string message, Exception inner, ErrorCode errorCode)
-            : base(message, inner)
-        {
-            this.ErrorCode = errorCode;
+            this.EntityName = entityName;
+            this.ErrorType = errorType;
         }
 
-        public RepositoryException(string message, string bizEntityName, Exception inner)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RepositoryException"/> class with specified business entity name, error type, error message, and a reference to the inner exception that is the cause of this exception.
+        /// </summary>
+        /// <param name="entityName">business entity name that being persisted or retrieved.</param>
+        /// <param name="errorType">generic classification of errors.</param>
+        /// <param name="message">custom message that describes the error.</param>
+        /// <param name="inner">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
+        public RepositoryException(string entityName, ErrorTypeEnum errorType, string message, Exception inner)
             : base(message, inner)
         {
-            this.BusinessEntityName = bizEntityName;
-        }
-        public RepositoryException(string message, string bizEntityName, Exception inner, ErrorCode errorCode)
-            : base(message, inner)
-        {
-            this.ErrorCode = errorCode;
-            this.BusinessEntityName = bizEntityName;
-        }
-
-        public RepositoryException(string message, ErrorTypeEnum errType, Exception inner)
-            : base(message, inner)
-        {
-            this.ErrorType = errType;
-        }
-        public RepositoryException(string message, ErrorTypeEnum errType, Exception inner, ErrorCode errorCode)
-            : base(message, inner)
-        {
-            this.ErrorCode = errorCode;
-            this.ErrorType = errType;
+            this.EntityName = entityName;
+            this.ErrorType = errorType;
         }
 
-        protected RepositoryException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityNotFoundException"/> class with serialized data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
+        protected RepositoryException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            ErrorType = (ErrorTypeEnum)info.GetValue(nameof(ErrorType), typeof(ErrorTypeEnum));
+            EntityName = info.GetString(nameof(EntityName));
+        }
 
-        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
+            info.AddValue(nameof(ErrorType), ErrorType, typeof(ErrorTypeEnum));
+            info.AddValue(nameof(EntityName), EntityName);
         }
     }
 }

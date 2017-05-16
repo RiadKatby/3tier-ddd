@@ -1,0 +1,77 @@
+﻿@model UserIndexModel
+
+@{
+    LayoutModel.Title = "إدارة المستخدمين";
+}
+
+@section breadcrumb
+{
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink("الرئيسية", "Index", "Home")</li>
+        <li class="active"><a href="#">المستخدمين</a></li>
+    </ol>
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @using (Html.MCIBeginItemsRow())
+        {
+            using (Html.MCIBeginItemsCol(12))
+            {
+                @:المستخدمين
+                @Html.MCIAcionLink("مستخدم جديد <i class='fa fa-plus'></i>", "AddUser",
+                htmlAttributes: new { @class = "btn btn-primary btn-sm pull-left" },
+                     onlyForRoles: RefactorName.Core.RoleNames.UsersAdd)
+            }
+        }
+    </div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsCol(12))
+        {
+            using (Ajax.BeginForm("GetUsersList", null,
+                new AjaxOptions
+                {
+                    HttpMethod = "GET",
+                    LoadingElementId = "dialog_loader",
+                    OnFailure = "onFailureDefault",
+                    UpdateTargetId = "divUsersGrid"
+                }, new { id = "frmSUsers" }))
+            {
+                using (Html.MCIBeginItemsRow())
+                {
+                    @Html.MCITextBoxItemFor(m => m.userSearchCriteriaModel.UserName, spanOf12: 4, httmlAttributes: new { maxLength = "256" })
+                    @Html.MCITextBoxItemFor(m => m.userSearchCriteriaModel.FullName, spanOf12: 4, httmlAttributes: new { maxLength = "256" })
+                    @Html.MCITextBoxItemFor(m => m.userSearchCriteriaModel.Email, spanOf12: 4, httmlAttributes: new { maxLength = "256" })
+                    @Html.MCITextBoxItemFor(m => m.userSearchCriteriaModel.Mobile, spanOf12: 4, httmlAttributes: new { @class = "only-number", maxLength = "10" })
+                    @Html.MCIDropDownListItemFor(m => m.userSearchCriteriaModel.RoleName, new SelectList(Model.RoleNames, "Key", "Value"), "اختر", 4)
+                    @Html.MCIDropDownListItemFor(m => m.userSearchCriteriaModel.IsActive, new SelectList(Model.Activation, "Key", "Value"), null, 4)
+                }
+                using (Html.MCIBeginItemsCol(12))
+                {
+                    @Html.MCISubmitButton("<i class='fa fa-search'></i>", htmlAttributes: new { @class = "btn btn-primary pull-left" })
+                    <button id="btnClear" type="button" class="btn btn-default pull-left">مسح</button>
+                }
+            }
+        }
+        @using (Html.MCIBeginItemsCol(12))
+        {
+            <div id="divUsersGrid">
+                @Html.Partial("_UsersGrid", Model.Items)
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#btnClear').click(function () {
+                clearForm('#frmSUsers');
+            });
+
+            $('#userSearchCriteriaModel_RoleName').select2()
+        });
+
+    </script>
+}

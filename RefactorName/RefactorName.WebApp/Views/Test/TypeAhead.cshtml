@@ -1,0 +1,77 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Type Ahead";
+}
+
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/typeahead")
+}
+
+@section Styles
+{
+    @Styles.Render("~/Content/typeahead")
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">Pretty Photo</div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+        {
+            <ul>
+                <li>Reference: <a href="https://twitter.github.io/typeahead.js/" target="_blank">https://twitter.github.io/typeahead.js/</a></li>
+                <li>Include Script bundle:("~/bundles/typeahead") and style bundle:("~/Content/typeahead")</li>
+            </ul>
+        }
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MCITextBoxItem("typeAhead1", "", "simple one");
+            @Html.MCITextBoxItem("CRNO", "", "Other Data");
+        }
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var engine = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '@Url.Action("GetCompanies")?name=%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+        engine.initialize();
+
+        $('#typeAhead1').typeahead({
+            minLength: 1,
+            hint: false,
+            highlight: true
+        },
+    {
+        name: 'Companies',
+        limit: 25,
+        displayKey: 'Name', //value to put in textbox
+        source: engine,
+        templates: {
+            empty: [
+              '<div class="empty-message">',
+              'لا يوجد نتائج مطابقة',
+              '</div>'
+            ].join('\n'),
+            suggestion: Handlebars.compile('<p><strong>{{Name}}</strong> – {{CRNO}}</p>')
+        }
+    });
+
+        $('#typeAhead1').bind('typeahead:cursorchanged typeahead:selected', function (obj, datum, name) {
+            if (datum && datum.CRNO)
+                $('#CRNO').val(datum.CRNO);
+            else $('#CRNO').val('');
+        });
+    });
+
+</script>
+

@@ -1,0 +1,53 @@
+﻿@model RefactorName.WebApp.Models.ChangeProfilePictureModel
+@LayoutModel.Title = "تعديل الصورة الشخصية";
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/finuploader")
+}
+@section Styles
+{
+    @Styles.Render("~/Content/finuploader")
+}
+
+
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">تعديل الصورة الشخصية</h3>
+        </div>
+        <div class="panel-body">
+            @Html.MCIStartFormItemsRow()
+
+            <div class="col-md-6 form-group">
+                @Html.MCIFileUploadItemFor(m => m.NewImagePath, fileMaxSize: 400, spanOf12: 12, onSuccessCallback: "ProfileImageUploaded")
+            </div>
+            <div class="col-md-6 form-group">
+                <label>معاينة</label>
+                <img id="imgProfile" class="img-thumbnail img-responsive" src="@Model.CurrentImagePath" alt="لا يوجد صورة حالياً">
+            </div>
+
+            @Html.MCIEndFormItemsRow()
+        </div>
+        <div class="panel-footer">
+            @Html.MCIStartFormItemsRow()
+            <div class="col-xs-12">
+                @Html.MCISubmitButtonWithConfirm("مسح الصورة", new ConfirmInfo("حذف الصورة", "هل أنت متأكد من حذف صورتك الشخصية من النظام؟!"), "action", "delete", new { @class = "btn btn-danger" })
+                <div class="pull-left">
+                    <a class="btn btn-default" href='@Request["redirectTo"]'>إلغاء</a>
+                    @Html.MCISubmitButton("تعديل الصورة", "action", "save", new { @class = "btn btn-primary" })
+                </div>
+            </div>
+            @Html.MCIEndFormItemsRow()
+        </div>
+
+    </div>
+}
+<script>
+    function ProfileImageUploaded(path) {
+        $('#imgProfile').attr('src', path);
+    }
+</script>

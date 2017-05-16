@@ -1,12 +1,11 @@
-﻿using RefactorName.WebApp.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace RefactorName.WebApp
+namespace RefactorName.WebApp.Infrastructure
 {
     public static class EncryptStringExtentions
     {

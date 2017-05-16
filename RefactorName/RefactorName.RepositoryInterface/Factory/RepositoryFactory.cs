@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RefactorName.Core;
+using RefactorName.Core.Basis;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -8,66 +10,61 @@ using System.Threading.Tasks;
 
 namespace RefactorName.RepositoryInterface
 {
+    /// <summary>
+    /// Encapsulate <see cref="Factory"/> generic class and specialize instantiation of Repositories, and Providers.
+    /// </summary>
     public class RepositoryFactory
     {
-        private static string DbProviderName;
-        private static string WebSvcProviderName;
-
-        private static Assembly DbProviderAssembly;
-        private static Assembly WebSvcProviderAssembly;
-
-        private static IGenericRepository repository;
-        private static IGenericQueryRepository queryRepository;
-
-        static RepositoryFactory()
+        /// <summary>
+        /// Instantiate new instance of <see cref="ICachingProvider"/>.
+        /// </summary>
+        /// <returns>New Instance of <see cref="ICachingProvider"/>.</returns>
+        public static ICachingProvider CreateCacheProvider()
         {
-            DbProviderName = ConfigurationManager.AppSettings["DbProvider"];
-            WebSvcProviderName = ConfigurationManager.AppSettings["WebSvcProvider"];
+            if ("NoCachingProvider".Equals(Settings.Provider.CacheProvider))
+                return new NoCachingProvider();
+
+            if (Settings.Provider.CacheProvider.Contains("Redis"))
+            {
+                var args = new object[] {
+                    Settings.Provider.RedisServerHost,
+                    Settings.Provider.RedisServerPort,
+                    Settings.Provider.RedisServerPassword,
+                    Settings.Provider.RedisServerSSL
+                };
+
+                return Factory.CreateCacheProvider<ICachingProvider>("CachingProvider", args);
+            }
+
+            /// In case of InMemory Caching not arguments required.
+            return Factory.CreateCacheProvider<ICachingProvider>("CachingProvider");
         }
 
-        public static T Create<T>(string providerName, ref Assembly providerAssembly, string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name", "Repository class name must not be null.");
-
-            if (string.IsNullOrEmpty(providerName))
-                throw new InvalidOperationException("[DbProvider] appSettings key is not defined or has no value.");
-
-            if (providerAssembly == null)
-                providerAssembly = Assembly.Load(providerName);
-
-            return (T)providerAssembly.CreateInstance(providerName + "." + name);
-        }
-
-        public static T Create<T>(string name)
-        {
-            return Create<T>(DbProviderName, ref DbProviderAssembly, name);
-        }
-
-        public static T CreateWebSvc<T>(string name)
-        {
-            return Create<T>(WebSvcProviderName, ref WebSvcProviderAssembly, name);
-        }
-
+        /// <summary>
+        /// Create new instance of <see cref="IGenericRepository"/> interface.
+        /// </summary>
+        /// <returns>New Instance of <see cref="IGenericRepository"/>.</returns>
         public static IGenericRepository CreateRepository()
         {
-            if (repository == null)
-                repository = Create<IGenericRepository>("GenericRepository");
-
-            return repository;
+            return Factory.CreateDbRepository<IGenericRepository>("GenericRepository");
         }
 
+        /// <summary>
+        /// Create new instance of <see cref="IGenericQueryRepository"/> interface.
+        /// </summary>
+        /// <returns>New instance of <see cref="IGenericQueryRepository"/>.</returns>
         public static IGenericQueryRepository CreateQueryRepository()
         {
-            if (queryRepository == null)
-                queryRepository = Create<IGenericQueryRepository>("GenericQueryRepository");
-
-            return queryRepository;
+            return Factory.CreateDbRepository<IGenericQueryRepository>("GenericQueryRepository");
         }
 
+        /// <summary>
+        /// Create new instance of <see cref="IUnitOfWork"/> interface.
+        /// </summary>
+        /// <returns>New instance of <see cref="IUnitOfWork"/>.</returns>
         public static IUnitOfWork CreateUnitOfWork()
         {
-            return Create<IUnitOfWork>("UnitOfWork");
+            return Factory.CreateDbRepository<IUnitOfWork>("UnitOfWork");
         }
     }
 }

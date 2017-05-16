@@ -6,7 +6,7 @@ using System.Reflection;
 namespace RefactorName.GraphDiff.Internal.Graph
 {
     internal class GraphNode
-    {       
+    {
         protected readonly PropertyInfo Accessor;
 
         protected string IncludeString

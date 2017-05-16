@@ -1,0 +1,51 @@
+﻿@model RefactorName.WebApp.Models.MciChart
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/mcicharts")
+}
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Pie Chart";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Pie Chart</div>
+    <div class="panel-body">
+
+        @using (Html.MCIBeginItemsRow())
+        {
+            @Html.MciChart(Model, MciChartType.PieChart, "divPieChart1", 12, "400px",
+            new RefactorName.WebApp.Models.MciChartOptions() {
+                Animation = true,
+                Cursor = "pointer", 
+                DrillDown = true, 
+                AllowPointSelect = true, 
+                Pie_ShowInPercentage = false, 
+                Pie_InnerSize = 80, 
+                O3d_Enabled = false, 
+                O3d_Alpha = 45, 
+                Pie_EndAngle = 350, 
+                Pie_StartAngle = 10 })
+            
+            @Html.MciChart(Model, MciChartType.PieChart, "divPieChart2", 12, "400px",
+            new RefactorName.WebApp.Models.MciChartOptions()
+            {
+                Animation = true,
+                Cursor = "pointer",
+                DrillDown = true,
+                AllowPointSelect = true,
+                Pie_ShowInPercentage = true,
+                Pie_InnerSize = 80,
+                O3d_Enabled = true,
+                O3d_Alpha = 45,
+                Pie_EndAngle = 350,
+                Pie_StartAngle = 10                
+            })
+        }
+
+    </div>
+</div>
+
+

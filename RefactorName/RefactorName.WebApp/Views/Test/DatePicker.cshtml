@@ -1,0 +1,37 @@
+﻿@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Date Picker";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Date Picker
+    </div>
+    <div class="panel-body">
+        @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+        {
+            <ul>
+                <li>Add UmmAlqura DatePicker to textbox input by adding "datepicker" class.</li>
+                <li>Use "DatePicker-mix" class to enable geogorian calendar.</li>
+                <li>The used format is "dd/MM/yyyy by default."</li>
+                <li>Pass the format="{0:dd/MM/yyyy}" to the helper to format text box default value.</li>
+                <li>If the textbox is mapped to DateTime property, the validater will take responsibility for validating date client side.</li>
+                <li>If the textbox is mapped to DateTime property, the custom binder will make sure that it will be parsed correctly.</li>
+            </ul>
+        }
+        @using (Html.MCIBeginItemsRow())
+        {
+            <form action="/Test" method="post">
+                @Html.MCITextBoxItem("datePicker1", "", "Simple UmmAlqura", httmlAttributes: new { @class = "datepicker" }, format: "{0:dd/MM/yyyy}")
+                <input type="submit" value="sdsd" />
+            </form>
+            @Html.MCITextBoxItem("datePicker2", "", "mix", httmlAttributes: new { @class = "datepicker-mix" }, format: "{0:dd/MM/yyyy}")
+            @Html.MCITextBoxItem("datePicker3", "", "custom year range c-1:c+5", httmlAttributes: new { @class = "datepicker-mix", data_year_range = "c-1:c+5" }, format: "{0:dd/MM/yyyy}")
+            @Html.MCITextBoxItem("datePicker4", "", "custom year range any", httmlAttributes: new { @class = "datepicker-mix", data_year_range = "any" }, format: "{0:dd/MM/yyyy}")
+            @Html.MCITextBoxItem("datePicker5", "", "custom year range 1430:1435", httmlAttributes: new { @class = "datepicker-mix", data_year_range = "1430:1435" }, format: "{0:dd/MM/yyyy}")
+            @Html.MCITextBoxItem("datePicker6", "", "custom year range 1436:-18", httmlAttributes: new { @class = "datepicker-mix", data_year_range = "1436:-18" }, format: "{0:dd/MM/yyyy}")
+            @Html.MCITextBoxItem("datePicker7", "", "custom year range 1436:+18", httmlAttributes: new { @class = "datepicker-mix", data_year_range = "1436:+18" }, format: "{0:dd/MM/yyyy}")
+        }
+    </div>
+</div>
+

@@ -1,0 +1,60 @@
+﻿@model RefactorName.WebApp.Models.FileUploaderModel
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "File Uploader";
+}
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/finuploader")
+}
+@section Styles
+{
+    @Styles.Render("~/Content/finuploader")
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">File Uploader</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>Include the Script bundle: ("~/bundles/uploader") and the style bundle: ("~/Content/finuploader")</li>
+                    <li>we have 4 helpers: 2 of them are model binded and 2 are not.</li>
+                    <li>one of each two helpers is uploader control without label.</li>
+                    <li>the uploader by default is configured to link to (Uploader Controller) which contains two actions (upload and delete).</li>
+                    <li>you can write your custom contoller and pass to the uploader.</li>
+                    <li>the default upload action will save the uploaded file to the ~/temp folder, so make sure that the folder is there.</li>
+                    <li>the file will take name of format: [session ID]__[GUID][Extension]</li>
+                    <li>the uploader is binded to the string property which holdes the file path.</li>
+                    <li>something like this "/Temp/13ijcoajbb2zmwknjedf0zhd__98b0120a-985c-4ee7-979e-372f9219bb11.jpg"</li>
+                    <li>look at the post action to see how to store uploaded file to the db model.</li>
+                    <li>Temp folder holds all uploads?! DON'T worry because at session end we will clean all session files :-)</li>
+                </ul>
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCIFileUploadItemFor(m => m.FilePath, hint: "(simple required uploader)", spanOf12: 12)
+                @Html.MCIFileUploadItem("file1", labelText: "Advanced", hint: "(Allow only pdf files)", allowedExtensions: "'pdf'", spanOf12: 12, required:false)
+                @Html.MCIFileUploadItem("file2", labelText: "Advanced", hint: "(Allow images size<1MB)", spanOf12: 12, fileMaxSize: 1024, required: false)
+                @Html.MCIFileUploadItem("file3", labelText: "Advanced", hint: "(Upload/delete events callback)", spanOf12: 12, required: false, onSuccessCallback: "uploadOnSuccess", onDeleteCallback: "uploadOnDelete")
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("submit", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
+
+<script>
+    function uploadOnSuccess(result) {
+        MCIAlert("uploaded", "You uploaded the file:</br>" + result)
+    }
+
+    function uploadOnDelete(result) {
+        MCIAlert("Deleted", "You deleted the file:</br>" + result)
+    }
+</script>

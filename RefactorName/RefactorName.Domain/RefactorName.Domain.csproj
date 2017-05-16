@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{934EAB3D-15C3-41C3-87FF-4ACAC0AF9439}</ProjectGuid>
+    <ProjectGuid>{ADF08C24-75BC-4F5D-9A59-BD0CF024982F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RefactorName.Domain</RootNamespace>
@@ -30,7 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,14 +45,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessRules.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Identity\RoleService.cs" />
+    <Compile Include="Identity\UserSevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Workflow\ProcessService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RefactorName.Core\RefactorName.Core.csproj">
-      <Project>{6923f1e7-e470-42b1-a24a-32693ca127f4}</Project>
+      <Project>{5dbdc2b4-2f5a-446a-87c4-161765bf38f4}</Project>
       <Name>RefactorName.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RefactorName.RepositoryInterface\RefactorName.RepositoryInterface.csproj">
+      <Project>{87641930-65df-49ea-b9cd-cdf27202e2f8}</Project>
+      <Name>RefactorName.RepositoryInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,44 @@
+﻿@model RefactorName.WebApp.Models.SignatureModel
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/signature")
+}
+
+@section Styles
+{
+    @Styles.Render("~/Content/signature")
+}
+
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Signature";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">File Uploader</div>
+        <div class="panel-body">
+            @using (Html.MCIBeginItemsRow(new { @class = "ltr" }))
+            {
+                <ul>
+                    <li>we have 2 helpers: one of them are model binded and the other is not.</li>
+                    <li>remember to include signature bundle in your view.</li>
+                    <li>the uploader is binded to a string property which holdes the imageURL of the signature.</li>
+                    <li>you have to sync between ImageURL and the actual byte array content of the signature</li>
+                </ul>
+            }
+            @using (Html.MCIBeginItemsRow())
+            {
+                @Html.MCISignatureItemFor(m => m.SignatureImageURL, 12)
+                @Html.MCISignatureItem("signature1", "custom", 12, "500px", "200px", "<i class='fa fa-trash'></i>", "Custom size and clear button")
+            }
+        </div>
+        <div class="panel-footer text-left">
+            @Html.MCISubmitButton("submit", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
+
+

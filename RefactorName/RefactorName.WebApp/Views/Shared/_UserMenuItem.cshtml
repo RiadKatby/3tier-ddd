@@ -1,0 +1,55 @@
+﻿@if (Request.IsAuthenticated)
+{
+    var userIdentity = User.Identity as UserProfileIdentity;
+
+    var imageUrl = "~/Images/03-Slide_06.jpg";
+    var imageUrl2 = "~/Images/photo.jpg";
+    //You can put your image URLs in user claims and read from here
+    //if (!string.IsNullOrEmpty(userIdentity.ProfileImageThumbUrl))
+    //{
+    //    imageUrl = userIdentity.ProfileImageThumbUrl;
+    //    imageUrl2 = imageUrl;
+    //}
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="@Url.Content(imageUrl)" width="33" height="33"> </a>
+        <ul class="dropdown-menu profile">
+            <li>
+                <div class="navbar-content">
+                    <div class="row">
+                        <div class="col-md-7 col-xs-7 text-right">
+                            <span class="h6">@userIdentity.GetClaimValue("FullName")</span>
+                            <p class="text-muted">
+                                @userIdentity.GetClaimValue("Email")
+                            </p>
+                        </div>
+
+                        <div class="col-md-5 col-xs-5 text-center">
+                            <img src="@Url.Content(imageUrl2)" alt="Alternate Text" class=" text-center img-rounded" />
+                            <p class="h6">
+                                @*@if (userIdentity.ImageChangeEnabled)
+                                    {
+                                        @Html.ActionLink("تغيير الصورة", "ChangeProfilePic", "Account", new { ReturnUrl = Request.Url }, null)
+                                    }*@
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-footer">
+                    <div class="navbar-footer-content">
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6 padding-top-10">
+                                @Html.ActionLink("تغيير كلمة المرور", "changePassword", "Account", new { ReturnUrl = Request.Url }, new { @class = "btn btn-default profile-btn  pull-right" })
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                @Html.ActionLink("تسجيل خروج", "LogOut", "Account", null, new { @class = "btn btn-default profile-btn  pull-left" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </li>
+}
+
+

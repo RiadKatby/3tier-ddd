@@ -1,0 +1,19 @@
+﻿@model ConfirmInfo
+
+@*var noButtonText = button == '' ? 'موافق' : 'لا';*@
+
+<div id="modal_confirm_@Model.ConfirmId" class="modal fade modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalConfirmTitle"> @Model.Title </h4>
+            </div>
+            <div class="modal-body"> @Model.Message </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Model.NegativeButton</button>
+                button
+            </div>
+        </div>
+    </div>
+</div>

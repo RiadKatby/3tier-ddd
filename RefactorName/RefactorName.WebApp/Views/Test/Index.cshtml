@@ -1,0 +1,744 @@
+﻿@model RefactorName.WebApp.Models.TestEntity
+@{
+    Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
+    LayoutModel.Title = "Samples Page";
+    Model.Name = " عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن-عبدالله";
+    Model.Birth = DateTime.Now;
+    Model.bool1 = true;
+    Model.bool7 = true;
+}
+
+
+@section Styles
+{
+    @Styles.Render("~/Content/signature")
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/signature")
+    <script>
+        function uploadSuccess(src) {
+            MCIAlert('File source', src);
+        }
+        function OnEdit() {
+            $("#EditDiag").modal("hide");
+        }
+        function OnEditFail() {
+
+        }
+
+        $(function () {
+            $("#ddl2").val(3);
+            var values = "1,3,5";
+            $.each(values.split(","), function (i, e) {
+                $("#ddl3 option[value='" + e + "']").prop("selected", true);
+            });
+
+            $('.selectpicker-search').multiselect({
+                enableFiltering: true,
+                filterBehavior: 'both', // possible options: 'text', 'value', 'both'
+                selectedClass: 'active',
+                selectAllText: ' إختر الكل',
+                includeSelectAllOption: 'true',
+                enableCaseInsensitiveFiltering: false,
+                filterPlaceholder: 'بحث',
+                nonSelectedText: 'لم يتم الاختيار',
+                nSelectedText: 'تم اختيارها',
+                numberDisplayed: 3,
+                maxHeight: 300
+            });
+
+            $('.selectpicker').multiselect({
+                selectedClass: 'active',
+                selectAllText: ' إختر الكل',
+                //includeSelectAllOption: 'true',
+                enableCaseInsensitiveFiltering: false,
+                filterPlaceholder: 'بحث',
+                nonSelectedText: 'لم يتم الاختيار',
+                nSelectedText: 'تم اختيارها',
+                numberDisplayed: 3,
+                maxHeight: 300
+            });
+
+            $('#ddl5, #ddl7').select2();
+
+            $('#btnMessage').click(function () {
+                MCIConfirm("MCI Confirm Title", "MCI Confirm Message", function () { snackbar('حدث خطأ جافا سكريب', snackbarType.Danger, 0); })
+
+            });
+
+            $('#btnAlert').click(function () {
+                MCIAlert('ALERT', 'test alert');
+            });
+
+            $("#btnMCIMessage").click(function () {
+                snackbar("السلام عليكم", snackbarType.Warning);
+            });
+
+            $('#formTest').validate().settings.ignore = ':hidden, .ignore';
+
+
+        });
+
+        function addl1OnBegin() {
+            if (!$('#addl1').val())
+                return false;
+            //showValidationErrorMessageFor($('#addl1')[0], "please pick a value");
+        }
+
+        function addl1OnSuccess(result) {
+            //alert("addl1 Success");
+        }
+
+        function addl1OnComplete() {
+            //alert("addl1 Complete");
+        }
+
+        function addl1OnFailure(res) {
+            $('#test2').text(res.responseJSON.message);
+        }
+
+    </script>
+
+}
+<div class="panel panel-default ">
+    <div class="panel-heading">
+        <div class="row">
+            <div class=col-xs-12>
+                صفحة العينات
+                <div class="btn-group pull-left">
+                    <button type="button" class="btn btn-default btn-group-sm">أضف مؤسسة جديدة</button>
+                    <button type="button" class="btn btn-default disabled btn-group-sm">أضف شركة جديدة <small class="red-color">قريباً</small></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+            @using (Html.MCIBeginWizard())
+            {
+                @Html.MCIWizardStep("1", "حجز إسم", WizardStepStatus.Completed, "14.2%")
+                @Html.MCIWizardStep("2", "نشاط المنشأة", WizardStepStatus.Completed, "14.2%")
+                @Html.MCIWizardStep("3", "حالة المنشأة", WizardStepStatus.Active, "14.2%")
+                @Html.MCIWizardStep("4", "عنوان المنشأة", WizardStepStatus.Future, "14.2%")
+                @Html.MCIWizardStep("5", "الموافقة على الشروط", WizardStepStatus.Future, "14.2%")
+                @Html.MCIWizardStep("6", "الرسوم", WizardStepStatus.Future, "14.2%")
+                @Html.MCIWizardStep("7", "التأكيد", WizardStepStatus.Future, "14.2%")
+            }
+
+            @*<div class="col-md-12 center">
+                    <!--  Steps Wizard -->
+                    <div class="row bs-wizard">
+
+                        <div class="bs-wizard-step complete" style="width:20%">
+                            <!-- complete -->
+                            <div class="bs-wizard-stepnum">1</div>
+                            <div class="bs-wizard-step-inner">
+                                <div class=" progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                            </div>
+                            <div class="bs-wizard-info">حجز إسم</div>
+                        </div>
+
+
+                        <div class="bs-wizard-step active" style="width:20%">
+                            <!-- complete -->
+                            <div class="bs-wizard-stepnum">2</div>
+                            <div class="bs-wizard-step-inner">
+                                <div class=" progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                            </div>
+                            <div class="bs-wizard-info">نشاط المنشأة</div>
+                        </div>
+
+                        <div class="bs-wizard-step disabled" style="width:20%">
+                            <!-- complete -->
+                            <div class="bs-wizard-stepnum">3</div>
+                            <div class="bs-wizard-step-inner">
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                            </div>
+                            <div class="bs-wizard-info">حالة المنشأة</div>
+                        </div>
+
+                        <div class="bs-wizard-step disabled" style="width:20%">
+                            <!-- complete -->
+                            <div class="bs-wizard-stepnum">4</div>
+                            <div class="bs-wizard-step-inner">
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                            </div>
+                            <div class="bs-wizard-info">عنوان المنشأة</div>
+                        </div>
+
+                        <div class="bs-wizard-step disabled" style="width:20%">
+                            <!-- complete -->
+                            <div class="bs-wizard-stepnum">5</div>
+                            <div class="bs-wizard-step-inner">
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="#" class="bs-wizard-dot"></a>
+                            </div>
+                            <div class="bs-wizard-info">الموافقة على الشروط</div>
+                        </div>
+
+
+                    </div><!-- ./ Steps Wizard -->
+                </div>*@
+
+            <div class="center-block" style="max-width: 300px;">
+                <button id="wizardNext" class="btn btn-default" type="button">خطوة للأمام</button>
+                <button id="wizardBack" class="btn btn-default" type="button">خطوة للخلف</button>
+            </div>
+
+            <script>
+                $(function () {
+                    $('#wizardNext').click(function () {
+                        var step = MCIWizardCurrentStep() || 1;
+                        step = parseInt(step, 10);
+                        if (step < 7)
+                            MCIWizardChangeStep(++step);
+                    });
+
+                    $('#wizardBack').click(function () {
+                        var step = MCIWizardCurrentStep() || 1;
+                        step = parseInt(step, 10);
+                        if (step > 1)
+                            MCIWizardChangeStep(--step);
+                    });
+                });
+
+            </script>
+
+            @using (Html.MCIBeginWizard2("mciWizard2"))
+            {
+                @Html.MCIWizardStep2("1", "حجز إسم")
+                @Html.MCIWizardStep2("2", "نشاط المنشأة", "#", false, true)
+                @Html.MCIWizardStep2("3", "عنوان المنشأة")
+                @Html.MCIWizardStep2("4", "الموافقة على الشروط")
+                @Html.MCIWizardStep2("5", "الرسوم", "", true)
+                @Html.MCIWizardStep2("6", "التأكيد")
+            }
+
+            @*<div class="col-md-12">
+                    <div class="mci-wizard">
+                        <a><span class="badge">1</span>حجز اسم</a>
+                        <a class="not-completed"><span class="badge">2</span>نشاط المنشأة</a>
+                        <a><span class="badge">3</span>عنوان المنشأة</a>
+                        <a><span class="badge">4</span>الموافقة على الشروط</a>
+                        <a class="current"><span class="badge">5</span>الرسوم</a>
+                        <a><span class="badge">6</span>التأكيد</a>
+                    </div>
+                </div>*@
+        </div>
+
+
+        @Html.MCIStartTabNavBar()
+        @Html.MCITabHeader("displayData", "Display", true)
+        @Html.MCITabHeader("FormTab", "نموذج form")
+        @Html.MCITabHeader("CbRbTab", "Checkbox and radio")
+        @Html.MCITabHeader("BtnsTab", "Buttons And Uploader")
+        @Html.MCITabHeader("gridTab", "WebGrid الجداول")
+        @Html.MCITabHeader("fadi", "Modal,Tabs,Ajax Buttons")
+        @Html.MCIEndTabNavBar()
+
+
+        @Html.MCIStartTabPanels("200px")
+
+        @Html.MCIStartTabPanel("displayData", true)
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">عمودي</div>
+            <div class="panel-body">
+                @Html.MCIStartFormItemsRow()
+                @Html.MCIDisplayItemFor(m => m.Name)
+                @Html.MCITextBoxItemFor(m => m.Name)
+                @Html.MCIDisplayItem("eng.shadihanani@gmail.com", "البريد الاكتروني")
+
+                @Html.MCIDisplayItemFor(m => m.Birth)
+                @Html.MCIDisplayItem("25580005555", "رقم الفاتورة")
+                @Html.MCIEndFormItemsRow()
+
+                @* without helper: *@
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label for="inputPassword3">رقم الفاتورة</label>
+                        <p class="form-control-static">25580005555</p>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="">البريد الاكتروني</label>
+                        <p class="form-control-static">eng.shadihanani@gmail.com</p>
+                    </div>
+
+                    @Html.MCIDisplayItemWithTruncate("Truncated", Model.Name, "Truncated text")
+                    @Html.MCIDisplayItemWithTruncateFor(m => m.Name)
+
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="panel panel-default ">
+            <div class="panel-heading">افقي</div>
+            <div class="panel-body">
+                @using (Html.MCIBeginItemsRow())
+                {
+                    @Html.MCIDisplayItemFor_H(m => m.Name)
+                    @Html.MCIDisplayItemFor_H(m => m.Birth)
+                    @Html.MCIDisplayItem_H("محمد عبد الله محمد عبد الله محمد عبد الله ", "اسم المستخدم")
+                }
+
+                @* without helper: *@
+                <div class="row">
+                    <div class="form-display col-sm-6">
+                        <label for="inputEmail3" class="">الاسم الاسم الاسم </label>
+                        <span>محمد عبد الله محمد عبد الله محمد عبد الله</span>
+                    </div>
+                    <div class="form-display col-sm-6">
+                        <label for="inputEmail3" class="">الاسم الاسم الاسم </label>
+                        <span>محمد عبد الله محمد عبد الله محمد عبد الله </span>
+                    </div>
+
+                    @Html.MCIDisplayItemWithTruncate_H(Model.Name, "Truncated text H")
+                    @*@Html.MCIDisplayItemWithTruncateFor_H(m => m.Name)*@
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label>unordered list</label>
+            <ul>
+                <li>تقديم طلب شهادة</li>
+                <li>تجديد الترخيص</li>
+                <li>رخصة الفسح الكيميائي</li>
+            </ul>
+        </div>
+        <div class="form-group col-md-4">
+            <label>ordered list</label>
+            <ol>
+                <li>عنصر 1</li>
+                <li>عنصر 2</li>
+                <li>عنصر 3</li>
+            </ol>
+        </div>
+
+        <div class="form-group col-md-12">
+            <h1>عنوان 1</h1>
+            <h2>عنوان 2</h2>
+            <h3>عنوان 3</h3>
+            <h4>عنوان 4</h4>
+            <h5>عنوان 5</h5>
+            <h6>عنوان 6</h6>
+        </div>
+        @Html.MCIEndTabPanel()
+
+
+        @Html.MCIStartTabPanel("FormTab")
+        <br />
+        <form role="form">
+
+            @Html.MCIStartFormItemsRow()
+            @Html.MCITextBoxItemFor(m => m.Name, 6, new { @class = "arabicNS" })
+            @Html.MCIPasswordItemFor(m => m.Name, 6, new { placeholder = "كلمة المرور", title = "ادخل كلمة المرور" })
+
+            @* without helper *@
+            <div class="form-group col-sm-6">
+                <label for="inputPassword3">Password</label>
+                <input type="password" class="form-control tooltipfy" id="inputPassword3" placeholder="Password" title="ادخل كلمة المرور">
+            </div>
+
+            @Html.MCITextBoxItem("readOnlyText", "Diabled span as form-control", "Read Only", 6, null, null, true, "%")
+
+            @* without helper *@
+            <div class="form-group col-sm-6">
+                <label for="inputEmail3">حقل للقراءة فقط شكل إدخال</label>
+                <span class="form-control" disabled>Diabled span as form-control</span>
+            </div>
+            @Html.MCIEndFormItemsRow()
+
+            @Html.MCIStartFormItemsRow()
+            @Html.MCITextBoxItemFor(m => m.Birth, 6, new { @class = "datepicker" }, "{0:dd/MM/yyyy}")
+            @Html.MCITextBoxItemFor(m => m.Birth, 6, new { @class = "datepicker-mix", data_year_range = "c-1:c+5" }, "{0:dd/MM/yyyy}", false, "DOB")
+
+            @* without helper *@
+            <div class="form-group col-sm-6">
+                <label for="inputPassword3">تاريخ الفاتورة</label>
+                <input type="text" class="form-control datepicker" value="">
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="inputPassword3">تاريخ الفاتورة</label>
+                <input type="text" class="form-control datepicker-mix" placeholder="" value="">
+            </div>
+            @Html.MCIEndFormItemsRow()
+
+            @Html.MCIStartFormItemsRow()
+            @Html.MCITextAreaItem("textArea", "Note", "Text Area", 6, new { style = "min-height:100px" })
+            @Html.MCIEndFormItemsRow()
+
+            @Html.MCIStartFormItemsRow()
+            @Html.MCIDropDownListItem("ddl1", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة عادية", "اختر الدولة")
+            @Html.MCIDropDownListItem("ddl2", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة مطورة", "اختر الدولة", 6, new { @class = "selectpicker-search" })
+            @Html.MCIDropDownListItem("ddl5", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة مطورة 2", "اختر الدولة")
+            @Html.MCIDropDownListItem("ddl3", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة متعددة", null, 6, new { multiple = "multiple", @class = "selectpicker-search" })
+            @* OR *@
+            @Html.MCIListBoxtItem("ddl6", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة متعددة 2", 6, new { @class = "selectpicker-search" })
+            @Html.MCIDropDownListItem("ddl4", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة بدون بحث", null, 6, new { multiple = "multiple", @class = "selectpicker" })
+
+            @Html.MCIListBoxtItem("ddl7", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"), "قائمة منسدلة متعددة مطورة 2")
+
+            @Html.MCICheckBoxItem("Active", "حالة المستخدم", "تفعيل")
+
+            @Html.MCITextBoxItemFor(m => m.IDNO)
+            @Html.MCIEndFormItemsRow()
+
+            <br class="clearfix" />
+            <div class="form-group ">
+                <div class="pull-left">
+                    <button type="submit" class="btn btn-default tooltipfy" title="زر الغاء">الغاء</button>
+                    <button type="submit" class="btn btn-primary tooltipfy" title="زر حفظ">حفظ وارسال</button>
+                </div>
+            </div>
+        </form>
+        @Html.MCIEndTabPanel()
+
+        @Html.MCIStartTabPanel("CbRbTab")
+        <br />
+        <form>
+
+            @Html.MCIStartFormItemsRow()
+            @*@Html.MCICheckBoxItemFor(m => m.bool7, "test", 6, true)*@
+            @Html.MCICheckBoxItem_Multi("options", (SelectList)ViewData["cbSample"], "خيارات")
+
+            @* without helper
+                <div class="col-sm-6 form-group">
+                    <label>خيارات</label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="option1">
+                        خيار 1
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="option2">
+                        خيار 2
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="option3">
+                        خيار 3
+                    </label>
+                </div>*@
+
+            @* other styles *@
+            @Html.MCICheckBoxItem_Multi("options", (SelectList)ViewData["cbSample"], "خيارات", 6, CheckBoxStyles.ButtonGroup)
+            @Html.MCICheckBoxItem_Multi("options", (SelectList)ViewData["cbSample"], "خيارات", 6, CheckBoxStyles.Buttons)
+            @Html.MCICheckBoxItem_Multi("options", (SelectList)ViewData["cbSample"], "خيارات", 6, CheckBoxStyles.Vertical)
+
+            @Html.MCICheckBoxItemFor_Multi("Item Label", 6, CheckBoxStyles.Buttons, "", m => m.bool1, m => m.bool2, m => m.bool3, m => m.bool4, m => m.bool5, m => m.bool6, m => m.bool7)
+            @* @Html.MCICheckBoxItemFor_Multi("Item Label", 6, CheckBoxStyles.ButtonGroup, "", m => m.bool1, m => m.bool2, m => m.bool3, m => m.bool4, m => m.bool5, m => m.bool6, m => m.bool7)
+                @Html.MCICheckBoxItemFor_Multi("Item Label", 6, CheckBoxStyles.Inline, "", m => m.bool1, m => m.bool2, m => m.bool3, m => m.bool4, m => m.bool5, m => m.bool6, m => m.bool7)
+                @Html.MCICheckBoxItemFor_Multi("Item Label", 6, CheckBoxStyles.Vertical, "", m => m.bool1, m => m.bool2, m => m.bool3, m => m.bool4, m => m.bool5, m => m.bool6, m => m.bool7)*@
+
+            @Html.MCIEndFormItemsRow()
+
+            @Html.MCIStartFormItemsRow()
+            @* without helper
+                <div class="col-sm-6 form-group">
+                    <label for="radioSample0">خيارات</label>
+                    <label class="radio-inline">
+                        <input name="radioSample0" type="radio" value="True">
+                        نعم
+                    </label>
+                    <label class="radio-inline">
+                        <input name="radioSample0" type="radio" value="True">
+                        لا
+                    </label>
+                    <label class="radio-inline">
+                        <input name="radioSample0" type="radio" value="True">
+                        أحياناً
+                    </label>
+                </div>*@
+
+            @Html.MCIRadioButtonItem("radioSample1", "خيارات", (SelectList)ViewData["rbSample"])
+            @Html.MCIRadioButtonItem("radioSample2", "خيارات", (SelectList)ViewData["rbSample"], 6, RadioButtonStyle.ButtonGroup)
+            @Html.MCIRadioButtonItem("radioSample3", "خيارات", (SelectList)ViewData["rbSample"], 6, RadioButtonStyle.Vertical)
+            @Html.MCIEndFormItemsRow()
+        </form>
+        @Html.MCIEndTabPanel()
+
+        @using (Html.MCIBeginTabPanel("BtnsTab"))
+        {
+            <br />
+            <div class="row">
+                <div class="col-xs-3 form-group">
+                    <button id="btnMCIMessage" class="btn btn-default "><span class="glyphicon glyphicon-search"></span>&nbsp;بحث </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>&nbsp;اضافة </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>&nbsp;حذف </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-edit"></span>&nbsp;تعديل </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;عرض </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;عرض التفاصيل </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&nbsp;نعم </button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <a id="test" class="btn btn-primary" data-loading-text="<img src='@Url.Content("~/Content/images/loadings.gif")' alt='الرجاء الانتظار..'/>">زر ارسال</a>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-success">زر نجاح</button>
+                </div>
+                <div class="col-xs-3 form-group">
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Default</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-warning">زر مع تنبيه</button>
+                </div>
+                <div class="col-xs-3 form-group">
+                    <button class="btn btn-danger">زر مع تحذير</button>
+                </div>
+                <div>
+                    <button class="btn btn-info">زر معلومات او مساعدة</button>
+                </div>
+
+            </div>
+
+            <br />
+            @Html.MCIFileUploadItemFor(m => m.FileName, onSuccessCallback: "uploadSuccess")
+            @Html.MCIFileUploadItem("file", 6, "رفع الملف", "Upload", "'pdf','jpg','png','gif','bmb'", hint: "(ملاحظة لرفع الملف.)")
+        }
+
+        @Html.MCIStartTabPanel("gridTab")
+        <br />
+        <div id="DataList">
+            @Html.Partial("_WebgridSample", ViewData["testGridItems"])
+        </div>
+        @Html.MCIEndTabPanel()
+
+        @Html.MCIStartTabPanel("fadi")
+        <br />
+        @Html.MCIStartTabNavBar("testTab")
+        @Html.MCITabHeader("FirstTab", "البيانات الشخصية", true)
+        @Html.MCITabHeader("SecondTab", "بيانات العمل")
+        @Html.MCITabHeader("ThirdTab", "أخرى")
+        @Html.MCIEndTabNavBar()
+
+        @Html.MCIStartTabPanels("200px")
+        @Html.MCIStartTabPanel("FirstTab", true)
+        البيانات الشخصية
+
+        @Html.MCIStartFormItemsRow()
+        @Html.MCICaptchaItem("CaptchaTest", "أدخل الرقم في الصورة", 6)
+        @Html.MCIEndFormItemsRow()
+
+        @Html.MCIEndTabPanel()
+
+        @Html.MCIStartTabPanel("SecondTab")
+        بيانات العمل
+
+        @Html.MCIEndTabPanel()
+
+        @Html.MCIStartTabPanel("ThirdTab")
+        أخرى
+        @Html.MCIEndTabPanel()
+        @Html.MCIEndTabPanels()
+
+        <h2>Alert</h2>
+        <button id="btnAlert">Alert</button>
+
+        <h2>Confirm</h2>
+
+        @Html.ConfirmableActionLink("with Helper", "Index", new ConfirmInfo("confirm title", "Are you sure?"), null)
+        @Html.ActionLink("تأكيد", "index", "Test", null, new { @class = "btn btn-primary mci-confirm", @title = "تأكيد تأكيد", @rel = "انت متأكد ؟!!" })
+        @Html.ActionLink("2تأكيد", "index", "Test", null, new { @class = "btn btn-default mci-confirm mci-confirm-popover", @title = "تأكيد تأكيد", @rel = "انت متأكد ؟!!" })
+
+
+        <h2>Confirm ajax link</h2>
+
+        @Ajax.ActionLink("تأكيد", "testAjax", "Test", null, new AjaxOptions
+{
+    HttpMethod = "GET",
+    UpdateTargetId = "testAjaxLink",
+    LoadingElementId = "dialog_loader",
+    OnBegin = "ReturnFalse"
+}, new { @class = "btn btn-primary mci-confirm", @title = "تأكيد تأكيد", @rel = "انت متأكد ؟!!" })
+
+        @Ajax.MCIAjaxLinkWithConfirm("with helper", new ConfirmInfo("confirm title", "Are you sure?"), "testAjax", "Test", null, new AjaxOptions
+{
+    HttpMethod = "GET",
+    UpdateTargetId = "testAjaxLink",
+    LoadingElementId = "dialog_loader"
+}, new { @class = "btn btn-primary" })
+
+        @Ajax.MCIAjaxLinkWithConfirm("with helper Popover", new ConfirmInfo("confirm title", "Are you sure?"), "testAjax", "Test", null, new AjaxOptions
+{
+    HttpMethod = "GET",
+    UpdateTargetId = "testAjaxLink",
+    LoadingElementId = "dialog_loader"
+}, new { @class = "btn btn-primary mci-confirm-popover" })
+
+
+        <div id="testAjaxLink"></div>
+
+
+        <h2>Confirm submit</h2>
+
+        @using (Html.BeginForm("index", "Test", FormMethod.Post, new { id = "formTest" }))
+        {
+            @Html.MCIStartFormItemsRow()
+
+            @Html.MCISignatureItemFor(m => m.SignatureImageURL, clearButtonInnerHTML: "<i class='fa fa-trash'></i>")
+
+            @Html.MCIEndFormItemsRow()
+
+            @Html.TextBox("testText", "", new { @class = "ignore", @data_val = "true", @data_val_required = "حقل مطلوب" })
+            <button type="submit" name="action" value="Save1" class="btn btn-default mci-confirm mci-confirm-popover">submit with popover confirm</button>
+            <button type="submit" name="action" value="Save2" class="btn btn-default mci-confirm">submit with modal confirm</button>
+            @Ajax.MCIAjaxButton("testAjaxBtn2", "تحقق", "testAjax", "Test", null, new AjaxOptions()
+   {
+       UpdateTargetId = "testAjax2"
+   }, new { @class = "btn-primary" })
+        }
+
+        <div id="testAjax2"></div>
+        <h2>Message</h2>
+        <button class="btn btn-primary" type="button" id="btnMessage">Message</button>
+
+        <h2>Form Modal</h2>
+        <button class="btn btn-primary" type="button" id="btnModal" data-toggle="modal" data-target="#myModal">My Modal</button>
+
+        <h2>ajax dropdownlist</h2>
+
+        @Html.MCIStartFormItemsRow()
+        @Html.MCIAjaxDropDownListItem("addl1", new SelectList((System.Collections.ICollection)ViewData["testGridItems"], "ID", "Name"),
+            new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                LoadingElementId = "dialog_loader",
+                OnBegin = "addl1OnBegin",
+                OnComplete = "addl1OnComplete",
+                OnFailure = "addl1OnFailure",
+                OnSuccess = "addl1OnSuccess",
+                UpdateTargetId = "test2",
+                Url = Url.Action("addl1Test", new { Value = "%value%" })
+            }, "Ajax DropDownList Item")
+
+        @Html.MCIEndFormItemsRow()
+        <div id="test2"></div>
+
+        <h2>Ajax button</h2>
+        @Ajax.MCIAjaxButton("testAjaxBtn", "تحقق", "testAjax", "Test", null, new AjaxOptions()
+{
+    UpdateTargetId = "testAjax"
+}, new { @class = "btn-primary" })
+
+        <div id="testAjax"></div>
+
+        <h2>Google Map</h2>
+        @*@Html.MCIGoogleMapItemFor(m => m.Lat, m => m.Lng, "Location title", "sampleMap", true, "400px", 8, "الموقع")*@
+        @Html.MCIEndTabPanel()
+        @Html.MCIEndTabPanels()
+
+
+    </div>
+</div>
+
+@*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            This is the form
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>*@
+@*The following is the same as the above code but minimized by helpers*@
+@using (Html.MCIBeginModalContainer("myModal"))
+{
+    using (Html.MCIBeginModal())
+    {
+        using (Html.MCIBeginModalHeader())
+        {
+            <h4 class="modal-title">My Title</h4>
+        }
+        using (Html.MCIBeginModalBody())
+        {
+            <p>This is the form</p>
+            <br />
+            @Html.MCITextBoxItem("sdds", null, "التاريخ ", 6, new { @class = "datepicker", data_val = "true", data_year_range = "c-5:c+4" })
+            <br />
+            <button class="btn btn-primary" type="button" id="btnModal2" data-toggle="modal" data-target="#myModal2">My Modal</button>
+            <br />
+            <br />
+        }
+        using (Html.MCIBeginModalFooter())
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        }
+    }
+}
+
+@using (Html.MCIBeginModalContainer("myModal2"))
+{
+    using (Html.MCIBeginModal())
+    {
+        using (Html.MCIBeginModalHeader())
+        {
+            <h4 class="modal-title">My Title2</h4>
+        }
+        using (Html.MCIBeginModalBody())
+        {
+            <p>This is the form</p>
+            <br />
+            @Html.MCITextBoxItem("sdds", null, "التاريخ", 6, new { @class = "datepicker" })
+            <br />
+            <br />
+            <br />
+        }
+        using (Html.MCIBeginModalFooter())
+        {
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        }
+    }
+}
+
+@using (Html.MCIBeginModalContainer("EditDiag"))
+{
+    //Ajax Content
+}
+

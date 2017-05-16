@@ -1,0 +1,42 @@
+﻿@model WebGridList<UserModel>
+
+@{
+    WebGrid usersGrid = new WebGrid(canPage: true, canSort: true, rowsPerPage: Model.PageSize, ajaxUpdateContainerId: "grid_div");
+    usersGrid.Bind(Model.List, autoSortAndPage: false, rowCount: Model.RowCount);
+}
+<div>
+    @if (Model.List == null || Model.RowCount == 0)
+    {
+        <div class="alert alert-warning" style="text-align: center">لا يوجد بيانات</div>
+    }
+    else
+    {
+        usersGrid.PageIndex = Model.PageIndex - 1;
+        <div class="well well-sm center-block" style="text-align: center; max-width: 200px">عدد المستخدمين : @Model.RowCount</div>
+        <div id="grid_div" class="grid table-responsive">
+            @usersGrid.GetTableWithPager(
+        tableStyle: "table table-striped ",
+        actionName: "GetUsersList",
+        mode: WebGridPagerModes.All,
+        footerStyle: "footerGrid",
+         columns: usersGrid.Columns(
+            usersGrid.Column("", header: "رقم", canSort: true, style: "col60", format: item => Convert.ToString((usersGrid.PageIndex * usersGrid.RowsPerPage) + usersGrid.Rows.IndexOf(item) + 1)),
+           usersGrid.Column("UserName", header: Html.DisplayNameFor(x => x.List.First().UserName).ToString(), canSort: true),
+            usersGrid.Column("FullName", header: Html.DisplayNameFor(x => x.List.First().FullName).ToString(), canSort: true),
+             usersGrid.Column("Email", header: Html.DisplayNameFor(x => x.List.First().Email).ToString(), canSort: true),
+           usersGrid.Column("Mobile", header: Html.DisplayNameFor(x => x.List.First().Mobile).ToString(), canSort: true),
+           usersGrid.Column("IsActive", header: Html.DisplayNameFor(x => x.List.First().IsActive).ToString(), canSort: true, format:
+        @<text>
+            @if (item.IsActive)
+            {
+                <span class="text-success">مفعل</span>
+            }
+            else
+            {
+                <span class="text-danger">غير مفعل</span>
+            }</text>),
+                     usersGrid.Column("", header: "تعديل", style: "action col70", format: item => Html.EncryptedActionLink("<i class='fa fa-search'></i>", "EditUser", routeValues: new { UserName = item.Username }, permissionCodes: RefactorName.Core.RoleNames.UsersEdit))))
+
+        </div>
+    }
+</div>

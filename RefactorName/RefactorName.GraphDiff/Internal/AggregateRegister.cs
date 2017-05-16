@@ -82,6 +82,6 @@ namespace RefactorName.GraphDiff.Internal
                 key += scheme;
             }
             return key;
-        }      
+        }
     }
 }

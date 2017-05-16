@@ -29,7 +29,7 @@ namespace RefactorName.Core
         /// <summary>
         /// The sort direction
         /// </summary>
-        public string SortDirection { get; set; }
+        public SortOrderEnum SortDirection { get; set; }
 
         public SearchCriteria()
         {
