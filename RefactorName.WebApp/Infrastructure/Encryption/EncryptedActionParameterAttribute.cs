@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace RefactorName.Web.Infrastructure.Encryption
+namespace RefactorName.WebApp.Infrastructure.Encryption
 {
     public class EncryptedActionParameterAttribute : ActionFilterAttribute
     {

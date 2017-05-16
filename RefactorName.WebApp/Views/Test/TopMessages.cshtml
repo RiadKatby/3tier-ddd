@@ -1,6 +1,6 @@
 ﻿@{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "Top Messages";
+    LayoutModel.Title = "Top Messages";
 }
 
 <div class="panel panel-default">
@@ -54,23 +54,23 @@
     $(function () {
 
         $('#btn1').click(function () {
-            mciMessage('Error message', mciMessageType.Danger);
+            snackbar('Error message', snackbarType.Danger);
         });
 
         $('#btn11').click(function () {
-            mciMessage('Sticked error message', mciMessageType.Danger, 0);
+            snackbar('Sticked error message', snackbarType.Danger, 0);
         });
 
         $('#btn2').click(function () {
-            mciMessage('Warning message', mciMessageType.Warning);
+            snackbar('Warning message', snackbarType.Warning);
         });
 
         $('#btn3').click(function () {
-            mciMessage('Info message', mciMessageType.Info);
+            snackbar('Info message', snackbarType.Info);
         });
 
         $('#btn4').click(function () {
-            mciMessage('Success message', mciMessageType.Success);
+            snackbar('Success message', snackbarType.Success);
         });
 
         $('#btn5').click(function () {

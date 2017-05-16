@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class BindAliasAttribute : Attribute

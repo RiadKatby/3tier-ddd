@@ -9,10 +9,7 @@
 
     <title>
         وزارة التجارة والصناعة
-        @if (ViewBag.Title != null)
-        {
-            @ViewBag.Title
-        }
+        @LayoutModel.Title ?? "";
     </title>
 
     @* //Scripts *@
@@ -92,7 +89,7 @@
         </div>
     </header>
 
-    @Html.RenderMCIMessagesArea()
+    @Html.SnackbarsArea(LayoutModel.Snackbars)
 
     <div class="container">
         <div class="row">

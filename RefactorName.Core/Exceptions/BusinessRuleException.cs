@@ -1,6 +1,8 @@
-﻿using System;
+﻿using RefactorName.Core.Basis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 namespace RefactorName.Core
 {
     /// <summary>
-    /// Represents errors that occrus during Business Rules checking.
+    /// Represents errors that occurs during Business Rules checking.
     /// </summary>
     [Serializable]
     public class BusinessRuleException : Exception
@@ -19,7 +21,7 @@ namespace RefactorName.Core
         public string RuleName { get; private set; }
 
         /// <summary>
-        /// Gets Business Entity name that violiated <see cref="RuleName"/>.
+        /// Gets Business Entity name that violated <see cref="RuleName"/>.
         /// </summary>
         public string EntityName { get; private set; }
 
@@ -53,6 +55,13 @@ namespace RefactorName.Core
             this.EntityName = entityName;
         }
 
+        public BusinessRuleException(string entityName, BusinessRule businessRule, [CallerMemberName] string businessOperation = "")
+            : base(businessRule.Message)
+        {
+            RuleName = businessOperation + businessRule.RuleName;
+            EntityName = entityName;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessRuleException"/> class with specified custom error message, business rule name, business entity name, and a reference to the inner exception that is the cause of this exception.
         /// </summary>
@@ -75,15 +84,15 @@ namespace RefactorName.Core
         protected BusinessRuleException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            RuleName = info.GetString("RuleName");
-            EntityName = info.GetString("EntityName");
+            RuleName = info.GetString(nameof(RuleName));
+            EntityName = info.GetString(nameof(EntityName));
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue("RuleName", RuleName);
-            info.AddValue("EntityName", EntityName);
+            info.AddValue(nameof(RuleName), RuleName);
+            info.AddValue(nameof(EntityName), EntityName);
         }
     }
 }

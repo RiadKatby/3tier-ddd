@@ -3,7 +3,7 @@ using System;
 using System.Web;
 using System.Configuration;
 
-namespace RefactorName.Web.Infrastructure.Encryption
+namespace RefactorName.WebApp.Infrastructure
 {
     public class SessionBasedStringEncrypter : IEncryptString
     {
@@ -93,6 +93,15 @@ namespace RefactorName.Web.Infrastructure.Encryption
         public string Prefix
         {
             get { return prefix; }
+        }
+
+        public bool IsEncryptionKeyExists
+        {
+            get
+            {
+                return (HttpContext.Current.Session["EncryptionKey"] != null
+                         && HttpContext.Current.Session["EncryptionIV"] != null);
+            }
         }
         #endregion
     }

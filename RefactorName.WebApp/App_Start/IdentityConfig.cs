@@ -8,7 +8,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class EmailService : IIdentityMessageService
     {

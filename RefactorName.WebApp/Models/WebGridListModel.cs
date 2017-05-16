@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RefactorName.Web.Models
+namespace RefactorName.WebApp.Models
 {
     public class WebGridList<T>
     {

@@ -79,5 +79,64 @@ namespace RefactorName.SettingsProvider.ConfigFile
             }
         }
 
+        public bool EnableOptimizations
+        {
+            get
+            {
+                return Convert.ToBoolean(ConfigurationManager.AppSettings["EnableOptimizations"]);
+            }
+        }
+
+        public int SnackbarDangerMessageTimeout
+        {
+            get
+            {
+                return 5000;
+            }
+        }
+
+        public int SnackbarSuccessMessageTimeout
+        {
+            get
+            {
+                return 3000;
+            }
+        }
+
+        public int SnackbarInfoMessageTimeout
+        {
+            get
+            {
+                return 4000;
+            }
+        }
+
+        public int SnackbarWarningMessageTimeout
+        {
+            get
+            {
+                return 4000;
+            }
+        }
+
+        public string EncryptionKey
+        {
+            get { return ConfigurationManager.AppSettings[nameof(EncryptionKey)]; }
+        }
+
+        public string EncryptionIV
+        {
+            get { return ConfigurationManager.AppSettings[nameof(EncryptionIV)]; }
+        }
+
+        public string EncryptionPrefix
+        {
+            get { return ConfigurationManager.AppSettings[nameof(EncryptionPrefix)]; }
+        }
+
+        public int HashIterationCounts
+        {
+            get { return Convert.ToInt32(ConfigurationManager.AppSettings[nameof(HashIterationCounts)]); }
+        }
     }
 }

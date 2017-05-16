@@ -1,13 +1,16 @@
-﻿using System;
+﻿using RefactorName.WebApp.Infrastructure;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Ajax;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class Extensions
     {
@@ -150,10 +153,37 @@ namespace RefactorName.Web
 
             return input;
         }
-        #endregion        
+        #endregion
 
+
+        public static NameValueCollection ToQueryString(this AjaxOptions ajaxOptions)
+        {
+            NameValueCollection retVal = HttpUtility.ParseQueryString("?");
+
+            foreach (var item in ajaxOptions.ToUnobtrusiveHtmlAttributes())
+                retVal.Add(item.Key, item.Value.ToString());
+
+
+            return retVal;
+        }
+
+        public static NameValueCollection ToQueryString(this IDictionary<string, object> dictionary)
+        {
+            NameValueCollection retVal = HttpUtility.ParseQueryString("?");
+
+            foreach (var item in dictionary)
+                retVal.Add(item.Key, item.Value.ToString());
+
+            return retVal;
+        }
+
+        public static IDictionary<string, object> DecryptUrlToDictionary(string s)
+        {
+            IDictionary<string, object> dictionary = new Dictionary<string, object>();
+            string clearUrl = StringEncrypter.UrlEncrypter.Decrypt(s);
+            HttpUtility.ParseQueryString(clearUrl).CopyTo(dictionary);
+
+            return dictionary;
+        }
     }
-
-
-
 }

@@ -1,12 +1,13 @@
 ﻿using RefactorName.Core;
 using RefactorName.Domain;
-using RefactorName.Web.Filters;
+using RefactorName.WebApp.Filters;
+using RefactorName.WebApp.Helpers;
 using Microsoft.AspNet.Identity.Owin;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace RefactorName.Web.Controllers
+namespace RefactorName.WebApp.Controllers
 {
     [InitializeIdentityMembership]
     [Authorize]
@@ -65,15 +66,15 @@ namespace RefactorName.Web.Controllers
             var user = UserService.Obj.FindByName(username);
             if (user == null)
             {
-                AddMCIMessage("بيانات الدخول غير صحيحه,  تأكد من اسم المستخدم وكلمه المرور", MCIMessageType.Danger);
-                return View(model);
+                return View(model)
+                    .WithDangerSnackbar("بيانات الدخول غير صحيحه,  تأكد من اسم المستخدم وكلمه المرور");
             }
 
             //check IsActive
             if (!user.IsActive)
             {
-                AddMCIMessage("المستخدم غير فعال. الرجاء مراجعة مسؤول النظام لتفعيل المستخدم.", MCIMessageType.Warning, 15);
-                return View();
+                return View()
+                    .WithWarningSnackbar("المستخدم غير فعال. الرجاء مراجعة مسؤول النظام لتفعيل المستخدم.");
             }
 
             // This doesn't count login failures towards account lockout
@@ -92,8 +93,8 @@ namespace RefactorName.Web.Controllers
                 //    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    AddMCIMessage("بيانات الدخول غير صحيحه,  تأكد من اسم المستخدم وكلمه المرور", MCIMessageType.Danger);
-                    return View(model);
+                    return View(model)
+                        .WithDangerSnackbar("بيانات الدخول غير صحيحه,  تأكد من اسم المستخدم وكلمه المرور");
             }
         }
 
@@ -140,21 +141,22 @@ namespace RefactorName.Web.Controllers
                     {
                         SignInManager.SignInAsync(user.Result, isPersistent: false, rememberBrowser: false);
                     }
-                    MCIAlert.AddMCIMessage(this, "تم تغيير كلمة المرور بنجاح", MCIMessageType.Success);
+                    ShowSuccessSnackbar("تم تغيير كلمة المرور بنجاح");
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     return RedirectToAction("index", "Home");
                 }
                 else if (result.Result.Errors.Contains("Incorrect password."))
-                    MCIAlert.AddMCIMessage(this, "كلمة المرور غير صحيحة.", MCIMessageType.Danger);
+                    ShowDangerSnackbar("كلمة المرور غير صحيحة.");
                 else
-                    MCIAlert.AddMCIMessage(this, "عفوأ. حدث خطأ أثناء تعديل كلمة المرور. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger);
+                    ShowDangerSnackbar("عفوأ. حدث خطأ أثناء تعديل كلمة المرور. الرجاء المحاولة لاحقاً.");
             }
             catch
             {
-                MCIAlert.AddMCIMessage(this, "عفوأ. حدث خطأ أثناء تعديل كلمة المرور. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger);
+                ShowDangerSnackbar("عفوأ. حدث خطأ أثناء تعديل كلمة المرور. الرجاء المحاولة لاحقاً.");
             }
             return View(model);
+            
         }
 
         #region Profile Picture
@@ -165,7 +167,7 @@ namespace RefactorName.Web.Controllers
         //    //make sure change Profile picture enabled
         //    if (!userProfile.ImageChangeEnabled)
         //    {
-        //        MCIAlert.AddMCIMessage(this, "عملية غير شرعية", MCIMessageType.Danger, 8);
+        //        ShowDangerSnackbar("عملية غير شرعية");
         //        if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
         //            return Redirect(ReturnUrl);
         //        return RedirectToAction("index", "Home");
@@ -184,7 +186,7 @@ namespace RefactorName.Web.Controllers
         //    var userProfile = Session["UserProfile"] as UserProfileModel;
         //    //make sure change Profile picture enabled
         //    if (!userProfile.ImageChangeEnabled)
-        //        AddMCIMessage("عملية غير شرعية", MCIMessageType.Danger, 8);
+        //        ShowDangerSnackbar("عملية غير شرعية");
 
         //    else if (action == "delete")
         //    {
@@ -207,7 +209,7 @@ namespace RefactorName.Web.Controllers
         //            }
         //            catch
         //            {
-        //                AddMCIMessage("عفواً..حدث خطأ أثناء حفظ البيانات. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger, 8);
+        //                ShowDangerSnackbar("عفواً..حدث خطأ أثناء حفظ البيانات. الرجاء المحاولة لاحقاً.");
         //            }
 
         //            //update user profile

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Web.Security;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class MainAuthorize : System.Web.Mvc.AuthorizeAttribute
     {
@@ -51,13 +51,16 @@ namespace RefactorName.Web
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
+            var controller = filterContext.Controller as BaseController;
+
             UrlHelper url = new UrlHelper(filterContext.RequestContext);
             if (IsAuthorize) //session timeout or not loged in
             {
                 HttpContext.Current.Session.Abandon(); //clear the session
                 //FormsAuthentication.SignOut();
 
-                MCIAlert.AddMCIMessage((Controller)filterContext.Controller, SessionTimeoutMessage, MCIMessageType.Warning, 0);
+                controller.ShowWarningSnackbar(SessionTimeoutMessage);
+
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {
                     // For AJAX requests, we're overriding the returned JSON result with a simple string,
@@ -81,7 +84,8 @@ namespace RefactorName.Web
             }
             else
             {
-                MCIAlert.AddMCIMessage((Controller)filterContext.Controller, NotAuthorizedMessage, MCIMessageType.Warning, 0);
+                controller.ShowWarningSnackbar(NotAuthorizedMessage);
+
                 // Otherwise the reason we got here was because the user didn't have access rights to the
                 // operation, and a 403 should be returned.
                 //filterContext.Result = new HttpStatusCodeResult(403);
@@ -102,7 +106,7 @@ namespace RefactorName.Web
                         new RouteValueDictionary {
                         { "Controller", Controller},
                         { "Action", Action }
-                       
+
                 });
                 }
             }

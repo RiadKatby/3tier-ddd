@@ -1,6 +1,6 @@
 ﻿@{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "Links";
+    LayoutModel.Title = "Links";
 }
 
 <div class="panel panel-default">
@@ -11,8 +11,8 @@
             using (Html.MCIBeginItemsCol(12))
             {
                 @Html.MCIAcionLink("Simple <i class='fa fa-hand-o-up'></i>", "Links", htmlAttributes: new { @class = "btn btn-default" })
-                @Html.MCIAcionLinkWithConfirm("With Confirm <i class='fa fa-hand-o-up'></i>", "confirmation title", "Are you sure?", "Links", htmlAttributes: new { @class = "btn btn-default" })
-                @Html.MCIAcionLinkWithConfirm("Modal Confirm <i class='fa fa-hand-o-up'></i>", "confirmation title", "Are you sure?", "Links", htmlAttributes: new { @class = "btn btn-default mci-confirm-modal" })
+                @Html.ConfirmableActionLink("With Confirm <i class='fa fa-hand-o-up'></i>", "Links", new ConfirmInfo("confirmation title", "Are you sure?"), htmlAttributes: new { @class = "btn btn-default" })
+                @Html.ConfirmableActionLink("Modal Confirm <i class='fa fa-hand-o-up'></i>", "Links", new ConfirmInfo("confirmation title", "Are you sure?"), htmlAttributes: new { @class = "btn btn-default mci-confirm-modal" })
             }
         }
         @using (Html.MCIBeginItemsRow())
@@ -28,7 +28,7 @@
                     OnSuccess = "LoadAjaxModalOnSuccess"
                 })
 
-                @Ajax.MCIAjaxLinkWithConfirm("With Confirm <i class='fa fa-search'></i>", "confirmation title", "Are you sure?", "LoadAjaxModal",
+                @Ajax.MCIAjaxLinkWithConfirm("With Confirm <i class='fa fa-search'></i>", new ConfirmInfo("confirmation title", "Are you sure?"), "LoadAjaxModal",
                 htmlAttributes: new { @class = "btn btn-default" },
                      ajaxOptions: new AjaxOptions()
                      {
@@ -37,7 +37,7 @@
                          OnSuccess = "LoadAjaxModalOnSuccess"
                      })
 
-                @Ajax.MCIAjaxLinkWithConfirm("Modal Confirm <i class='fa fa-search'></i>", "confirmation title", "Are you sure?", "LoadAjaxModal",
+                @Ajax.MCIAjaxLinkWithConfirm("Modal Confirm <i class='fa fa-search'></i>", new ConfirmInfo("confirmation title", "Are you sure?"), "LoadAjaxModal",
                 htmlAttributes: new { @class = "btn btn-default mci-confirm-modal" },
                 ajaxOptions: new AjaxOptions()
                 {

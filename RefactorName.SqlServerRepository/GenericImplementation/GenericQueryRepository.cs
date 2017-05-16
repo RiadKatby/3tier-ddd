@@ -10,101 +10,89 @@ using System.Linq;
 
 namespace RefactorName.SqlServerRepository
 {
-   public class GenericQueryRepository : IGenericQueryRepository
+    public class GenericQueryRepository : IGenericQueryRepository
     {
         #region IGenericQueryRepository Members
 
         public TEntity Single<TEntity>(int id)
             where TEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
-                {
+                using (AppDbContext context = new AppDbContext())
                     return context.Set<TEntity>().Find(id);
-                }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TEntity>(ex);
             }
         }
 
         public TEntity Single<TEntity>(IQueryConstraints<TEntity> constraints)
             where TEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
-                {
+                using (AppDbContext context = new AppDbContext())
                     return context.LoadAggregate(constraints.Predicate);
-                }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TEntity>(ex);
             }
         }
 
         public TEntity SingleOrDefault<TEntity>(IQueryConstraints<TEntity> constraints)
             where TEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
-                {
+                using (AppDbContext context = new AppDbContext())
                     return context.Set<TEntity>()
-                                  .ToSearchResult<TEntity>(constraints)
-                                  .Items
-                                  .FirstOrDefault();
-                }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TEntity>(ex);
-                }
+                              .ToSearchResult<TEntity>(constraints)
+                              .Items
+                              .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TEntity>(ex);
             }
         }
 
         public int GetCount<TEntity>()
             where TEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
-                {
-                    return context.Set<TEntity>()
-                                  .Count();
-                }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TEntity>(ex);
-                }
+                using (AppDbContext context = new AppDbContext())
+                    return context.Set<TEntity>().Count();
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TEntity>(ex);
             }
         }
 
         public int GetCount<TEntity>(IQueryConstraints<TEntity> constraints)
             where TEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
-                {
-                    return context.Set<TEntity>()
-                                  .Count(constraints.Predicate);
-                }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TEntity>(ex);
-                }
+                using (AppDbContext context = new AppDbContext())
+                    return context.Set<TEntity>().Count(constraints.Predicate);
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TEntity>(ex);
             }
         }
 
         public IQueryResult<TEntity> Find<TEntity>(IQueryConstraints<TEntity> constraints)
             where TEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
+                using (AppDbContext context = new AppDbContext())
                 {
                     IQueryResult<TEntity> results = null;
 
@@ -130,10 +118,10 @@ namespace RefactorName.SqlServerRepository
                     // return the results either from cache or that were just run
                     return results;
                 }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TEntity>(ex);
             }
         }
 

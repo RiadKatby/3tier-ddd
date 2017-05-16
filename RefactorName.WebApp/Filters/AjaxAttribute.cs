@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace RefactorName.Web.Filters
+namespace RefactorName.WebApp.Filters
 {
     public class AjaxAttribute : ActionFilterAttribute
     {

@@ -10,7 +10,7 @@ using RefactorName.Core;
 namespace RefactorName.RepositoryInterface
 {
     /// <summary>
-    /// Represents repository that retirve Business Entities genericaly.
+    /// Represents repository that retrieves Business Entities generically.
     /// </summary>
     public interface IGenericQueryRepository
     {

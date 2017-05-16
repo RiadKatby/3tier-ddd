@@ -1,9 +1,9 @@
 ﻿using RefactorName.Core;
-using RefactorName.Web.Models;
+using RefactorName.WebApp.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class UserExtensions
     {

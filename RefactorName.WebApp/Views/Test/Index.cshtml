@@ -1,7 +1,7 @@
-﻿@model RefactorName.Web.Models.TestEntity
+﻿@model RefactorName.WebApp.Models.TestEntity
 @{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "Samples Page";
+    LayoutModel.Title = "Samples Page";
     Model.Name = " عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن عبدالله عبدالرحمن-عبدالله";
     Model.Birth = DateTime.Now;
     Model.bool1 = true;
@@ -63,7 +63,7 @@
             $('#ddl5, #ddl7').select2();
 
             $('#btnMessage').click(function () {
-                MCIConfirm("MCI Confirm Title", "MCI Confirm Message", function () { mciMessage('حدث خطأ جافا سكريب', mciMessageType.Danger, 0); })
+                MCIConfirm("MCI Confirm Title", "MCI Confirm Message", function () { snackbar('حدث خطأ جافا سكريب', snackbarType.Danger, 0); })
 
             });
 
@@ -72,7 +72,7 @@
             });
 
             $("#btnMCIMessage").click(function () {
-                mciMessage("السلام عليكم", mciMessageType.Warning);
+                snackbar("السلام عليكم", snackbarType.Warning);
             });
 
             $('#formTest').validate().settings.ignore = ':hidden, .ignore';
@@ -573,7 +573,7 @@
 
         <h2>Confirm</h2>
 
-        @Html.MCIAcionLinkWithConfirm("with Helper", "confirm title", "Are you sure?", "Index")
+        @Html.ConfirmableActionLink("with Helper", "Index", new ConfirmInfo("confirm title", "Are you sure?"), null)
         @Html.ActionLink("تأكيد", "index", "Test", null, new { @class = "btn btn-primary mci-confirm", @title = "تأكيد تأكيد", @rel = "انت متأكد ؟!!" })
         @Html.ActionLink("2تأكيد", "index", "Test", null, new { @class = "btn btn-default mci-confirm mci-confirm-popover", @title = "تأكيد تأكيد", @rel = "انت متأكد ؟!!" })
 
@@ -588,14 +588,14 @@
     OnBegin = "ReturnFalse"
 }, new { @class = "btn btn-primary mci-confirm", @title = "تأكيد تأكيد", @rel = "انت متأكد ؟!!" })
 
-        @Ajax.MCIAjaxLinkWithConfirm("with helper", "confirm title", "Are you sure?", "testAjax", "Test", null, new AjaxOptions
+        @Ajax.MCIAjaxLinkWithConfirm("with helper", new ConfirmInfo("confirm title", "Are you sure?"), "testAjax", "Test", null, new AjaxOptions
 {
     HttpMethod = "GET",
     UpdateTargetId = "testAjaxLink",
     LoadingElementId = "dialog_loader"
 }, new { @class = "btn btn-primary" })
 
-        @Ajax.MCIAjaxLinkWithConfirm("with helper Popover", "confirm title", "Are you sure?", "testAjax", "Test", null, new AjaxOptions
+        @Ajax.MCIAjaxLinkWithConfirm("with helper Popover", new ConfirmInfo("confirm title", "Are you sure?"), "testAjax", "Test", null, new AjaxOptions
 {
     HttpMethod = "GET",
     UpdateTargetId = "testAjaxLink",

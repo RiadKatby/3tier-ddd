@@ -4,59 +4,45 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using RefactorName.Core;
-using RefactorName.Web.Models;
+using RefactorName.WebApp.Models;
+using System.Configuration;
+using System.Threading;
+using RefactorName.WebApp.Helpers;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
-    public class BaseController : Controller
+    public partial class BaseController : Controller, IDisposable
     {
-        public LayoutViewModel LayoutModel { get; private set; }
+        //protected override void OnException(ExceptionContext filterContext)
+        //{
+        //    filterContext.ExceptionHandled = true;
+        //    string controller = filterContext.RouteData.Values["controller"].ToString();
+        //    string action = filterContext.RouteData.Values["action"].ToString();
+        //    Exception exception = filterContext.Exception;
 
-        public BaseController()
-        {
-            LayoutModel = new LayoutViewModel();
-        }
+        //    string errorTitle = string.Empty;
+        //    if (exception is PermissionException)
+        //        errorTitle = "Security Permission Required";
 
-        protected override void OnResultExecuting(ResultExecutingContext filterContext)
-        {
-            ViewResult viewResult = filterContext.Result as ViewResult;
-            if (viewResult != null)
-                viewResult.ViewBag.LayoutModel = LayoutModel;
+        //    ErrorModel model = new ErrorModel(exception, controller, action, errorTitle);
+        //    var result = View("Error", model);
+        //    result.ViewBag.LayoutModel = LayoutModel;
+        //    filterContext.Result = result;
+        //}
 
-            base.OnResultExecuting(filterContext);
-        }
+        //public JsonResult JsonErrorMessage(string errorMessage)
+        //{
+        //    var response = HttpContext.Response;
+        //    response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+        //    response.StatusDescription = errorMessage;
 
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            filterContext.ExceptionHandled = true;
-            string controller = filterContext.RouteData.Values["controller"].ToString();
-            string action = filterContext.RouteData.Values["action"].ToString();
-            Exception exception = filterContext.Exception;
+        //    return Json(new { message = errorMessage }, JsonRequestBehavior.AllowGet);
+        //}
 
-            string errorTitle = string.Empty;
-            if (exception is PermissionException)
-                errorTitle = "Security Permission Required";
-
-            ErrorModel model = new ErrorModel(exception, controller, action, errorTitle);
-            var result = View("Error", model);
-            result.ViewBag.LayoutModel = LayoutModel;
-            filterContext.Result = result;
-        }
-
-        public JsonResult JsonErrorMessage(string errorMessage)
-        {
-            var response = HttpContext.Response;
-            response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-            response.StatusDescription = errorMessage;
-
-            return Json(new { message = errorMessage }, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public void AddMCIMessage(string message, MCIMessageType type = MCIMessageType.Info, int timeout = 5)
-        {
-            MCIAlert.AddMCIMessage(this, message, type, timeout);
-        }
+        //public void AddMCIMessage(string message, MCIMessageType type = MCIMessageType.Info, int timeout = 5)
+        //{
+        //    MCIAlert.AddMCIMessage(this, message, type, timeout);
+        //}
 
         protected ActionResult RegisterError(Exception ex, string actionName, int? objectID = null, string objectName = "", string toReturnViewName = "", object model = null, string userMessage = "عفواً .. حدث خطأ أثناء جلب  البيانات . الرجاء المحاولة لاحقاً.")
         {
@@ -83,28 +69,76 @@ namespace RefactorName.Web
                 {
                     if (!string.IsNullOrEmpty(toReturnViewName))
                     {
-                        AddMCIMessage(userMessage, MCIMessageType.Danger, 15);
-                        return View(toReturnViewName, model);
+                        return View(toReturnViewName, model)
+                            .WithDangerSnackbar(userMessage);
                     }
                     else
                         return Content(errorBody);
                 }
                 else
-                    return JsonErrorMessage(userMessage);
+                    return DangerSnackbar(userMessage);
             }
             return Content(errorBody);
         }
 
-        protected ActionResult RedirectwithMCIMessage(string redirectTo, string message = "", MCIMessageType messageType = MCIMessageType.Info, int messageTimeOut = 8)
-        {
-            if (!string.IsNullOrWhiteSpace(message))
-                AddMCIMessage(message, messageType, messageTimeOut);
+        //protected ActionResult RedirectwithMCIMessage(string redirectTo, string message = "", MCIMessageType messageType = MCIMessageType.Info, int messageTimeOut = 8)
+        //{
+        //    if (!string.IsNullOrWhiteSpace(message))
+        //        AddMCIMessage(message, messageType, messageTimeOut);
 
-            if (HttpContext.Request.IsAjaxRequest())
-                return Json(new { url = redirectTo }, JsonRequestBehavior.AllowGet);
-            else
-                return Redirect(redirectTo);
+        //    if (HttpContext.Request.IsAjaxRequest())
+        //        return Json(new { url = redirectTo }, JsonRequestBehavior.AllowGet);
+        //    else
+        //        return Redirect(redirectTo);
+        //}
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var aspNetCookieName = ConfigurationManager.AppSettings["ASPNETCookieName"];
+            var ctx = filterContext.HttpContext;
+            if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
+            {
+                //if (Session["IsLoggedIn"] != null)
+                //{
+                //    if (ctx.Session[aspNetCookieName] == null && ctx.Request.Cookies[aspNetCookieName] != null)
+                //    {
+                //        ctx.Session[aspNetCookieName] = ctx.Request.Cookies[aspNetCookieName].Value;
+                //    }
+                //    if (ctx.Session[aspNetCookieName] != null)
+                //    {
+                //        if (ctx.Request.Cookies[aspNetCookieName].Value != ctx.Session[aspNetCookieName].ToString())
+                //        {
+                //            Session.Abandon();
+                //            HttpContext.GetOwinContext().Get<ApplicationSignInManager>().AuthenticationManager.SignOut();
+                //            Util.ClearCookiesAndSessions();
+                //            filterContext.Result = RedirectToAction("Login", "Account")
+                //                .WithDangerSnackbar("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.");
+                //        }
+                //    }
+                //}
+
+                if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
+                {
+                    //var userIdentity = User.Identity as UserProfileIdentity;
+                    //var sToken = Util.FetchTokenBySecureCookie();
+                    //Trace.TraceInformation("Calim: {0} Token: {1}", userIdentity.GetClaimValue("Id"), EncryptionHelper.Decrypt(sToken));
+
+                    //if (String.IsNullOrWhiteSpace(sToken)
+                    //    || userIdentity.GetClaimValue("Id") != EncryptionHelper.Decrypt(sToken))
+                    //    Response.Redirect("/account/logout");
+                }
+            }
+            base.OnActionExecuting(filterContext);
         }
 
+        protected bool IsRefresh()
+        {
+            return Convert.ToBoolean(RouteData.Values["IsRefreshed"]);
+        }
+
+        void IDisposable.Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

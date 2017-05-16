@@ -16,9 +16,9 @@ namespace RefactorName.SqlServerRepository
         public virtual TBusinessEntity Create<TBusinessEntity>(TBusinessEntity entity)
             where TBusinessEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
+                using (AppDbContext context = new AppDbContext())
                 {
                     TBusinessEntity updatedEntity = context.UpdateGraph(entity);
 
@@ -34,19 +34,19 @@ namespace RefactorName.SqlServerRepository
 
                     return result;
                 }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 
         public virtual TBusinessEntity Update<TBusinessEntity>(TBusinessEntity entity)
             where TBusinessEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
+                using (AppDbContext context = new AppDbContext())
                 {
                     TBusinessEntity updatedEntity = context.UpdateGraph<TBusinessEntity>(entity);
 
@@ -62,19 +62,19 @@ namespace RefactorName.SqlServerRepository
 
                     return result;
                 }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 
         public virtual bool Delete<TBusinessEntity>(TBusinessEntity entity)
             where TBusinessEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
+                using (AppDbContext context = new AppDbContext())
                 {
                     context.Set<TBusinessEntity>().Attach(entity);
                     context.Set<TBusinessEntity>().Remove(entity);
@@ -91,19 +91,19 @@ namespace RefactorName.SqlServerRepository
 
                     return result;
                 }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 
         public bool Delete<TBusinessEntity>(IEnumerable<TBusinessEntity> entities)
             where TBusinessEntity : class, new()
         {
-            using (AppDbContext context = new AppDbContext())
+            try
             {
-                try
+                using (AppDbContext context = new AppDbContext())
                 {
                     context.Set<TBusinessEntity>().RemoveRange(entities);
 
@@ -119,10 +119,10 @@ namespace RefactorName.SqlServerRepository
 
                     return result;
                 }
-                catch (Exception ex)
-                {
-                    throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ThrowHelper.ReThrow<TBusinessEntity>(ex);
             }
         }
 

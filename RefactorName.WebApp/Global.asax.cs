@@ -1,6 +1,6 @@
 ﻿using RefactorName.Domain;
 using RefactorName.Core;
-using RefactorName.Web.Binders;
+using RefactorName.WebApp.Binders;
 using System;
 using System.Linq;
 using System.IO;
@@ -10,14 +10,18 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using RefactorName.Web.Infrastructure.Encryption;
+using RefactorName.WebApp.Infrastructure.Encryption;
+using RefactorName.WebApp.Infrastructure;
+using RefactorName.Core.Basis;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
+            Factory.Initialize();
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -59,7 +63,7 @@ namespace RefactorName.Web
             Session.Clear();
         }
 
-        protected void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        protected static void Application_PreSendRequestHeaders(object sender, EventArgs e)
         {
             HttpContext.Current.Response.Headers.Remove("X-Powered-By");
             HttpContext.Current.Response.Headers.Remove("X-AspNet-Version");
@@ -72,7 +76,7 @@ namespace RefactorName.Web
             //HttpContext.Current.Response.Headers.Add("content-security-policy", "script-src 'self' 'unsafe-inline' 'unsafe-eval'");
         }
 
-        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        protected static void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             var oldPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
             if (oldPrincipal != null)
@@ -89,5 +93,9 @@ namespace RefactorName.Web
 
         }
 
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError().GetBaseException();
+        }
     }
 }

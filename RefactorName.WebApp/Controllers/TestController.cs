@@ -1,5 +1,6 @@
-﻿using RefactorName.Web.Filters;
-using RefactorName.Web.Models;
+﻿using RefactorName.WebApp.Filters;
+using RefactorName.WebApp.Models;
+using RefactorName.WebApp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
-namespace RefactorName.Web.Controllers
+namespace RefactorName.WebApp.Controllers
 {
     public class TestController : BaseController
     {
@@ -43,22 +44,22 @@ namespace RefactorName.Web.Controllers
             switch (action)
             {
                 case "error":
-                    AddMCIMessage("Server Error Message", MCIMessageType.Danger);
+                    ShowDangerSnackbar("Server Error Message");
                     break;
                 case "sError":
-                    AddMCIMessage("Server sticked Error Message", MCIMessageType.Danger, 0);
+                    ShowDangerSnackbar("Server sticked Error Message");
                     break;
                 case "warning":
-                    AddMCIMessage("Server warning Message", MCIMessageType.Warning);
+                    ShowWarningSnackbar("Server warning Message");
                     break;
                 case "info":
-                    AddMCIMessage("Server info Message", MCIMessageType.Info);
+                    ShowInfoSnackbar("Server info Message");
                     break;
                 case "success":
-                    AddMCIMessage("Server success Message", MCIMessageType.Success);
+                    ShowSuccessSnackbar("Server success Message");
                     break;
                 default:
-                    AddMCIMessage("Server Message", MCIMessageType.Success);
+                    ShowSuccessSnackbar("Server Message");
                     break;
             }
             return View();
@@ -153,8 +154,8 @@ namespace RefactorName.Web.Controllers
             }
 
             //proceed to next step
-            AddMCIMessage("Yes!! This is the right captcha", MCIMessageType.Success);
-            return View(model);
+            return View(model)
+                .WithSuccessSnackbar("Yes!! This is the right captcha");
         }
 
         [HttpGet]
@@ -278,7 +279,7 @@ namespace RefactorName.Web.Controllers
         [Ajax]
         public ActionResult ReturnAjaxErrorMessage()
         {
-            return JsonErrorMessage("I used return JsonErrorMessage(<the message>) to return this message to Failure event. it is in result.responseJSON.message");
+            return DangerSnackbar("I used return JsonErrorMessage(<the message>) to return this message to Failure event. it is in result.responseJSON.message");
         }
 
         [HttpPost]
@@ -287,7 +288,7 @@ namespace RefactorName.Web.Controllers
         {
             Thread.Sleep(2000);
             if (example == 2)
-                return JsonErrorMessage("Some thing is wrong!");
+                return DangerSnackbar("Some thing is wrong!");
 
             else if (example == 1)
                 return Content("This is our response");
@@ -493,11 +494,11 @@ namespace RefactorName.Web.Controllers
         {
             var mapchart = new MciChart() { Title = "Map Chart Title", SubTitle = "Map Chart Sub Title", Data = new List<MciChartCategory>() };
 
-            var data = new List<MciChartCategory>(){ 
+            var data = new List<MciChartCategory>(){
                 new MciChartCategory()
                 {
                     Category = "sa-ri",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 1}
                     ,new MciChartValues(){ Name="المخالفات", Value = 2.5f}
                     ,new MciChartValues(){ Name="التجمعات", Value = 3  }
@@ -506,7 +507,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-mk",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 2}
                     ,new MciChartValues(){ Name="المخالفات", Value = 3}
                     ,new MciChartValues(){ Name="التجمعات", Value = 4  }
@@ -515,7 +516,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-md",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 3}
                     ,new MciChartValues(){ Name="المخالفات", Value = 4}
                     ,new MciChartValues(){ Name="التجمعات", Value = 1 }
@@ -524,7 +525,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-qs",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 4}
                     ,new MciChartValues(){ Name="المخالفات", Value = 1}
                     ,new MciChartValues(){ Name="التجمعات", Value = 2 }
@@ -533,7 +534,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-sh",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 1}
                     ,new MciChartValues(){ Name="المخالفات", Value = 2}
                     ,new MciChartValues(){ Name="التجمعات", Value = 3}
@@ -542,7 +543,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-as",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 2}
                     ,new MciChartValues(){ Name="المخالفات", Value = 3}
                     ,new MciChartValues(){ Name="التجمعات", Value = 4}
@@ -551,7 +552,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-ha",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 3}
                     ,new MciChartValues(){ Name="المخالفات", Value = 4}
                     ,new MciChartValues(){ Name="التجمعات", Value = 1 }
@@ -560,7 +561,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-tb",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 4}
                     ,new MciChartValues(){ Name="المخالفات", Value = 1}
                     ,new MciChartValues(){ Name="التجمعات", Value = 2 }
@@ -569,7 +570,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-ba",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 1}
                     ,new MciChartValues(){ Name="المخالفات", Value = 2}
                     ,new MciChartValues(){ Name="التجمعات", Value = 3 }
@@ -578,7 +579,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-hs",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 2}
                     ,new MciChartValues(){ Name="المخالفات", Value = 3}
                     ,new MciChartValues(){ Name="التجمعات", Value = 4 }
@@ -587,7 +588,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-jf",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 3}
                     ,new MciChartValues(){ Name="المخالفات", Value = 4}
                     ,new MciChartValues(){ Name="التجمعات", Value = 1}
@@ -596,7 +597,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-jz",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 4}
                     ,new MciChartValues(){ Name="المخالفات", Value = 1}
                     ,new MciChartValues(){ Name="التجمعات", Value = 2 }
@@ -605,7 +606,7 @@ namespace RefactorName.Web.Controllers
                 new MciChartCategory()
                 {
                     Category = "sa-nj",
-                    Values = new List<MciChartValues>(){ 
+                    Values = new List<MciChartValues>(){
                     new MciChartValues(){ Name="الزيارات", Value = 4}
                     ,new MciChartValues(){ Name="المخالفات", Value = 1}
                     ,new MciChartValues(){ Name="التجمعات", Value = 2}
@@ -624,20 +625,21 @@ namespace RefactorName.Web.Controllers
 
         public ActionResult Index()
         {
-            AddMCIMessage("فقط معلومات , ملاحظة فقط معلومات , ملاحظة", MCIMessageType.Info, 0);
             //MCIAlert.Alert(this, "حدث خطأ, الرجاء المحاولة ثانية", AlertType.Danger, 10);
             //MCIAlert.Alert(this, "تم ارسال البيانات بنجاح", AlertType.Success, 10);
             //MCIAlert.Alert(this, "الرجاء الانتباه, يجب الموافقة على شروط التسجيل أولاً", AlertType.Warning, 0);
             FillSampleData();
-            return View(new TestEntity());
+            return View(new TestEntity())
+                .WithInfoSnackbar("فقط معلومات , ملاحظة فقط معلومات , ملاحظة");
         }
 
         [HttpPost]
         public ActionResult Index(Models.TestEntity model, string action, string testText, DateTime? datePicker1)
         {
             FillSampleData();
-            AddMCIMessage("submitted: action:" + action);
-            return View(model);
+
+            return View(model)
+                .WithInfoSnackbar("submitted: action:{0}", action);
         }
 
         [OutputCache(VaryByParam = "*", NoStore = true, Duration = 0)]
@@ -657,10 +659,10 @@ namespace RefactorName.Web.Controllers
         public ActionResult addl1Test(int? Value)
         {
             if (!Value.HasValue)
-                return JsonErrorMessage("value can't be null");
+                return DangerSnackbar("value can't be null");
 
             if (Value == 1)
-                return JsonErrorMessage("your value can't be 1");
+                return DangerSnackbar("your value can't be 1");
             return Content("addl1Test success: Value = " + Value.ToString());
         }
 
@@ -746,7 +748,7 @@ namespace RefactorName.Web.Controllers
                 if (ID == 1)
                 {
                     errMSG = "not allowed";
-                    return JsonErrorMessage("غير مسموح");
+                    return DangerSnackbar("غير مسموح");
                     //throw new Exception();
                 }
                 System.Threading.Thread.Sleep(2000);
@@ -788,7 +790,7 @@ namespace RefactorName.Web.Controllers
             }
             catch
             {
-                return JsonErrorMessage("عفواً. حدث خطأ أثناء حذف العنصر");
+                return DangerSnackbar("عفواً. حدث خطأ أثناء حذف العنصر");
             }
         }
 

@@ -1,4 +1,4 @@
-﻿@model RefactorName.Web.Models.MciChart
+﻿@model RefactorName.WebApp.Models.MciChart
 
 @section Scripts
 {
@@ -8,7 +8,7 @@
 
 @{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "Map Chart";
+    LayoutModel.Title = "Map Chart";
 }
 
 <div class="panel panel-default">
@@ -17,9 +17,9 @@
 
         @using (Html.MCIBeginItemsRow())
         {
-            @Html.MciChart(Model, MciChartType.MapChart, "divMapChart1", 12, "400px", new RefactorName.Web.Models.MciChartOptions() { Map_Bubble = true })
+            @Html.MciChart(Model, MciChartType.MapChart, "divMapChart1", 12, "400px", new RefactorName.WebApp.Models.MciChartOptions() { Map_Bubble = true })
 
-            @Html.MciChart(Model, MciChartType.MapChart, "divMapChart2", 12, "400px", new RefactorName.Web.Models.MciChartOptions() { Map_Bubble = false })
+            @Html.MciChart(Model, MciChartType.MapChart, "divMapChart2", 12, "400px", new RefactorName.WebApp.Models.MciChartOptions() { Map_Bubble = false })
 
         }
 

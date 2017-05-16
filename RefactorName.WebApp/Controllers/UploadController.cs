@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
-using RefactorName.Web.Models;
+using RefactorName.WebApp.Models;
 
-namespace RefactorName.Web.Controllers
+namespace RefactorName.WebApp.Controllers
 {
     public class UploadController : Controller
     {

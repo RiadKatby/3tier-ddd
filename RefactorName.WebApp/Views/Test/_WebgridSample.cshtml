@@ -1,4 +1,4 @@
-﻿@model List<RefactorName.Web.Models.TestEntity>
+﻿@model List<RefactorName.WebApp.Models.TestEntity>
 @{
     WebGrid testGrid = new WebGrid(Model, canPage: true, rowsPerPage: 3, ajaxUpdateContainerId: "grid_div");
 }
@@ -38,7 +38,7 @@
            OnSuccess = "OnEditOpen",
            OnFailure = "OnEditOpenFail"
        })
-                                    @Ajax.MCIAjaxLinkWithConfirm("حذف", "تأكيد", "سيتم حذف العنصر. هل أنت متأكد؟", "DeleteAction", "", new { id = item.ID },
+                                    @Ajax.MCIAjaxLinkWithConfirm("حذف", new ConfirmInfo("تأكيد", "سيتم حذف العنصر. هل أنت متأكد؟"), "DeleteAction", "", new { id = item.ID },
             new AjaxOptions()
             {
                 HttpMethod = "post",
@@ -48,7 +48,7 @@
                 OnFailure = "on_failure_with_Error"
             }, null)
 
-            @Ajax.MCIAjaxLinkWithConfirm("<i class='fa fa-trash'></i>", "تأكيد", "سيتم حذف العنصر. هل أنت متأكد؟", "DeleteAction", "", new { id = item.ID },
+            @Ajax.MCIAjaxLinkWithConfirm("<i class='fa fa-trash'></i>", new ConfirmInfo("تأكيد", "سيتم حذف العنصر. هل أنت متأكد؟"), "DeleteAction", "", new { id = item.ID },
             new AjaxOptions()
             {
                 HttpMethod = "post",
@@ -72,11 +72,11 @@
         $("#EditDiag").modal("show");
     }
     function OnEditOpenFail(res) {
-        mciMessage(res.responseText, mciMessageType.Danger, 10);
+        snackbar(res.responseText, snackbarType.Danger, 10);
     }
 
     function DeleteActionOnSuccess() {
-        mciMessage('تم حذف العنصر بنجاح', mciMessageType.Success, 10);
+        snackbar('تم حذف العنصر بنجاح', snackbarType.Success, 10);
     }
 
 </script>

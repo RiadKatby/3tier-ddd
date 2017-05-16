@@ -1,10 +1,12 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+﻿@model ErrorModel
 
-@{
-    ViewBag.Title = "Error";
-}
+@LayoutModel.Title = "Error";
 
-<h1 class="text-danger">عملية غير شرعية.</h1>
-<h2 class="text-danger">لقد قمت بعملية غير شرعية داخل النظام.</h2>
+<h1 class="text-danger">@Model.ErrorTitle</h1>
+<h3 class="text-danger">@Model.Description</h3>
 <p><b>إذا كنت تعتقد أن العملية شرعية الرجاء الاتصال بمدير النظام لحل المشكلة. وشكراً.</b></p>
+<h4>@Model.ControllerName - @Model.ActionName</h4>
+
+<h4>@Model.EntityName</h4>
+<h4>@Model.ErrorType</h4>
 

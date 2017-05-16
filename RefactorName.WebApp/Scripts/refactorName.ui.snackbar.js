@@ -1,5 +1,5 @@
 ﻿
-var mciMessageType = {
+var snackbarType = {
     Success: 'success',
     Warning: 'warning',
     Danger: 'danger',
@@ -7,14 +7,15 @@ var mciMessageType = {
 };
 
 $(window).load(function () {
-    showAlerts();
+    showSnackbars();
 });
-function showAlerts(obj) {
+
+function showSnackbars(obj) {
     obj = obj || $(".message-box div");
     obj.each(function (i) {
 
         var alert = $(this);
-        var timeout = alert.data("mcimessage-timeout");
+        var timeout = alert.data("snackbar-timeout");
         if (alert.attr("class").indexOf("alert-danger") > 0) {
             alert.prepend(' <strong type="button" class="glyphicon glyphicon-remove"></strong> ');
         }
@@ -37,14 +38,14 @@ function showAlerts(obj) {
         });
         if (timeout != 0) {
             setTimeout(function () {
-                hideMCIMessage(alert);
+                hideSnackbars(alert);
             }, timeout);
         }
 
     });
-    //closeAllHideOrShow();
 }
-function hideMCIMessage(alert) {
+
+function hideSnackbars(alert) {
     alert.css("overflow", "hidden");
     alert.css("height", "43px");
     alert.animate({ "width": "0", "opacity": "0", "margin-right": "50%" }, 400, function () {
@@ -52,6 +53,7 @@ function hideMCIMessage(alert) {
         closeAllHideOrShow();
     });
 }
+
 function closeAllHideOrShow() {
     var count = $(".message-box  div.alert").length;
 
@@ -64,14 +66,17 @@ function closeAllHideOrShow() {
     }
 }
 
-function mciMessage(msg, mciMessageType, timeout) {
+function snackbar(msg, snackbarType, timeout) {
+    /// <summary>Show a Bootstrap Alert Message on the Snackbar area.</summary>
+    /// <param name="msg" type="string">Text message to be shown on Snackbar area.</param>
+    /// <param name="snackbarType" type="snackbarType">Warning, Success, etc type of message.</param>
+    /// <param name="timeout" type="Number">show timeout of message in seconds, 0 mean forever.</param>
     $(".message-box .closeall").remove();
     timeout = (timeout == undefined ? 5 : timeout) * 1000;
-    mciMessageType = mciMessageType || "warning";
-    var alert = $("<div class='center-block alert alert-dismissible alert-" + mciMessageType.toLowerCase() + "'  data-mcimessage-timeout='" + timeout + "'>" + msg + "</div>").appendTo(".message-box");
+    snackbarType = snackbarType || "warning";
+    var alert = $("<div class='center-block alert alert-dismissible alert-" + snackbarType.toLowerCase() + "'  data-snackbar-timeout='" + timeout + "'>" + msg + "</div>").appendTo(".message-box");
 
-    showAlerts(alert);
-
+    showSnackbars(alert);
 }
 
 $(document).on("click", ".message-box .closeall", function (e) {
@@ -85,5 +90,5 @@ $(document).on("click", ".message-box .closeall", function (e) {
 });
 
 $(document).on("click", ".message-box .close", function () {
-    hideMCIMessage($(this).closest("div"));
+    hideSnackbars($(this).closest("div"));
 });

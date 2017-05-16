@@ -37,7 +37,7 @@ namespace RefactorName.Core
         int RedisServerPort { get; }
 
         /// <summary>
-        /// Gets redis server password.
+        /// Gets Redis server password.
         /// </summary>
         string RedisServerPassword { get; }
 
@@ -45,5 +45,38 @@ namespace RefactorName.Core
         /// Gets value determines wether SSL is used to connect redis server or not.
         /// </summary>
         bool RedisServerSSL { get; }
+
+        /// <summary>
+        /// Gets or sets whether bundling and minification of bundle references is enabled.
+        /// </summary>
+        bool EnableOptimizations { get; }
+
+        /// <summary>
+        /// Gets Danger Snackbar Message life time timeout.
+        /// </summary>
+        int SnackbarDangerMessageTimeout { get; }
+
+        /// <summary>
+        /// Gets Success Snackbar Message life time timeout.
+        /// </summary>
+        int SnackbarSuccessMessageTimeout { get; }
+
+        /// <summary>
+        /// Gets Info Snackbar Message life time timeout.
+        /// </summary>
+        int SnackbarInfoMessageTimeout { get; }
+
+        /// <summary>
+        /// Gets Warning Snackbar Message life time timeout.
+        /// </summary>
+        int SnackbarWarningMessageTimeout { get; }
+
+        string EncryptionKey { get; }
+
+        string EncryptionIV { get; }
+
+        string EncryptionPrefix { get; }
+
+        int HashIterationCounts { get; }
     }
 }

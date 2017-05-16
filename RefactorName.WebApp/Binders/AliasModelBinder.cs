@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class AliasModelBinder : DefaultModelBinder
     {

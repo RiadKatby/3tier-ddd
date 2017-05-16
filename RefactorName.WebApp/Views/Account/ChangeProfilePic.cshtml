@@ -1,7 +1,5 @@
-﻿@model RefactorName.Web.Models.ChangeProfilePictureModel
-@{
-    ViewBag.Title = "تعديل الصورة الشخصية";
-}
+﻿@model RefactorName.WebApp.Models.ChangeProfilePictureModel
+@LayoutModel.Title = "تعديل الصورة الشخصية";
 
 @section Scripts
 {
@@ -37,7 +35,7 @@
         <div class="panel-footer">
             @Html.MCIStartFormItemsRow()
             <div class="col-xs-12">
-                @Html.MCISubmitButtonWithConfirm("مسح الصورة", "حذف الصورة", "هل أنت متأكد من حذف صورتك الشخصية من النظام؟!", "action", "delete", new { @class = "btn btn-danger" })
+                @Html.MCISubmitButtonWithConfirm("مسح الصورة", new ConfirmInfo("حذف الصورة", "هل أنت متأكد من حذف صورتك الشخصية من النظام؟!"), "action", "delete", new { @class = "btn btn-danger" })
                 <div class="pull-left">
                     <a class="btn btn-default" href='@Request["redirectTo"]'>إلغاء</a>
                     @Html.MCISubmitButton("تعديل الصورة", "action", "save", new { @class = "btn btn-primary" })

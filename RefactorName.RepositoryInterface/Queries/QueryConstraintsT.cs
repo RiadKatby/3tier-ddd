@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace RefactorName.RepositoryInterface.Queries
 {
     /// <summary>
-    /// Typed constraints
+    /// Providers abilities to filter, sort, page, and cache specific set of result from Repository.
     /// </summary>
     /// <typeparam name="T">Model to query</typeparam>
     public class QueryConstraints<T> : IQueryConstraints<T> where T : class
@@ -163,8 +163,8 @@ namespace RefactorName.RepositoryInterface.Queries
         /// <returns>Current instance</returns>
         public IQueryConstraints<T> SortBy(string propertyName, SortOrderEnum sortDir)
         {
-            if (propertyName == null)
-                throw new ArgumentNullException(nameof(propertyName));
+            if (string.IsNullOrEmpty(propertyName))
+                return this;
 
             ValidatePropertyName(propertyName);
 

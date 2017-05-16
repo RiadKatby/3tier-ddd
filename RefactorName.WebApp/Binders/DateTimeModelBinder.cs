@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Web.Mvc;
 
-namespace RefactorName.Web.Binders
+namespace RefactorName.WebApp.Binders
 {
     public class DateTimeModelBinder : DefaultModelBinder
     {

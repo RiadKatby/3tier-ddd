@@ -1,0 +1,13 @@
+﻿@model RefactorName.WebApp.Models.ErrorModel
+
+@LayoutModel.Title = "NotFoundError";
+
+<h2>@Model.ErrorTitle</h2>
+<h4>@Model.Description</h4>
+<h4>@Model.EntityName - @Model.EntityId</h4>
+<h4>@Model.ControllerName - @Model.ActionName</h4>
+
+<code>
+    @Model.Exception.ToString()
+</code>
+

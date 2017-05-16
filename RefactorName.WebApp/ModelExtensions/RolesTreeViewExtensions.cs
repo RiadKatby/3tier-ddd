@@ -1,10 +1,10 @@
-﻿using RefactorName.Web.Models;
+﻿using RefactorName.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace RefactorName.Web.ModelExtensions
+namespace RefactorName.WebApp.ModelExtensions
 {
     public static class RolesTreeViewExtensions
     {

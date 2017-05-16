@@ -6,7 +6,7 @@ using System.Linq;
 using System;
 using System.Diagnostics;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     //public static class ADHelper
     //{

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(RefactorName.Web.Startup))]
+[assembly: OwinStartupAttribute(typeof(RefactorName.WebApp.Startup))]
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public partial class Startup
     {

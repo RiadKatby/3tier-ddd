@@ -1,16 +1,18 @@
-﻿using System.Web.Mvc;
+﻿using RefactorName.Domain;
+using System.Web.Mvc;
+using RefactorName.WebApp.Helpers;
+using System;
 
-namespace RefactorName.Web.Controllers
+namespace RefactorName.WebApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         //
         // GET: /Home/
 
         public ActionResult Index()
-        {            
+        {
             return View();
         }
-
     }
 }

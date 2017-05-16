@@ -1,7 +1,8 @@
-﻿using System.Web;
+﻿using RefactorName.Core;
+using System.Web;
 using System.Web.Optimization;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class BundleConfig
     {
@@ -38,7 +39,8 @@ namespace RefactorName.Web
             //Common JS
             bundles.Add(new ScriptBundle("~/bundles/common").Include(
                                 "~/Scripts/common.js",
-                                "~/Scripts/MCI-Alerts.js",
+                                "~/Scripts/refactorName.ui.snackbar.js",
+                                "~/Scripts/refactorName.ui.confirmable-action-link.js",
                                 "~/Scripts/App.js",
                                 "~/Scripts/MCI.Validations.js"));
 
@@ -126,7 +128,7 @@ namespace RefactorName.Web
                 "~/Content/Site.css",
                 "~/Content/Main.css",
                 "~/Content/style.css",
-                "~/Content/MCI-Alerts.css",
+                "~/Content/refactorName.ui.snackbar.css",
                 "~/Content/font-awesome.css"
                 ));
 
@@ -173,12 +175,8 @@ namespace RefactorName.Web
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
-#if (DEBUG)
-            BundleTable.EnableOptimizations = false;
-#else
-            BundleTable.EnableOptimizations = true;
-#endif
 
+            BundleTable.EnableOptimizations = false;// Settings.Provider.EnableOptimizations;
         }
     }
 }

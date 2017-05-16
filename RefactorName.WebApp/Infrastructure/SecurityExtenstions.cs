@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class SecurityExtenstions
     {

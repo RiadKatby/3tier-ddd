@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using RefactorName.Core;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class Extenstions
     {

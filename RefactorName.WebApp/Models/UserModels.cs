@@ -5,7 +5,7 @@ using MCI.Mvc.Validation.Web;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RefactorName.Web.Models
+namespace RefactorName.WebApp.Models
 {
     public class UserModel
     {

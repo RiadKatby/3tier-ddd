@@ -9,6 +9,7 @@ namespace RefactorName.Core
 {
     /// <summary>
     /// Represent errors that is occur during business entity validation.
+    /// TODO: ToString() must be overridden to contains all Validation Results.
     /// </summary>
     [Serializable]
     public class ValidationException : Exception
@@ -38,6 +39,20 @@ namespace RefactorName.Core
         {
             this.ValidationResults = validationResults;
             this.EntityName = entityName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationException"/>  class with a specified business entity name and set of validation messages.
+        /// </summary>
+        /// <param name="entityName">business entity name that has invalid information.</param>
+        /// <param name="validationResults">set of validation messages.</param>
+        public ValidationException(string entityName, IEnumerable<string> validationResults)
+            : this(string.Format("[{0}] Entity contains invalid information.", entityName))
+        {
+            ValidationResults = (from x in validationResults
+                                 select new ValidationResult(x))
+                                     .ToArray();
+            EntityName = entityName;
         }
 
         /// <summary>
@@ -91,15 +106,15 @@ namespace RefactorName.Core
         protected ValidationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            EntityName = info.GetString("EntityName");
-            ValidationResults = info.GetValue("ValidationResults", typeof(IEnumerable<ValidationResult>)) as IEnumerable<ValidationResult>;
+            EntityName = info.GetString(nameof(EntityName));
+            ValidationResults = info.GetValue(nameof(ValidationResults), typeof(IEnumerable<ValidationResult>)) as IEnumerable<ValidationResult>;
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue("EntityName", EntityName);
-            info.AddValue("ValidationResults", ValidationResults, typeof(IEnumerable<ValidationResult>));
+            info.AddValue(nameof(EntityName), EntityName);
+            info.AddValue(nameof(ValidationResults), ValidationResults, typeof(IEnumerable<ValidationResult>));
         }
     }
 }

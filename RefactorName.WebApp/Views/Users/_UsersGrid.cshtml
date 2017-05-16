@@ -35,7 +35,7 @@
             {
                 <span class="text-danger">غير مفعل</span>
             }</text>),
-                     usersGrid.Column("", header: "تعديل", style: "action col70", format: item => Html.MCIEncryptedAcionLink("<i class='fa fa-search'></i>", "EditUser", routeValues: new { UserName = item.UserName }, onlyForRoles: RefactorName.Core.RoleNames.UsersEdit))))
+                     usersGrid.Column("", header: "تعديل", style: "action col70", format: item => Html.EncryptedActionLink("<i class='fa fa-search'></i>", "EditUser", routeValues: new { UserName = item.Username }, permissionCodes: RefactorName.Core.RoleNames.UsersEdit))))
 
         </div>
     }

@@ -1,5 +1,6 @@
 ﻿using Mci.Security.Cryptography;
-using RefactorName.Web.Infrastructure.Encryption;
+using RefactorName.WebApp.Infrastructure;
+using RefactorName.WebApp.Infrastructure.Encryption;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +18,7 @@ using System.Web.Routing;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class Util
     {
@@ -447,6 +448,7 @@ namespace RefactorName.Web
 
         #region Encryption
 
+        [Obsolete("Need to check")]
         internal static RouteValueDictionary EncryptRouteValues(object routeValues)
         {
             RouteValueDictionary encryptedRouteValue = new RouteValueDictionary();
@@ -466,17 +468,18 @@ namespace RefactorName.Web
                 queryString += d.Keys.ElementAt(i) + "=" + d.Values.ElementAt(i);
             }
 
-            encryptedValue = StringEncrypter.Obj.Encrypt(queryString);
+            encryptedValue = StringEncrypter.UrlEncrypter.Encrypt(queryString);
 
             encryptedRouteValue["q"] = HttpUtility.UrlEncode(encryptedValue);
             return encryptedRouteValue;
         }
 
+        [Obsolete("Need to check")]
         internal static Dictionary<string, object> RouteValuesFromEncryptedQueryString(string encryptedQueryString)
         {
             Dictionary<string, object> decryptedParameters = new Dictionary<string, object>();
 
-            string decryptedString = StringEncrypter.Obj.Decrypt(encryptedQueryString);
+            string decryptedString = StringEncrypter.UrlEncrypter.Decrypt(encryptedQueryString);
             string[] paramsArrs = decryptedString.Split('?', '&');
 
             for (int i = 0; i < paramsArrs.Length; i++)

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace RefactorName.Web.Controllers
+namespace RefactorName.WebApp.Controllers
 {
 
     public class SharedController : Controller
@@ -66,22 +66,5 @@ namespace RefactorName.Web.Controllers
 
             return img;
         }
-
-        public ActionResult Error()
-        {
-            return View();
-        }
-
-        public ActionResult Unauthorized()
-        {
-            return View();
-        }
-
-        public ActionResult PageNotFound()
-        {
-            return View();
-        }
-
-
     }
 }

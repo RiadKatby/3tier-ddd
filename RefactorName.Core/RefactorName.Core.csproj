@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +52,8 @@
   <ItemGroup>
     <Compile Include="Basis\AuditableEntity.cs" />
     <Compile Include="Basis\BaseEntity.cs" />
+    <Compile Include="Basis\BusinessRule.cs" />
+    <Compile Include="Basis\Factory.cs" />
     <Compile Include="Basis\IEntity.cs" />
     <Compile Include="Basis\IQueryResult.cs" />
     <Compile Include="Basis\ISettingsProvider.cs" />
@@ -65,7 +68,6 @@
     <Compile Include="Exceptions\PermissionException.cs" />
     <Compile Include="Exceptions\RepositoryException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
-    <Compile Include="Exceptions\WebServiceException.cs" />
     <Compile Include="Identity\IdentityRole.cs" />
     <Compile Include="Identity\IdentityRoleClaim.cs" />
     <Compile Include="Identity\IdentityUser.cs" />

@@ -22,6 +22,16 @@ namespace RefactorName.Core
         /// </summary>
         public string UserName { get; private set; }
 
+        public string Title
+        {
+            get { return "Insufficient Permission"; }
+        }
+
+        public string Description
+        {
+            get { return "you either trying to access resource when you didn't login or you don't have sufficient permission."; }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionException"/> class.
         /// </summary>
@@ -61,15 +71,15 @@ namespace RefactorName.Core
         protected PermissionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            PermissionCode = info.GetString("PermissionCode");
-            UserName = info.GetString("UserName");
+            PermissionCode = info.GetString(nameof(PermissionCode));
+            UserName = info.GetString(nameof(UserName));
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue("PermissionCode", PermissionCode);
-            info.AddValue("UserName", UserName);
+            info.AddValue(nameof(PermissionCode), PermissionCode);
+            info.AddValue(nameof(UserName), UserName);
         }
     }
 }

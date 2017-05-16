@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessRules.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Identity\RoleService.cs" />
     <Compile Include="Identity\UserSevice.cs" />

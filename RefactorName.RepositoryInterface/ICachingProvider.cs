@@ -44,6 +44,14 @@ namespace RefactorName.RepositoryInterface
         /// <returns>True, if item exist in cache. False otherwise.</returns>
         bool TryGet<T>(string key, out T value);
 
+        /// <summary>
+        /// Retrieve the specified value of <paramref name="key"/> and increment it by <paramref name="incrementValue"/>, if value is not already stored <paramref name="defaultValue"/> will be used.
+        /// </summary>
+        /// <param name="key">key of cached item.</param>
+        /// <param name="defaultValue">default value that will be incremented if no already stored value.</param>
+        /// <param name="incrementValue">the value that will increase the value of key.</param>
+        /// <param name="priority">cache item priority.</param>
+        /// <returns></returns>
         int Increment(string key, int defaultValue, int incrementValue, CacheItemPriority priority = CacheItemPriority.Default);
 
     }

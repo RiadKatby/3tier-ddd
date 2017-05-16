@@ -1,7 +1,7 @@
 ﻿using RefactorName.Core;
 using RefactorName.Domain;
-using RefactorName.Web.Filters;
-using RefactorName.Web.Models;
+using RefactorName.WebApp.Filters;
+using RefactorName.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,13 +9,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
-using RefactorName.Web.Infrastructure.Encryption;
+using RefactorName.WebApp.Infrastructure.Encryption;
+using RefactorName.WebApp.Helpers;
 
-namespace RefactorName.Web.Controllers
-{    
+namespace RefactorName.WebApp.Controllers
+{
     public class UsersController : BaseController
     {
-        int pageSize = 10;
+        readonly int pageSize = 10;
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
@@ -54,8 +55,9 @@ namespace RefactorName.Web.Controllers
             catch (RepositoryException repEx)
             {
                 Trace.TraceError("A Repository Error has occurred as the followings: {0}", repEx.ToString());
-                AddMCIMessage("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger, 10);
-                return View();
+
+                return View()
+                    .WithDangerSnackbar("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.");
             }
         }
 
@@ -67,7 +69,7 @@ namespace RefactorName.Web.Controllers
             {
                 if (page.HasValue || !string.IsNullOrEmpty(sort))  //paging or sorting requested
                 {
-                    model.userSearchCriteriaModel = UserSearchCriteriaModelStored;  //take stored criteria                
+                    model.userSearchCriteriaModel = UserSearchCriteriaModelStored;  //take stored criteria
                     //update paging sorting properties
                     model.userSearchCriteriaModel.PageSize = pageSize;
                     model.userSearchCriteriaModel.PageNumber = page ?? 1;
@@ -82,7 +84,7 @@ namespace RefactorName.Web.Controllers
             catch (Exception repEx)
             {
                 Trace.TraceError("A Repository Error has occurred as the followings: {0}", repEx.ToString());
-                return JsonErrorMessage("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.");
+                return DangerSnackbar("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.");
             }
         }
 
@@ -110,7 +112,9 @@ namespace RefactorName.Web.Controllers
             catch (RepositoryException repEx)
             {
                 Trace.TraceError("A Repository Error has occurred as the followings: {0}", repEx.ToString());
-                return RedirectwithMCIMessage(Url.Action("Index"), "عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger, 10);
+
+                return Redirect(Url.Action(nameof(Index)))
+                    .WithDangerSnackbar("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.");
             }
         }
 
@@ -135,9 +139,10 @@ namespace RefactorName.Web.Controllers
                 if (result.Exception != null)
                 {
                     if (result.Exception.InnerException != null)
-                        AddMCIMessage(result.Exception.InnerException.Message, MCIMessageType.Danger, 0);
+                        ShowDangerSnackbar(result.Exception.InnerException.Message);
                     else
-                        AddMCIMessage(result.Exception.Message, MCIMessageType.Danger, 0);
+                        ShowDangerSnackbar(result.Exception.Message);
+
                     model.FillDDLs();
                     return View(model);
                 }
@@ -145,15 +150,16 @@ namespace RefactorName.Web.Controllers
                 {
                     //translate known errors
                     if (result.Result.Errors.Any(e => e.Contains("is already taken.")))
-                        AddMCIMessage("عفواً. المستخدم موجود مسبقاً. الرجاء اختيار اسم آخر.", MCIMessageType.Danger, 0);
+                        ShowDangerSnackbar("عفواً. المستخدم موجود مسبقاً. الرجاء اختيار اسم آخر.");
                     else
-                        AddMCIMessage(string.Join(",", result.Result.Errors), MCIMessageType.Danger, 0);
+                        ShowDangerSnackbar(string.Join(",", result.Result.Errors));
 
                     model.FillDDLs();
                     return View(model);
                 }
 
-                return RedirectwithMCIMessage(Url.Action("Index"), "تم إضافة المستخدم بنجاح.", MCIMessageType.Success);
+                return RedirectToAction(nameof(Index))
+                    .WithSuccessSnackbar("تم إضافة المستخدم بنجاح.");
             }
             catch (ValidationException valEx)
             {
@@ -163,16 +169,19 @@ namespace RefactorName.Web.Controllers
             }
             catch (BusinessRuleException buzRuleEx)
             {
-                AddMCIMessage(buzRuleEx.Message, MCIMessageType.Danger, 10);
                 model.FillDDLs();
-                return View(model);
+
+                return View(model)
+                    .WithDangerSnackbar(buzRuleEx.Message);
             }
             catch (RepositoryException repEx)
             {
                 Trace.TraceError("A Repository Error has occurred as the followings: {0}", repEx.ToString());
-                AddMCIMessage(repEx.Message, MCIMessageType.Danger, 10);
+
                 model.FillDDLs();
-                return View(model);
+
+                return View(model)
+                    .WithDangerSnackbar(repEx.Message);
             }
         }
 
@@ -189,7 +198,9 @@ namespace RefactorName.Web.Controllers
             catch (RepositoryException repEx)
             {
                 Trace.TraceError("A Repository Error has occurred as the followings: {0}", repEx.ToString());
-                return RedirectwithMCIMessage(Url.Action("Index"), "عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger, 10);
+
+                return RedirectToAction(nameof(Index))
+                    .WithDangerSnackbar("عفواً. حدث خطأ أثناء جلب البيانات. الرجاء المحاولة لاحقاً.");
             }
         }
 
@@ -215,12 +226,11 @@ namespace RefactorName.Web.Controllers
                 var updatedUser = UserService.Obj.Update(user);
 
                 if (updatedUser != null)
-                    return RedirectwithMCIMessage(Url.Action("Index"), "تم حفظ البيانات بنجاح.", MCIMessageType.Success);
+                    return RedirectToAction(nameof(Index))
+                        .WithSuccessSnackbar("تم حفظ البيانات بنجاح.");
                 else
-                {
-                    AddMCIMessage("عفواً. حصل خطأ أثناء حفظ البيانات. الرجاء المحاولة لاحقاً.", MCIMessageType.Danger, 10);
-                    return View(user.ToModel().ToEditModel());
-                }
+                    return View(user.ToModel().ToEditModel())
+                        .WithDangerSnackbar("عفواً. حصل خطأ أثناء حفظ البيانات. الرجاء المحاولة لاحقاً.");
             }
             catch (ValidationException valEx)
             {
@@ -229,14 +239,15 @@ namespace RefactorName.Web.Controllers
             }
             catch (BusinessRuleException buzRuleEx)
             {
-                AddMCIMessage(buzRuleEx.Message, MCIMessageType.Danger, 10);
-                return View(user.ToModel().ToEditModel());
+                return View(user.ToModel().ToEditModel())
+                    .WithDangerSnackbar(buzRuleEx.Message);
             }
             catch (RepositoryException repEx)
             {
                 Trace.TraceError("A Repository Error has occurred as the followings: {0}", repEx.ToString());
-                AddMCIMessage(repEx.Message, MCIMessageType.Danger, 10);
-                return View(user.ToModel().ToEditModel());
+
+                return View(user.ToModel().ToEditModel())
+                    .WithDangerSnackbar(repEx.Message);
             }
         }
 

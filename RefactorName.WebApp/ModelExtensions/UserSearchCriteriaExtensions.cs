@@ -1,11 +1,11 @@
 ﻿using RefactorName.Core;
-using RefactorName.Web.Models;
+using RefactorName.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class UserSearchCriteriaExtensions
     {

@@ -1,4 +1,4 @@
-﻿@model RefactorName.Web.Models.MciChart
+﻿@model RefactorName.WebApp.Models.MciChart
 
 @section Scripts
 {
@@ -7,7 +7,7 @@
 
 @{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "Pie Chart";
+    LayoutModel.Title = "Pie Chart";
 }
 
 <div class="panel panel-default">
@@ -17,7 +17,7 @@
         @using (Html.MCIBeginItemsRow())
         {
             @Html.MciChart(Model, MciChartType.PieChart, "divPieChart1", 12, "400px",
-            new RefactorName.Web.Models.MciChartOptions() {
+            new RefactorName.WebApp.Models.MciChartOptions() {
                 Animation = true,
                 Cursor = "pointer", 
                 DrillDown = true, 
@@ -30,7 +30,7 @@
                 Pie_StartAngle = 10 })
             
             @Html.MciChart(Model, MciChartType.PieChart, "divPieChart2", 12, "400px",
-            new RefactorName.Web.Models.MciChartOptions()
+            new RefactorName.WebApp.Models.MciChartOptions()
             {
                 Animation = true,
                 Cursor = "pointer",

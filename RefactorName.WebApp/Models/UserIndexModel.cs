@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Collections;
 
-namespace RefactorName.Web.Models
+namespace RefactorName.WebApp.Models
 {
     public class UserIndexModel
     {

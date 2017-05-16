@@ -1,8 +1,8 @@
-﻿@model RefactorName.Web.Models.Company
+﻿@model RefactorName.WebApp.Models.Company
 
 @{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "DropDownLists";
+    LayoutModel.Title = "DropDownLists";
 }
 
 <div class="panel panel-default">
@@ -79,7 +79,7 @@
     }
 
     function addl2OnFailure(result) {
-        mciMessage(result.responseJSON.message, mciMessageType.Danger, 0);;
+        snackbar(result.responseJSON.message, snackbarType.Danger, 0);;
     }
 
     function addl3DataProvider() {

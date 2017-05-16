@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class MCILog
     {

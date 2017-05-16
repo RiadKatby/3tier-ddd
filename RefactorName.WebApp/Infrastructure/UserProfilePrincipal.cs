@@ -9,7 +9,7 @@ using RefactorName.Core;
 using RefactorName.Domain;
 using System.Security.Claims;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public class UserProfilePrincipal : IPrincipal
     {

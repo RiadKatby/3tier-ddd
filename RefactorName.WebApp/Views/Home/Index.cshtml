@@ -1,7 +1,29 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@LayoutModel.Title = "Index";
 
 <h2>الرئيسية</h2>
 
 
+@Html.ActionLink("Argument Exception", "Argument")
+<br />
+@Html.ActionLink("BusinessRule Exception", "BusinessRule")
+<br />
+@Html.ActionLink("NotFoundException Exception", "NotFoundException")
+<br />
+@Html.ActionLink("Permission Exception", "Permission")
+<br />
+@Html.ActionLink("Repository Exception", "Repository")
+<br />
+@Html.ActionLink("Validation Exception", "Validation")
+
+<a href="#" onclick="myLoad()">content</a>
+<div id="riad" style="background-color: cornflowerblue">
+    riad div
+</div>
+
+<script>
+    function myLoad() {
+        $("#riad").load('/Home/ConfirmModal?t=TitleGoingHere&m=MessageOfConfirmationGogintHere', function (x, y, z) {
+            debugger;
+        });
+    }
+</script>

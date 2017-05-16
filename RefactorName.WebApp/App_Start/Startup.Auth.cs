@@ -7,7 +7,7 @@ using Owin;
 using System;
 using System.Web;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public partial class Startup
     {

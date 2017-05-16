@@ -1,8 +1,9 @@
 ﻿using Mci.Security.Cryptography;
+using RefactorName.Core;
 using System;
 using System.Configuration;
 
-namespace RefactorName.Web.Infrastructure.Encryption
+namespace RefactorName.WebApp.Infrastructure
 {
     public class ConfigurationBasedStringEncrypter : IEncryptString
     {
@@ -12,8 +13,8 @@ namespace RefactorName.Web.Infrastructure.Encryption
         static ConfigurationBasedStringEncrypter()
         {
             //read settings from configuration     
-            var key = ConfigurationManager.AppSettings["EncryptionKey"];
-            var iv = ConfigurationManager.AppSettings["EncryptionIV"] ?? string.Empty;
+            var key = Settings.Provider.EncryptionKey;
+            var iv = Settings.Provider.EncryptionIV;
 
             if (string.IsNullOrEmpty(key))
                 throw new InvalidOperationException("[EncryptionKey] appSettings key is not defined or has no value.");
@@ -21,15 +22,11 @@ namespace RefactorName.Web.Infrastructure.Encryption
             if (string.IsNullOrEmpty(iv))
                 throw new InvalidOperationException("[EncryptionIV] appSettings key is not defined or has no value.");
 
-            prefix = ConfigurationManager.AppSettings["EncryptionPrefix"];
+            prefix = Settings.Provider.EncryptionPrefix;
             if (string.IsNullOrWhiteSpace(prefix))
                 prefix = "encryptedHidden_";
 
-            var hashIterationCountsConfig = ConfigurationManager.AppSettings["HashIterationCounts"];
-            if (string.IsNullOrWhiteSpace(hashIterationCountsConfig))
-                hashIterationCounts = 1;
-            else
-                hashIterationCounts = Int32.Parse(hashIterationCountsConfig);
+            hashIterationCounts = Settings.Provider.HashIterationCounts;
 
             keyArray = key.GetBytesFromHexString();
             ivArray = iv.GetBytesFromHexString();
@@ -69,6 +66,15 @@ namespace RefactorName.Web.Infrastructure.Encryption
         public string Prefix
         {
             get { return prefix; }
+        }
+
+        public bool IsEncryptionKeyExists
+        {
+            get
+            {
+                return !(string.IsNullOrEmpty(ConfigurationManager.AppSettings["EncryptionKey"])
+                         && string.IsNullOrEmpty(ConfigurationManager.AppSettings["EncryptionIV"]));
+            }
         }
         #endregion
     }

@@ -1,6 +1,6 @@
 ﻿@{
     Layout = Layout = "~/Views/Shared/_LayoutDemo.cshtml";
-    ViewBag.Title = "Buttons";
+    LayoutModel.Title = "Buttons";
 }
 
 @using (Html.BeginForm())
@@ -96,8 +96,8 @@
         <div class="panel-footer text-left">
             Normal submit buttons:
             @Html.MCISubmitButton("simple submit", "command", "simple", new { @class = "btn btn-primary" })
-            @Html.MCISubmitButtonWithConfirm("with confirm", "confirm title", "Are you sure?", "command", "confirm", new { @class = "btn btn-primary" })
-            @Html.MCISubmitButtonWithConfirm("with modal confirm", "confirm title", "Are you sure?", "command", "modal confirm", new { @class = "btn btn-primary mci-confirm-modal" })
+            @Html.MCISubmitButtonWithConfirm("with confirm", new ConfirmInfo("confirm title", "Are you sure?"), "command", "confirm", new { @class = "btn btn-primary" })
+            @Html.MCISubmitButtonWithConfirm("with modal confirm", new ConfirmInfo("confirm title", "Are you sure?"), "command", "modal confirm", new { @class = "btn btn-primary mci-confirm-modal" })
         </div>
     </div>
 }

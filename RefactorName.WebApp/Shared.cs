@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class Shared
     {

@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 
 
-namespace RefactorName.Web.Filters
+namespace RefactorName.WebApp.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class InitializeIdentityMembershipAttribute : ActionFilterAttribute

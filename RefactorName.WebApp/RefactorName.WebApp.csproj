@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>RefactorName.WebApp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +44,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>RefactorName.WebApp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MCI.Mvc.Validation.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -171,8 +173,10 @@
   <ItemGroup>
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\InitializeIdentityMembershipAttribute.cs" />
+    <Compile Include="Helpers\ActionResultExtenstions.cs" />
     <Compile Include="Helpers\ADHelper.cs" />
     <Compile Include="AppEnums.cs" />
     <Compile Include="App_GlobalResources\Messages.Designer.cs">
@@ -190,35 +194,40 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Binders\DateTimeModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Helpers\ConfirmInfo.cs" />
+    <Compile Include="Helpers\EncryptedActionExtentions.cs" />
+    <Compile Include="Helpers\LinkExtentions.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Filters\AjaxAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
-    <Compile Include="Infrastructure\AliasModelBinder.cs" />
+    <Compile Include="Binders\AliasModelBinder.cs" />
     <Compile Include="Infrastructure\BaseController.cs" />
+    <Compile Include="Infrastructure\BaseController.ExceptionHandling.cs" />
+    <Compile Include="Infrastructure\BaseController.Snackbars.cs" />
     <Compile Include="Infrastructure\BaseWebViewPage.cs" />
-    <Compile Include="Infrastructure\BaseWebViewPageT.cs" />
     <Compile Include="Infrastructure\BindAliasAttribute.cs" />
     <Compile Include="Infrastructure\Encryption\EncryptedActionParameterAttribute.cs" />
     <Compile Include="Infrastructure\Encryption\ConfigurationBasedStringEncrypter.cs" />
     <Compile Include="Infrastructure\Encryption\DecryptingControllerFactory.cs" />
+    <Compile Include="Infrastructure\Encryption\EncryptStringExtentions.cs" />
     <Compile Include="Infrastructure\Encryption\IEncryptString.cs" />
     <Compile Include="Infrastructure\Encryption\SessionBasedStringEncrypter.cs" />
     <Compile Include="Infrastructure\Encryption\StringEncrypter.cs" />
     <Compile Include="Infrastructure\Extenstions.cs" />
     <Compile Include="Infrastructure\SecurityExtenstions.cs" />
+    <Compile Include="Infrastructure\TagBuilderEx.cs" />
     <Compile Include="Infrastructure\UserProfileIdentity.cs" />
     <Compile Include="Infrastructure\UserProfilePrincipal.cs" />
     <Compile Include="Infrastructure\WebGridExtensions.cs" />
     <Compile Include="MainAuthorize.cs" />
-    <Compile Include="Helpers\MCI-Alerts.cs" />
+    <Compile Include="Helpers\SnackbarExtensions.cs" />
     <Compile Include="Helpers\MCILog.cs" />
     <Compile Include="ModelExtensions\RolesTreeViewExtensions.cs" />
     <Compile Include="ModelExtensions\UserExtensions.cs" />
@@ -227,6 +236,7 @@
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\FileUploadModel.cs" />
     <Compile Include="Models\RolesTreeViewModel.cs" />
+    <Compile Include="Models\SnackbarViewModel.cs" />
     <Compile Include="Models\WebGridListModel.cs" />
     <Compile Include="Models\LayoutViewModel.cs" />
     <Compile Include="Models\MciChartModels.cs" />
@@ -382,7 +392,7 @@
     <Content Include="Content\jquery.signature.css" />
     <Content Include="Content\loading.gif" />
     <Content Include="Content\Main.css" />
-    <Content Include="Content\MCI-Alerts.css" />
+    <Content Include="Content\refactorName.ui.snackbar.css" />
     <Content Include="Content\MCIMap.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\prettyPhoto.css" />
@@ -581,7 +591,7 @@
     <Content Include="Scripts\Maps\markerclusterer.js" />
     <Content Include="Scripts\Maps\oms.min.js" />
     <Content Include="Scripts\Maps\richmarker.js" />
-    <Content Include="Scripts\MCI-Alerts.js" />
+    <Content Include="Scripts\refactorName.ui.snackbar.js" />
     <Content Include="Scripts\MCI.Maps.js" />
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.js" />
@@ -603,8 +613,12 @@
     <Content Include="Scripts\typeahead.bundle.js" />
     <Content Include="Scripts\MCI.Validations.js" />
     <None Include="Properties\PublishProfiles\MCITemplateV4.pubxml" />
+    <Content Include="RefactorName.WebApp.ruleset" />
+    <Content Include="Scripts\refactorName.ui.confirmable-action-link.js" />
     <None Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -667,6 +681,11 @@
     <Content Include="Views\Users\_UsersGrid.cshtml" />
     <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\NotFoundError.cshtml" />
+    <Content Include="Views\Home\Repository.cshtml" />
+    <Content Include="Views\Home\Argument.cshtml" />
+    <Content Include="Views\Shared\_ConfirmModal.cshtml" />
+    <Content Include="Views\Shared\_ConfirmPopover.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\TempImages\" />

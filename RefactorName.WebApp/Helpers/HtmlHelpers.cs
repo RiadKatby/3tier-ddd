@@ -8,15 +8,16 @@ using System.Web.Mvc.Ajax;
 using System.Linq;
 using System.Text;
 using System.Web;
-using RefactorName.Web.Models;
+using RefactorName.WebApp.Models;
 using System.Web.Helpers;
 using System.Xml.Linq;
-using RefactorName.Web;
-using RefactorName.Web.Infrastructure.Encryption;
+using RefactorName.WebApp;
+using RefactorName.WebApp.Infrastructure.Encryption;
 using System.Configuration;
-using RefactorName.Web.ModelExtensions;
+using RefactorName.WebApp.ModelExtensions;
+using RefactorName.WebApp.Infrastructure;
 
-namespace MvcHtmlHelpers
+namespace RefactorName.WebApp.Helpers
 {
     public static class HtmlHelperExtensions
     {
@@ -2236,7 +2237,7 @@ namespace MvcHtmlHelpers
 
         #region Buttons and links
 
-        private static RouteValueDictionary AddConfirmationAttributes(object htmlAttributes, string confirmationTitle, string confirmationMessage)
+        public static RouteValueDictionary AddConfirmationAttributes(object htmlAttributes, ConfirmInfo confirmInfo)
         {
             RouteValueDictionary result;
             if (htmlAttributes is RouteValueDictionary)
@@ -2245,8 +2246,8 @@ namespace MvcHtmlHelpers
                 result = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
 
             result["class"] += " mci-confirm";
-            result["title"] = confirmationTitle;
-            result["rel"] = confirmationMessage;
+            result["title"] = confirmInfo.Title;
+            result["rel"] = confirmInfo.Message;
 
             return result;
         }
@@ -2301,11 +2302,10 @@ namespace MvcHtmlHelpers
         /// <param name="htmlAttributes">custom httmlAttributes applied to the button element</param>
         /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
         /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCISubmitButtonWithConfirm(this HtmlHelper helper, string innerHtml,
-            string confirmationTitle, string confirmationMessage,
+        public static MvcHtmlString MCISubmitButtonWithConfirm(this HtmlHelper helper, string innerHtml, ConfirmInfo confirmInfo,
             string name = "", string value = "", object htmlAttributes = null, string onlyForRoles = null)
         {
-            RouteValueDictionary customHtmlAttributes = AddConfirmationAttributes(htmlAttributes, confirmationTitle, confirmationMessage);
+            RouteValueDictionary customHtmlAttributes = AddConfirmationAttributes(htmlAttributes, confirmInfo);
 
             return MCISubmitButton(helper, innerHtml, name, value, customHtmlAttributes, onlyForRoles);
         }
@@ -2410,25 +2410,6 @@ namespace MvcHtmlHelpers
             return new MvcHtmlString(result.ToString());
         }
 
-        /// <summary>
-        /// Returns anchor element with bootstrap modal confirmation befor navigation
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="confirmationTitle">bootstrap modal title</param>
-        /// <param name="confirmationMessage">bootstrap modal confirmation message</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIAcionLinkWithConfirm(this HtmlHelper helper, string linkInnerHtml,
-            string confirmationTitle, string confirmationMessage,
-            string actionName, string controllerName = null, object routeValues = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            RouteValueDictionary customAttributes = AddConfirmationAttributes(htmlAttributes, confirmationTitle, confirmationMessage);
-            return GenerateAcionLink(helper.RouteCollection, helper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, null, null, null, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), customAttributes, onlyForRoles, false /* encrypted */);
-        }
 
         /// <summary>
         /// Returns ajax anchor element with bootstrap modal confirmation befor request
@@ -2442,11 +2423,10 @@ namespace MvcHtmlHelpers
         /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
         /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
         /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIAjaxLinkWithConfirm(this AjaxHelper helper, string linkInnerHtml,
-            string confirmationTitle, string confirmationMessage,
+        public static MvcHtmlString MCIAjaxLinkWithConfirm(this AjaxHelper helper, string linkInnerHtml, ConfirmInfo confirmInfo,
             string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
         {
-            RouteValueDictionary customAttributes = AddConfirmationAttributes(htmlAttributes, confirmationTitle, confirmationMessage);
+            RouteValueDictionary customAttributes = AddConfirmationAttributes(htmlAttributes, confirmInfo);
             ajaxOptions = (ajaxOptions ?? new AjaxOptions());
             if (string.IsNullOrWhiteSpace(ajaxOptions.OnBegin))
                 ajaxOptions.OnBegin = "ReturnFalse";
@@ -2464,6 +2444,7 @@ namespace MvcHtmlHelpers
         /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
         /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
         /// <returns>MvcHtmlString</returns>
+        [Obsolete("Need to re-direct all invoke to this method to the new one.")]
         public static MvcHtmlString MCIAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml,
             string actionName, string controllerName = null, object routeValues = null, object htmlAttributes = null, string onlyForRoles = null)
         {
@@ -2506,17 +2487,19 @@ namespace MvcHtmlHelpers
             return GenerateAcionLink(helper.RouteCollection, helper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, null, null, null, realRoutValues, customAttributes, onlyForRoles, false /* encrypted */);
         }
 
+        [Obsolete("Need to re-direct all invoke to this method to the new one.")]
         public static MvcHtmlString MCIAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, object routeValues, object htmlAttributes, string onlyForRoles)
         {
             return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, protocol, hostName, fragment, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, false /* encrypted */);
         }
 
+        [Obsolete("Need to re-direct all invoke to this method to the new one.")]
         public static MvcHtmlString MCIAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, string onlyForRoles)
         {
             return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, protocol, hostName, fragment, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, false /* encrypted */);
         }
 
-        private static MvcHtmlString GenerateAcionLink(RouteCollection routeCollection, RequestContext requestContext, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, string onlyForRoles, bool encrypted)
+        public static MvcHtmlString GenerateAcionLink(RouteCollection routeCollection, RequestContext requestContext, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, string onlyForRoles, bool encrypted)
         {
             //check roles
             if (!string.IsNullOrWhiteSpace(onlyForRoles) &&
@@ -2560,9 +2543,9 @@ namespace MvcHtmlHelpers
 
             value = value ?? string.Empty;
             string strValue = value.ToString();
-            string encryptedValue = StringEncrypter.Obj.Encrypt(strValue);
+            string encryptedValue = StringEncrypter.ControlsEncrypter.Encrypt(strValue);
 
-            string newName = string.Concat(StringEncrypter.Obj.Prefix, name);
+            string newName = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name);
             string id = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(newName);
             if (!htmlAttributes.ContainsKey("id"))
                 htmlAttributes.Add("id", id);
@@ -2593,26 +2576,6 @@ namespace MvcHtmlHelpers
         #endregion Encypted Hidden Fields
 
         #region Encrypted Action Link
-
-        /// <summary>
-        /// Returns anchor element with bootstrap modal confirmation befor navigation and with encrypted route values
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="confirmationTitle">bootstrap modal title</param>
-        /// <param name="confirmationMessage">bootstrap modal confirmation message</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIEncryptedAcionLinkWithConfirm(this HtmlHelper helper, string linkInnerHtml,
-            string confirmationTitle, string confirmationMessage,
-            string actionName, string controllerName = null, object routeValues = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            return MCIAcionLinkWithConfirm(helper, linkInnerHtml, confirmationTitle, confirmationMessage, actionName, controllerName, Util.EncryptRouteValues(routeValues), htmlAttributes, onlyForRoles);
-        }
-
         /// <summary>
         /// Returns ajax anchor element with bootstrap modal confirmation befor request and with encrypted route values
         /// </summary>
@@ -2626,54 +2589,28 @@ namespace MvcHtmlHelpers
         /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
         /// <returns>MvcHtmlString</returns>
         public static MvcHtmlString MCIEncryptedAjaxLinkWithConfirm(this AjaxHelper helper, string linkInnerHtml,
-            string confirmationTitle, string confirmationMessage,
+            ConfirmInfo confirmInfo,
             string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
         {
-            return MCIAjaxLinkWithConfirm(helper, linkInnerHtml, confirmationTitle, confirmationMessage, actionName, controllerName, Util.EncryptRouteValues(routeValues), ajaxOptions, htmlAttributes, onlyForRoles);
+            return MCIAjaxLinkWithConfirm(helper, linkInnerHtml, confirmInfo, actionName, controllerName, Util.EncryptRouteValues(routeValues), ajaxOptions, htmlAttributes, onlyForRoles);
         }
 
-        /// <summary>
-        /// Returns Exact same as ActionLink but takes inner html instead of inner text and with encrypted route values
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIEncryptedAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml,
-            string actionName, string controllerName = null, object routeValues = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, null, null, null, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, true /* encrypted */);
-        }
-
-        /// <summary>
-        /// Returns Exact same as AjaxActionLink but takes inner html instead of inner text and with encrypted route values
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="ajaxOptions">AjaxOptions</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIEncryptedAjaxLink(this AjaxHelper helper, string linkInnerHtml,
-            string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            return MCIAjaxLink(helper, linkInnerHtml, actionName, controllerName, Util.EncryptRouteValues(routeValues), ajaxOptions, htmlAttributes, onlyForRoles);
-        }
-
-        public static MvcHtmlString MCIEncryptedAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, object routeValues, object htmlAttributes, string onlyForRoles)
-        {
-            return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, protocol, hostName, fragment, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, true /* encrypted */);
-        }
-
-        public static MvcHtmlString MCIEncryptedAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, string onlyForRoles)
-        {
-            return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, protocol, hostName, fragment, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, true /* encrypted */);
-        }
+        ///// <summary>
+        ///// Returns Exact same as AjaxActionLink but takes inner html instead of inner text and with encrypted route values
+        ///// </summary>
+        ///// <param name="linkInnerHtml">Anchor inner html</param>
+        ///// <param name="actionName">Url Action name</param>
+        ///// <param name="controllerName">Url Controller name</param>
+        ///// <param name="routeValues">Url rout values</param>
+        ///// <param name="ajaxOptions">AjaxOptions</param>
+        ///// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
+        ///// <param name="onlyForRoles">comma delimited roles to display the button for</param>
+        ///// <returns>MvcHtmlString</returns>
+        //public static MvcHtmlString MCIEncryptedAjaxLink(this AjaxHelper helper, string linkInnerHtml,
+        //    string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
+        //{
+        //    return MCIAjaxLink(helper, linkInnerHtml, actionName, controllerName, Util.EncryptRouteValues(routeValues), ajaxOptions, htmlAttributes, onlyForRoles);
+        //}
 
         #endregion
 

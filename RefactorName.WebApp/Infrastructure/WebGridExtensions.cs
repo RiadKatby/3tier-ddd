@@ -13,7 +13,7 @@ using System.Web.WebPages;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace RefactorName.Web
+namespace RefactorName.WebApp
 {
     public static class WebGridExtensions
     {
