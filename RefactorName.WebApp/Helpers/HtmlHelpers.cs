@@ -16,11 +16,13 @@ using RefactorName.WebApp.Infrastructure.Encryption;
 using System.Configuration;
 using RefactorName.WebApp.ModelExtensions;
 using RefactorName.WebApp.Infrastructure;
+using RefactorName.WebApp.ModelExtensions;
 
 namespace RefactorName.WebApp.Helpers
 {
     public static class HtmlHelperExtensions
     {
+
         #region file upload
 
         /// <summary>
@@ -33,8 +35,10 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="onSuccessCallback">Javascript function name to call after upload success</param>
         /// <param name="onDeleteCallback">Javascript function name to call after deleting afile from the uploader</param>
         /// <returns>MvcHtmlString of the uploader</returns>
-        private static string MCIUploaderHtml(string name, string controllerName, string allowedExtensions, int fileMaxSize, string onSuccessCallback, string onDeleteCallback)
+        private static string MCIUploaderHtml(HtmlHelper helper, string name, string controllerName, string allowedExtensions, int fileMaxSize, string onSuccessCallback, string onDeleteCallback)
         {
+            name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(name);
+
             StringBuilder result = new StringBuilder();
             string divName = string.Format("{0}_attachement_div", name);
 
@@ -98,7 +102,7 @@ namespace RefactorName.WebApp.Helpers
                 newTagbuilder.MergeAttribute("data-val-required", validationMessage);
             }
             result.Append(newTagbuilder.ToString());
-            result.Append(MCIUploaderHtml(name, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback));
+            result.Append(MCIUploaderHtml(helper, name, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback));
 
             return new MvcHtmlString(result.ToString());
         }
@@ -118,10 +122,10 @@ namespace RefactorName.WebApp.Helpers
             Expression<Func<TModel, TProperty>> expression, string controllerName = "Upload", string allowedExtensions = "'jpg', 'jpeg', 'png', 'bmp'",
             int fileMaxSize = 2048, string onSuccessCallback = "", string onDeleteCallback = "")
         {
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
+            string name = ExpressionHelper.GetExpressionText(expression);
 
             StringBuilder result = new StringBuilder(System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, new { @style = "position:absolute;opacity:0.0;visibility:hidden" }).ToString());
-            result.Append(MCIUploaderHtml(name, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback));
+            result.Append(MCIUploaderHtml(helper, name, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback));
 
             return new MvcHtmlString(result.ToString());
         }
@@ -146,24 +150,21 @@ namespace RefactorName.WebApp.Helpers
             int fileMaxSize = 2048, bool withValidation = true, int spanOf12 = 6,
             string onSuccessCallback = "", string onDeleteCallback = "", string hint = "")
         {
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
+            string name = ExpressionHelper.GetExpressionText(expression);
 
-            StringBuilder result = new StringBuilder();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
+            MCITagBuilder frmGroup = new MCIFormGroup()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
 
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.Append(MCIFileUploaderFor(helper, expression, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback).ToString());
-
+            frmGroup.AppendInnerHtml(MCIFileUploaderFor(helper, expression, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback).ToString());
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
 
-            result.Append("</div>");
-
-            return new MvcHtmlString(result.ToString());
+            return new MvcHtmlString(col.AppendInnerHtml(frmGroup).ToString());
         }
 
         /// <summary>
@@ -192,40 +193,52 @@ namespace RefactorName.WebApp.Helpers
             bool required = true, string validationMessage = "الملف مطلوب",
             string onSuccessCallback = "", string onDeleteCallback = "", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
             if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
             else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
 
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.Append(MCIFileUploader(helper, name, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback, required, validationMessage).ToString());
+            frmGroup.AppendInnerHtml(MCIFileUploader(helper, name, controllerName, allowedExtensions, fileMaxSize, onSuccessCallback, onDeleteCallback, required, validationMessage).ToString());
 
             if (required)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, validationMessage, null, null));
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, validationMessage, null, null).ToString());
 
-            result.Append("</div>");
-
-            return new MvcHtmlString(result.ToString());
+            return new MvcHtmlString(col.AppendInnerHtml(frmGroup).ToString());
         }
 
         #endregion
 
         #region tab
+
+        /// <summary>
+        /// return html tag for bootstrab tab container item
+        /// </summary>
+        /// <param name="name">Unique name for the tab control</param>
+        /// <param name="style">direction and border style of the tab control</param>
+        /// <param name="inverse">true to inverse color</param>
+        /// <returns></returns>
+        public static MCIDisposableHelper MCIBeginTabNavContainer(this HtmlHelper helper, string name, NavTabsStyle style = NavTabsStyle.HorizontalWithActiveBorder, bool inverse = false)
+        {
+            return new MCIDisposableHelper(helper, new MCITabContainer(name, style, inverse));
+        }
+
         /// <summary>
         /// return html tag for bootstrab tab header item
         /// </summary>
         /// <param name="tabName">Unique name for the header</param>
-        /// <param name="headerText">Display text of the header</param>
+        /// <param name="innerHtml">Inner html of the header link</param>
         /// <param name="active">Render it as active tab header?</param>
         /// <returns>MvcHtmlString for li tag of bootstrab tab header</returns>
-        public static MvcHtmlString MCITabHeader(this HtmlHelper helper, string tabName, string headerText, bool active = false)
+        public static MvcHtmlString MCITabHeader(this HtmlHelper helper, string tabName, string innerHtml, bool active = false)
         {
-            return new MvcHtmlString(string.Format("<li {2}><a href='#{0}' data-toggle='tab'>{1}</a></li>", tabName, headerText, active ? "class='active'" : ""));
+            return new MCITabHeader(tabName, innerHtml, active).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -233,30 +246,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="tabName">Unique name for the tab header control</param>
         /// <returns>Begin ul bootstrab tab nav bar item that contains tab headers</returns>
-        public static MCINavBar MCIBeginTabNavBar(this HtmlHelper helper, string tabName = "")
+        public static MCIDisposableHelper MCIBeginTabNavBar(this HtmlHelper helper, string tabName = "")
         {
-            return new MCINavBar(helper, tabName);
-        }
-
-        /// <summary>
-        /// return html tag for ul bootstrab tab nav bar item that contains tab headers
-        /// </summary>
-        /// <param name="tabName">Unique name for the tab control</param>
-        /// <returns>return ul start tag for bootstrab tab nav bar item that contains tab headers</returns>
-        public static MvcHtmlString MCIStartTabNavBar(this HtmlHelper helper, string tabName = "")
-        {
-            if (tabName != "") tabName = string.Format("id='{0}'", tabName);
-
-            return new MvcHtmlString(string.Format("<ul {0} class='nav nav-tabs'>", tabName));
-        }
-
-        /// <summary>
-        /// Closes MCIStartTabNavBar tag
-        /// </summary>
-        /// <returns>MvcHtmlString of the close tag for the MCIStartTabNavBar</returns>
-        public static MvcHtmlString MCIEndTabNavBar(this HtmlHelper helper)
-        {
-            return new MvcHtmlString("</ul>");
+            return new MCIDisposableHelper(helper, new MCINavBar(tabName));
         }
 
         /// <summary>
@@ -266,30 +258,9 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="active">Enable focus on this panel by default</param>
         /// <param name="withFadeEffect">Enable fade effect on focus</param>
         /// <returns>begin tab panel div block</returns>
-        public static MCITabPanel MCIBeginTabPanel(this HtmlHelper helper, string name, bool active = false, bool withFadeEffect = true)
+        public static MCIDisposableHelper MCIBeginTabPanel(this HtmlHelper helper, string name, bool active = false, bool withFadeEffect = true)
         {
-            return new MCITabPanel(helper, name, active, withFadeEffect);
-        }
-
-        /// <summary>
-        /// start div tag for tab panel
-        /// </summary>
-        /// <param name="name">Unique name for the tab panel (the same name of the corresponding tab header)</param>
-        /// <param name="active">Enable focus on this panel by default</param>
-        /// <param name="withFadeEffect">Enable fade effect on focus</param>
-        /// <returns>open tag for tab panel div block</returns>
-        public static MvcHtmlString MCIStartTabPanel(this HtmlHelper helper, string name, bool active = false, bool withFadeEffect = true)
-        {
-            return new MvcHtmlString(string.Format("<div class='tab-pane {1} {2} {3}' id='{0}'>", name, active ? "active" : "", withFadeEffect ? "fade" : "", (active && withFadeEffect) ? "in" : ""));
-        }
-
-        /// <summary>
-        /// closes tab panel tag for MCIStartTabPanel
-        /// </summary>
-        /// <returns>MvcHtmlString for closing tag</returns>
-        public static MvcHtmlString MCIEndTabPanel(this HtmlHelper helper)
-        {
-            return new MvcHtmlString("</div>");
+            return new MCIDisposableHelper(helper, new MCITabPanel(name, active, withFadeEffect));
         }
 
         /// <summary>
@@ -297,28 +268,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="minHeight">Minimum height for the container</param>
         /// <returns>begin tab panels container div block</returns>
-        public static MCITabPanels MCIBeginTabPanels(this HtmlHelper helper, string minHeight = "")
+        public static MCIDisposableHelper MCIBeginTabPanels(this HtmlHelper helper, string minHeight = "")
         {
-            return new MCITabPanels(helper, minHeight);
-        }
-
-        /// <summary>
-        /// start div tag for tab panels container
-        /// </summary>
-        /// <param name="minHeight">Minimum height for the container</param>
-        /// <returns>open tag for tab panels container div block</returns>
-        public static MvcHtmlString MCIStartTabPanels(this HtmlHelper helper, string minHeight = "")
-        {
-            return new MvcHtmlString(string.Format("<div class='tab-content' {0} >", string.IsNullOrEmpty(minHeight) ? "" : "style='min-height:" + minHeight + "'"));
-        }
-
-        /// <summary>
-        /// closes tab panels container tag for MCIStartTabPanels
-        /// </summary>
-        /// <returns>MvcHtmlString for tab panels container closing tag</returns>
-        public static MvcHtmlString MCIEndTabPanels(this HtmlHelper helper)
-        {
-            return new MvcHtmlString("</div>");
+            return new MCIDisposableHelper(helper, new MCITabPanels(minHeight));
         }
 
         #endregion
@@ -334,14 +286,7 @@ namespace RefactorName.WebApp.Helpers
         /// <returns>start tag MvcHtmlString</returns>
         public static MvcHtmlString MCIStartFormItemsRow(this HtmlHelper helper, object htmlAttributes = null)
         {
-            RouteValueDictionary customAttributes = htmlAttributes != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) : new RouteValueDictionary();
-            customAttributes["class"] += " row";
-
-            TagBuilder tagBuilder = new TagBuilder("div");
-            tagBuilder.MergeAttributes(customAttributes);
-
-            var result = tagBuilder.ToString().Replace("</div>", "");
-            return new MvcHtmlString(result);
+            return new MCIItemsRow(htmlAttributes).ToMvcHtmlString(TagRenderMode.StartTag);
         }
 
         /// <summary>
@@ -350,16 +295,16 @@ namespace RefactorName.WebApp.Helpers
         /// <returns>close tag MvcHtmlString</returns>
         public static MvcHtmlString MCIEndFormItemsRow(this HtmlHelper helper)
         {
-            return new MvcHtmlString("</div>");
+            return new MCIItemsRow().ToMvcHtmlString(TagRenderMode.EndTag);
         }
 
         /// <summary>
         /// Writes &lt;div class="row"&gt; to the response
         /// </summary>
         /// <returns></returns>
-        public static MCIItemsRow MCIBeginItemsRow(this HtmlHelper helper, object htmlAttributes = null)
+        public static MCIDisposableHelper MCIBeginItemsRow(this HtmlHelper helper, object htmlAttributes = null)
         {
-            return new MCIItemsRow(helper, htmlAttributes);
+            return new MCIDisposableHelper(helper, new MCIItemsRow(htmlAttributes));
         }
 
 
@@ -371,14 +316,7 @@ namespace RefactorName.WebApp.Helpers
         /// <returns>start tag MvcHtmlString</returns>
         public static MvcHtmlString MCIStartFormItemsCol(this HtmlHelper helper, int spanOf12 = 6, object htmlAttributes = null)
         {
-            RouteValueDictionary customAttributes = htmlAttributes != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) : new RouteValueDictionary();
-            customAttributes["class"] += string.Format(" col-sm-{0}", spanOf12.ToString());
-
-            TagBuilder tagBuilder = new TagBuilder("div");
-            tagBuilder.MergeAttributes(customAttributes);
-
-            var result = tagBuilder.ToString().Replace("</div>", "");
-            return new MvcHtmlString(result);
+            return new MCIItemsCol(spanOf12, htmlAttributes).ToMvcHtmlString(TagRenderMode.StartTag);
         }
 
         /// <summary>
@@ -387,19 +325,17 @@ namespace RefactorName.WebApp.Helpers
         /// <returns>close tag MvcHtmlString</returns>
         public static MvcHtmlString MCIEndFormItemsCol(this HtmlHelper helper)
         {
-            return new MvcHtmlString("</div>");
+            return new MCIItemsCol().ToMvcHtmlString(TagRenderMode.EndTag);
         }
 
         /// <summary>
         /// Writes &lt;div class="col-sm-[spanOf12]"&gt; to the response
         /// </summary>
         /// <returns></returns>
-        public static MCIItemsCol MCIBeginItemsCol(this HtmlHelper helper, int spanOf12 = 6, object htmlAttributes = null)
+        public static MCIDisposableHelper MCIBeginItemsCol(this HtmlHelper helper, int spanOf12 = 6, object htmlAttributes = null)
         {
-            return new MCIItemsCol(helper, spanOf12, htmlAttributes);
+            return new MCIDisposableHelper(helper, new MCIItemsCol(spanOf12, htmlAttributes));
         }
-
-
 
         #endregion
 
@@ -420,31 +356,127 @@ namespace RefactorName.WebApp.Helpers
          this HtmlHelper<TModel> helper,
          Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, bool postBackValue = false, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            customAttributes["class"] += " form-control-static";
+            MCITagBuilder frmGroup = new MCIFormGroup()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
 
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
-
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            TagBuilder newTagBuilder = new TagBuilder("p");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.MergeAttribute("id", name, false);
-            newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
-
-            result.Append(newTagBuilder.ToString());
+            frmGroup.AppendInnerHtml(new MCIDisplayTag(name, httmlAttributes)
+                .AppendInnerHtml(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString()));
 
             if (postBackValue)
-                result.Append(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
-            result.Append("</div>");
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+        public static MvcHtmlString MCIDisplayItemWithLeftDirectionFor<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, bool postBackValue = false, string hint = "")
+        {
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+
+            MCITagBuilder frmGroup = new MCIFormGroup()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtml(new MCIDisplayTag(name, httmlAttributes)
+                .AppendInnerHtml(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString()));
+
+            if (postBackValue)
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        public static MvcHtmlString MCIDisplayItemsFor<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, bool postBackValue = false, string hint = "")
+        {
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+            string value = System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString();//(ExpressionHelper.GetExpressionText(expression));
+            //MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+
+            //MCITagBuilder frmGroup = new MCIFormGroup()
+            //    .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            //if (!string.IsNullOrEmpty(hint))
+            //    frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //frmGroup.AppendInnerHtml(new MCIDisplayTag(name, httmlAttributes)
+            //    .AppendInnerHtml(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString()));
+
+            //if (postBackValue)
+            //    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
+            var display = System.Web.Mvc.Html.LabelExtensions.Label(helper, value, httmlAttributes);
+            return new MvcHtmlString(display.ToString());
+        }
+        public static MvcHtmlString MCITextBoxItemNoGroupFor<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, string format = "", bool readOnly = false,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
+        {
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            string controlHtml = "";
+
+            //if (readOnly)
+            //{
+            //    TagBuilder newTagBuilder = new TagBuilder("span");
+            //    newTagBuilder.MergeAttribute("disabled", "");
+            //    if (!customAttributes.ContainsKey("id"))
+            //        newTagBuilder.MergeAttribute("id", helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression)));
+            //    newTagBuilder.MergeAttributes(customAttributes);
+            //    newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
+
+            //    controlHtml = newTagBuilder.ToString();
+            //}
+            //else
+            //{
+            controlHtml = System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, format, customAttributes).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+            //}
+
+            //MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            //MCITagBuilder frmGroup = new MCIFormGroup();
+
+            //frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            //if (!string.IsNullOrEmpty(hint))
+            //    frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            //if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            //{
+            //    MCITagBuilder inputGroup = new MCIInputGroup();
+            //    //preAddon
+            //    if (!string.IsNullOrEmpty(preAddon))
+            //        inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+            //    //input control
+            //    inputGroup.AppendInnerHtml(controlHtml);
+
+            //    //postAddon
+            //    if (!string.IsNullOrEmpty(postAddon))
+            //        inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+            //    frmGroup.AppendInnerHtml(inputGroup);
+            //}
+            //else
+            //frmGroup.AppendInnerHtml(controlHtml);
+
+            return new MvcHtmlString(controlHtml);//col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -461,25 +493,22 @@ namespace RefactorName.WebApp.Helpers
         public static MvcHtmlString MCIDisplayItem<TModel>(
          this HtmlHelper<TModel> helper, string value, string labelText = "", int spanOf12 = 6, object httmlAttributes = null, bool postBackValue = false, string name = "postValue", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
+            MCITagBuilder frmGroup = new MCIFormGroup()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
-            customAttributes["class"] += " form-control-static";
-
-            TagBuilder newTagBuilder = new TagBuilder("p");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.SetInnerText(value);
-            result.Append(newTagBuilder.ToString());
+            frmGroup.AppendInnerHtml(new MCIDisplayTag(name, httmlAttributes)
+                .AppendInnerHtml(value));
 
             if (postBackValue)
-                result.Append(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString());
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString());
+
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -494,25 +523,19 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, bool postBackValue = false)
         {
-            StringBuilder result = new StringBuilder();
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
-            result.AppendFormat("<div class='form-display col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            TagBuilder newTagBuilder = new TagBuilder("span");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.MergeAttribute("id", name, false);
-            newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
-
-            result.Append(newTagBuilder.ToString());
+            MCITagBuilder frmGroup = new MCIFormDisplay()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString())
+                .AppendInnerHtml(new MCIDisplayTagH(name, httmlAttributes)
+                    .AppendInnerHtml(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString()));
 
             if (postBackValue)
-                result.Append(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
-            result.Append("</div>");
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -528,23 +551,16 @@ namespace RefactorName.WebApp.Helpers
         public static MvcHtmlString MCIDisplayItem_H<TModel>(
          this HtmlHelper<TModel> helper, string value, string labelText = "", int spanOf12 = 6, object httmlAttributes = null, bool postBackValue = false, string name = "postValue")
         {
-            StringBuilder result = new StringBuilder();
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            result.AppendFormat("<div class='form-display col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
-
-
-            TagBuilder newTagBuilder = new TagBuilder("span");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.SetInnerText(value);
-
-            result.Append(newTagBuilder.ToString());
+            MCITagBuilder frmGroup = new MCIFormDisplay()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString())
+                .AppendInnerHtml(new MCIDisplayTagH(name, value, httmlAttributes));
 
             if (postBackValue)
-                result.Append(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString());
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -614,23 +630,21 @@ namespace RefactorName.WebApp.Helpers
             int textMaxLength = 50, string popOverTitle = "", string seeMoreHtml = " المزيد >>", bool showAllContentInPopover = false,
             object httmlAttributes = null, bool postBackValue = false, string hint = "")
         {
-            string result = string.Format("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result += System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+
+            MCITagBuilder frmGroup = new MCIFormGroup()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result += string.Format("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
-            customAttributes["class"] += " form-control-static";
-
-            TagBuilder newTagBuilder = new TagBuilder("p");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.InnerHtml = MCIDisplayWithTruncate(helper, name, value, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString();
-            result += newTagBuilder.ToString();
+            frmGroup.AppendInnerHtml(new MCIDisplayTag(name, httmlAttributes)
+                .AppendInnerHtml(MCIDisplayWithTruncate(helper, name, value, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString()));
 
             if (postBackValue)
-                result += System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString();
-            result += "</div>";
-            return new MvcHtmlString(result);
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -647,7 +661,7 @@ namespace RefactorName.WebApp.Helpers
             int textMaxLength = 50, string popOverTitle = "", string seeMoreHtml = " المزيد >>", bool showAllContentInPopover = false)
         {
             string value = System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString();
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
             string result = MCIDisplayWithTruncate(helper, name, value, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString();
             return new MvcHtmlString(result);
@@ -672,26 +686,23 @@ namespace RefactorName.WebApp.Helpers
             int textMaxLength = 50, string popOverTitle = "", string seeMoreHtml = " المزيد >>",
             bool showAllContentInPopover = false, object httmlAttributes = null, bool postBackValue = false, string hint = "")
         {
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
-            customAttributes["class"] += " form-control-static";
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
-            string result = string.Format("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result += System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+
+            MCITagBuilder frmGroup = new MCIFormGroup()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result += string.Format("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            TagBuilder newTagBuilder = new TagBuilder("p");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.MergeAttribute("id", name, false);
-            newTagBuilder.InnerHtml = MCIDisplayWithTruncateFor(helper, expression, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString();
-            result += newTagBuilder.ToString();
+            frmGroup.AppendInnerHtml(new MCIDisplayTag(name, httmlAttributes)
+                .AppendInnerHtml(MCIDisplayWithTruncateFor(helper, expression, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString()));
 
             if (postBackValue)
-                result += System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString();
-            result += "</div>";
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
 
-            return new MvcHtmlString(result);
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         //horizontal
@@ -714,23 +725,19 @@ namespace RefactorName.WebApp.Helpers
             int textMaxLength = 50, string popOverTitle = "", string seeMoreHtml = " المزيد >>", bool showAllContentInPopover = false,
             object httmlAttributes = null, bool postBackValue = false)
         {
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
-            string result = string.Format("<div class='form-display col-sm-{0}'>", spanOf12.ToString());
-            result += System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            TagBuilder newTagBuilder = new TagBuilder("span");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.MergeAttribute("id", name, false);
-            newTagBuilder.InnerHtml = MCIDisplayWithTruncateFor(helper, expression, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString();
-
-            result += newTagBuilder.ToString();
+            MCITagBuilder frmGroup = new MCIFormDisplay()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString())
+                .AppendInnerHtml(new MCIDisplayTagH(name, httmlAttributes)
+                    .AppendInnerHtml(MCIDisplayWithTruncateFor(helper, expression, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString()));
 
             if (postBackValue)
-                result += System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString();
-            result += "</div>";
-            return new MvcHtmlString(result);
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -752,20 +759,17 @@ namespace RefactorName.WebApp.Helpers
             int textMaxLength = 50, string popOverTitle = "", string seeMoreHtml = " المزيد >>", bool showAllContentInPopover = false,
             object httmlAttributes = null, bool postBackValue = false, string name = "postValue")
         {
-            string result = string.Format("<div class='form-display col-sm-{0}'>", spanOf12.ToString());
-            result += System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
 
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
-
-            TagBuilder newTagBuilder = new TagBuilder("span");
-            newTagBuilder.MergeAttributes(customAttributes);
-            newTagBuilder.InnerHtml = MCIDisplayWithTruncate(helper, name, value, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString();
-            result += newTagBuilder.ToString();
+            MCITagBuilder frmGroup = new MCIFormDisplay()
+                .AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString())
+                .AppendInnerHtml(new MCIDisplayTagH(name, httmlAttributes)
+                    .AppendInnerHtml(MCIDisplayWithTruncate(helper, name, value, textMaxLength, popOverTitle, seeMoreHtml, showAllContentInPopover).ToString()));
 
             if (postBackValue)
-                result += System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString();
-            result += "</div>";
-            return new MvcHtmlString(result);
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, value).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -794,24 +798,10 @@ namespace RefactorName.WebApp.Helpers
          this HtmlHelper<TModel> helper, string name, string defaultValue, string labelText = "", int spanOf12 = 6, object httmlAttributes = null, string format = "", bool readOnly = false,
             string postAddon = "", string preAddon = "", bool withValidation = false, string errorMessege = "الرجاء إدخال الحقل", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
-            else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
+            string controlHtml = "";
 
             if (readOnly)
             {
@@ -822,26 +812,172 @@ namespace RefactorName.WebApp.Helpers
                 newTagBuilder.MergeAttributes(customAttributes);
                 newTagBuilder.SetInnerText(defaultValue);
 
-                result.Append(newTagBuilder.ToString());
+                controlHtml = newTagBuilder.ToString();
             }
             else
             {
-                result.Append(System.Web.Mvc.Html.InputExtensions.TextBox(helper, name, defaultValue, format, customAttributes).ToString());
+                controlHtml = System.Web.Mvc.Html.InputExtensions.TextBox(helper, name, defaultValue, format, customAttributes).ToString();
 
                 if (withValidation)
-                    result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null));
+                    controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null);
             }
 
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.Append(string.Format("<div class='input-group-addon'>{0}</div>", postAddon));
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             //if there is addon
             if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        public static MvcHtmlString MCITextBoxStyleHiddenItemFor<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, string format = "", bool readOnly = false,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
+        {
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+
+            customAttributes["class"] += " form-control";
+
+
+            string controlHtml = "";
+
+            if (readOnly)
+            {
+                TagBuilder newTagBuilder = new TagBuilder("span");
+                newTagBuilder.MergeAttribute("disabled", "");
+                if (!customAttributes.ContainsKey("id"))
+                    newTagBuilder.MergeAttribute("id", helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression)));
+                newTagBuilder.MergeAttributes(customAttributes);
+                newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
+
+                controlHtml = newTagBuilder.ToString();
+            }
+            else
+            {
+                controlHtml = System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, format, customAttributes).ToString();
+
+                if (withValidation)
+                    controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+            }
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.Attributes.Add(new KeyValuePair<string, string>("style", "display:none;"));
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+        public static MvcHtmlString MCITextBoxItemForNoLabel<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, string format = "", bool readOnly = false,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
+        {
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            string controlHtml = "";
+
+            if (readOnly)
+            {
+                TagBuilder newTagBuilder = new TagBuilder("span");
+                newTagBuilder.MergeAttribute("disabled", "");
+                if (!customAttributes.ContainsKey("id"))
+                    newTagBuilder.MergeAttribute("id", helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression)));
+                newTagBuilder.MergeAttributes(customAttributes);
+                newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
+
+                controlHtml = newTagBuilder.ToString();
+            }
+            else
+            {
+                controlHtml = System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, format, customAttributes).ToString();
+
+                if (withValidation)
+                    controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression, null, new { @class = "text-danger" });
+            }
+
+            //MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            //MCITagBuilder frmGroup = new MCIFormGroup();
+
+            //frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            //if (!string.IsNullOrEmpty(hint))
+            //    frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            //if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            //{
+            //    MCITagBuilder inputGroup = new MCIInputGroup();
+            //    //preAddon
+            //    if (!string.IsNullOrEmpty(preAddon))
+            //        inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+            //    //input control
+            //    inputGroup.AppendInnerHtml(controlHtml);
+
+            //    //postAddon
+            //    if (!string.IsNullOrEmpty(postAddon))
+            //        inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+            //    frmGroup.AppendInnerHtml(inputGroup);
+            //}
+            //else
+            //    frmGroup.AppendInnerHtml(controlHtml);
+
+            return new MvcHtmlString(controlHtml);// col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -862,52 +998,132 @@ namespace RefactorName.WebApp.Helpers
          Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, string format = "", bool readOnly = false,
             string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
+            string controlHtml = "";
 
             if (readOnly)
             {
                 TagBuilder newTagBuilder = new TagBuilder("span");
                 newTagBuilder.MergeAttribute("disabled", "");
-                newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
                 if (!customAttributes.ContainsKey("id"))
-                    newTagBuilder.MergeAttribute("id", ExpressionHelper.GetExpressionText(expression).Replace('.', '_'));
+                    newTagBuilder.MergeAttribute("id", helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression)));
                 newTagBuilder.MergeAttributes(customAttributes);
+                newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
 
-
-                result.Append(newTagBuilder.ToString());
+                controlHtml = newTagBuilder.ToString();
             }
             else
             {
-                result.Append(System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, format, customAttributes).ToString());
+                controlHtml = System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, format, customAttributes).ToString();
 
                 if (withValidation)
-                    result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
+                    controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
             }
 
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             //if there is addon
             if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns input control item with caption in bootstrap form item mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the input control</param>
+        /// <param name="format">Input value format</param>
+        /// <param name="readOnly">If true, the value will be span styled as disabled text input</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString MCITextBoxItemsFor<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, string format = "", bool readOnly = false,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
+        {
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            string controlHtml = "";
+
+            if (readOnly)
+            {
+                TagBuilder newTagBuilder = new TagBuilder("span");
+                newTagBuilder.MergeAttribute("disabled", "");
+                if (!customAttributes.ContainsKey("id"))
+                    newTagBuilder.MergeAttribute("id", helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression)));
+                newTagBuilder.MergeAttributes(customAttributes);
+                newTagBuilder.SetInnerText(System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
+
+                controlHtml = newTagBuilder.ToString();
+            }
+            else
+            {
+                controlHtml = System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, format, customAttributes).ToString();
+
+                if (withValidation)
+                    controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+            }
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            //frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
 
@@ -928,32 +1144,41 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper, string name, string defaultValue, string labelText = "", int spanOf12 = 6, object httmlAttributes = null, bool readOnly = false,
             bool withValidation = false, string errorMessege = "الرجاء إدخال الحقل", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
             if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
             else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
 
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             if (readOnly)
-                result.AppendFormat("<span disabled>{0}</span>", System.Web.Mvc.Html.DisplayExtensions.Display(helper, defaultValue).ToString());
+            {
+                TagBuilder newTagBuilder = new TagBuilder("span");
+                newTagBuilder.MergeAttribute("disabled", "");
+                if (!customAttributes.ContainsKey("id"))
+                    newTagBuilder.MergeAttribute("id", name);
+                newTagBuilder.MergeAttributes(customAttributes);
+                newTagBuilder.SetInnerText(defaultValue);
+
+                frmGroup.AppendInnerHtml(newTagBuilder.ToString());
+            }
             else
             {
-                result.Append(System.Web.Mvc.Html.TextAreaExtensions.TextArea(helper, name, defaultValue, customAttributes).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.TextAreaExtensions.TextArea(helper, name, defaultValue, customAttributes).ToString());
 
                 if (withValidation)
-                    result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null));
+                    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null).ToString());
             }
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -970,27 +1195,28 @@ namespace RefactorName.WebApp.Helpers
          this HtmlHelper<TModel> helper,
          Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, bool readOnly = false, bool withValidation = true, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             if (readOnly)
-                result.AppendFormat("<span disabled>{0}</span>", System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
+                frmGroup.AppendInnerHtmlFormat("<span disabled>{0}</span>", System.Web.Mvc.Html.DisplayExtensions.DisplayFor(helper, expression).ToString());
             else
             {
-                result.Append(System.Web.Mvc.Html.TextAreaExtensions.TextAreaFor(helper, expression, customAttributes).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.TextAreaExtensions.TextAreaFor(helper, expression, customAttributes).ToString());
 
                 if (withValidation)
-                    result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
+                    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
             }
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
 
@@ -1007,23 +1233,24 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
             customAttributes["autocomplete"] = "off";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
-            result.Append(System.Web.Mvc.Html.InputExtensions.PasswordFor(helper, expression, customAttributes).ToString());
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.PasswordFor(helper, expression, customAttributes).ToString());
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1042,26 +1269,28 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper, string name, string defaultValue, string labelText = "", int spanOf12 = 6, object httmlAttributes = null,
             bool withValidation = true, string errorMessege = "الرجاء إدخال الحقل", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
             customAttributes["autocomplete"] = "off";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
-            else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
-            result.Append(System.Web.Mvc.Html.InputExtensions.Password(helper, name, defaultValue, customAttributes).ToString());
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.Password(helper, name, defaultValue, customAttributes).ToString());
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null));
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null).ToString());
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -1069,6 +1298,68 @@ namespace RefactorName.WebApp.Helpers
         #region Dropdownlist
 
         #region normal Dropdownlist item
+
+        /// <summary>
+        /// Returns single-selection select element in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString MCIDropDownListItemsForNoLabel<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+            string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
+        {
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            string controlHtml = "";
+
+            controlHtml = System.Web.Mvc.Html.SelectExtensions.DropDownListFor(helper, expression, selectList, optionLabel, customAttributes).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression, null, new { @class = "text-danger" });
+
+            //MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            //MCITagBuilder frmGroup = new MCIFormGroup();
+
+            //frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression, new { @for = "exampleInputEmail1" }).ToString());
+
+            //if (!string.IsNullOrEmpty(hint))
+            //    frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            //if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            //{
+            //    MCITagBuilder inputGroup = new MCIInputGroup();
+            //    //preAddon
+            //    if (!string.IsNullOrEmpty(preAddon))
+            //        inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+            //    //input control
+            //    inputGroup.AppendInnerHtml(controlHtml);
+
+            //    //postAddon
+            //    if (!string.IsNullOrEmpty(postAddon))
+            //        inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+            //    frmGroup.AppendInnerHtml(inputGroup);
+            //}
+            //else
+            //    frmGroup.AppendInnerHtml(controlHtml);
+
+            return new MvcHtmlString(controlHtml);
+        }
 
         /// <summary>
         /// Returns single-selection select element in bootstrap form item with caption mapped to model property
@@ -1091,37 +1382,112 @@ namespace RefactorName.WebApp.Helpers
         {
             if (selectList == null)
                 selectList = new List<SelectListItem>();
-
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+            string controlHtml = "";
 
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
-
-            result.Append(System.Web.Mvc.Html.SelectExtensions.DropDownListFor(helper, expression, selectList, optionLabel, customAttributes).ToString());
-
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            controlHtml = System.Web.Mvc.Html.SelectExtensions.DropDownListFor(helper, expression, selectList, optionLabel, customAttributes).ToString();
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns single-selection encrypted keys select element in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedDropDownListItemFor<TModel, TProperty>(
+         this HtmlHelper<TModel> helper,
+         Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+            string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
+        {
+            string expressionName = ExpressionHelper.GetExpressionText(expression);
+            string fullName = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionName);
+            string fullId = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(expressionName);
+            string displayName = System.Web.Mvc.Html.DisplayNameExtensions.DisplayNameFor(helper, expression).ToString();
+
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            string controlHtml = "";
+
+            controlHtml = EncryptedSelectExtensions.EncryptedDropDownListFor(helper, expression, selectList, optionLabel, customAttributes).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullName)).ToString();
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, displayName, new { @for = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullId) }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1146,44 +1512,118 @@ namespace RefactorName.WebApp.Helpers
         {
             if (selectList == null)
                 selectList = new List<SelectListItem>();
-
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
-            if (!customAttributes.ContainsKey("id"))
-                customAttributes["id"] = name;
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
-            else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+            string controlHtml = "";
 
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
-
-            result.Append(System.Web.Mvc.Html.SelectExtensions.DropDownList(helper, name, selectList, optionLabel, customAttributes).ToString());
-
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
-
+            controlHtml = System.Web.Mvc.Html.SelectExtensions.DropDownList(helper, name, selectList, optionLabel, customAttributes).ToString();
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, defaultValidationMessege, null, null));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, defaultValidationMessege, null, null).ToString();
+
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns single-selection select element with encrypted options in bootstrap form item with caption
+        /// </summary>
+        /// <param name="name">Unique name for the select element</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="labelText">Item caption</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="defaultValidationMessege">Default error message for the validation</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedDropDownListItem<TModel>(
+         this HtmlHelper<TModel> helper, string name, IEnumerable<SelectListItem> selectList,
+            string labelText = " ", string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null,
+            string postAddon = "", string preAddon = "", bool withValidation = true, string defaultValidationMessege = "الرجاء إدخال الحقل", string hint = "")
+        {
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            string controlHtml = "";
+
+            controlHtml = EncryptedSelectExtensions.EncryptedDropDownList(helper, name, selectList, optionLabel, customAttributes).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name), defaultValidationMessege, null, null).ToString();
+
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1204,36 +1644,45 @@ namespace RefactorName.WebApp.Helpers
             string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null,
             string postAddon = "", string preAddon = "", bool withValidation = true, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             customAttributes["class"] += " form-control";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+            string controlHtml = "";
 
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
-
-            result.Append(System.Web.Mvc.Html.SelectExtensions.EnumDropDownListFor(helper, expression, optionLabel, customAttributes).ToString());
-
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            controlHtml = System.Web.Mvc.Html.SelectExtensions.EnumDropDownListFor(helper, expression, optionLabel, customAttributes).ToString();
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -1278,6 +1727,44 @@ namespace RefactorName.WebApp.Helpers
         }
 
         /// <summary>
+        /// Returns encrypted single-selection select element with ajax enabled on value changed
+        /// </summary>
+        /// <param name="name">Unique name for the select element</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="ajaxOptions">AjaxOptions</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="additionalJSONDataFunctionProvider">Javascript function that will return Json object to send with drop-down value inside the ajax request</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedAjaxDropDownList<TModel>(
+         this HtmlHelper<TModel> helper, string name, IEnumerable<SelectListItem> selectList, AjaxOptions ajaxOptions,
+            string optionLabel = "اختر", object httmlAttributes = null, string additionalJSONDataFunctionProvider = "")
+        {
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+            if (!customAttributes.ContainsKey("id"))
+                customAttributes["id"] = name;
+
+            ajaxOptions = (ajaxOptions ?? new AjaxOptions());
+            var ajaxAttributes = ajaxOptions.ToUnobtrusiveHtmlAttributes();
+
+            //merge two attributes
+            foreach (var ajaxAttribute in ajaxAttributes)
+                customAttributes[ajaxAttribute.Key] = ajaxAttribute.Value;
+
+            if (!string.IsNullOrEmpty(additionalJSONDataFunctionProvider))
+                customAttributes["data-ajax-dataprovider"] = additionalJSONDataFunctionProvider;
+
+            string result = EncryptedSelectExtensions.EncryptedDropDownList(helper, name, selectList, optionLabel, customAttributes).ToString();
+
+            return new MvcHtmlString(result);
+        }
+
+
+        /// <summary>
         /// Returns single-selection select element with ajax enabled on value changed mapped to model property
         /// </summary>
         /// <param name="expression">Lambda expression for the property</param>
@@ -1314,6 +1801,42 @@ namespace RefactorName.WebApp.Helpers
         }
 
         /// <summary>
+        /// Returns encrypted single-selection select element with ajax enabled on value changed mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="ajaxOptions">AjaxOptions</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="additionalJSONDataFunctionProvider">Javascript function that will return Json object to send with drop-down value inside the ajax request</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedAjaxDropDownListFor<TModel, TProperty>(
+            this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression,
+            IEnumerable<SelectListItem> selectList, AjaxOptions ajaxOptions,
+            string optionLabel = "اختر", object httmlAttributes = null, string additionalJSONDataFunctionProvider = "")
+        {
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            ajaxOptions = (ajaxOptions ?? new AjaxOptions());
+            var ajaxAttributes = ajaxOptions.ToUnobtrusiveHtmlAttributes();
+
+            //merge two attributes
+            foreach (var ajaxAttribute in ajaxAttributes)
+                customAttributes[ajaxAttribute.Key] = ajaxAttribute.Value;
+
+            if (!string.IsNullOrEmpty(additionalJSONDataFunctionProvider))
+                customAttributes["data-ajax-dataprovider"] = additionalJSONDataFunctionProvider;
+
+            string result = EncryptedSelectExtensions.EncryptedDropDownListFor(helper, expression, selectList, optionLabel, customAttributes).ToString();
+
+            return new MvcHtmlString(result);
+        }
+
+        /// <summary>
         /// Returns single-selection select element with ajax enabled on value changed mapped to enum value model property using the Enum for select items
         /// </summary>
         /// <param name="expression">Lambda expression for the property</param>
@@ -1345,6 +1868,38 @@ namespace RefactorName.WebApp.Helpers
         }
 
         /// <summary>
+        /// Returns encrypted single-selection select element with ajax enabled on value changed mapped to enum value model property using the Enum for select items
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="ajaxOptions">AjaxOptions</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="additionalJSONDataFunctionProvider">Javascript function that will return Json object to send with drop-down value inside the ajax request</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedAjaxEnumDropDownListFor<TModel, TProperty>(
+            this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, AjaxOptions ajaxOptions,
+            string optionLabel = "اختر", object httmlAttributes = null, string additionalJSONDataFunctionProvider = "")
+        {
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            ajaxOptions = (ajaxOptions ?? new AjaxOptions());
+            var ajaxAttributes = ajaxOptions.ToUnobtrusiveHtmlAttributes();
+
+            //merge two attributes
+            foreach (var ajaxAttribute in ajaxAttributes)
+                customAttributes[ajaxAttribute.Key] = ajaxAttribute.Value;
+
+            if (!string.IsNullOrEmpty(additionalJSONDataFunctionProvider))
+                customAttributes["data-ajax-dataprovider"] = additionalJSONDataFunctionProvider;
+
+            string result = EncryptedSelectExtensions.EncryptedEnumDropDownListFor(helper, expression, optionLabel, customAttributes).ToString();
+
+            return new MvcHtmlString(result);
+        }
+
+
+        /// <summary>
         /// Returns single-selection select element with ajax enabled on value changed in bootstrap form item with caption
         /// </summary>
         /// <param name="name">Unique name for the select element</param>
@@ -1370,37 +1925,116 @@ namespace RefactorName.WebApp.Helpers
             if (selectList == null)
                 selectList = new List<SelectListItem>();
 
-            StringBuilder result = new StringBuilder();
+            string controlHtml = "";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
-            else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
-
-            result.Append(MCIAjaxDropDownList(helper, name, selectList, ajaxOptions, optionLabel, httmlAttributes, additionalJSONDataFunctionProvider).ToString());
-
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            controlHtml = MCIAjaxDropDownList(helper, name, selectList, ajaxOptions, optionLabel, httmlAttributes, additionalJSONDataFunctionProvider).ToString();
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, defaultValidationMessege, null, null));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, defaultValidationMessege, null, null).ToString();
+
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns encrypted single-selection select element with ajax enabled on value changed in bootstrap form item with caption
+        /// </summary>
+        /// <param name="name">Unique name for the select element</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="ajaxOptions">AjaxOptions</param>
+        /// <param name="labelText">Item caption</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="additionalJSONDataFunctionProvider">Javascript function that will return Json object to send with drop-down value inside the ajax request</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="defaultValidationMessege">Default error message for the validation</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedAjaxDropDownListItem<TModel>(
+            this HtmlHelper<TModel> helper, string name, IEnumerable<SelectListItem> selectList, AjaxOptions ajaxOptions,
+            string labelText = " ", string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null, string additionalJSONDataFunctionProvider = "",
+            string postAddon = "", string preAddon = "", string hint = "",
+            bool withValidation = true, string defaultValidationMessege = "الرجاء إدخال الحقل")
+        {
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+
+            string controlHtml = "";
+
+            controlHtml = EncryptedAjaxDropDownList(helper, name, selectList, ajaxOptions, optionLabel, httmlAttributes, additionalJSONDataFunctionProvider).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name), defaultValidationMessege, null, null).ToString();
+
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name) }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1427,34 +2061,109 @@ namespace RefactorName.WebApp.Helpers
             if (selectList == null)
                 selectList = new List<SelectListItem>();
 
-            StringBuilder result = new StringBuilder();
+            string controlHtml = "";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
-
-            result.Append(MCIAjaxDropDownListFor(helper, expression, selectList, ajaxOptions, optionLabel, httmlAttributes, additionalJSONDataFunctionProvider).ToString());
-
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            controlHtml = MCIAjaxDropDownListFor(helper, expression, selectList, ajaxOptions, optionLabel, httmlAttributes, additionalJSONDataFunctionProvider).ToString();
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns Encrypted single-selection select element with ajax enabled on value changed in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the drop-down list</param>
+        /// <param name="ajaxOptions">AjaxOptions</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="additionalJSONDataFunctionProvider">Javascript function that will return Json object to send with drop-down value inside the ajax request</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedAjaxDropDownListItemFor<TModel, TProperty>(
+            this HtmlHelper<TModel> helper,
+            Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList, AjaxOptions ajaxOptions,
+            string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null, string additionalJSONDataFunctionProvider = "",
+            string postAddon = "", string preAddon = "", string hint = "", bool withValidation = true)
+        {
+            string expressionName = ExpressionHelper.GetExpressionText(expression);
+            string fullName = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionName);
+            string fullId = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(expressionName);
+            string displayName = System.Web.Mvc.Html.DisplayNameExtensions.DisplayNameFor(helper, expression).ToString();
+
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+
+            string controlHtml = "";
+
+            controlHtml = EncryptedAjaxDropDownListFor(helper, expression, selectList, ajaxOptions, optionLabel, httmlAttributes, additionalJSONDataFunctionProvider).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullId)).ToString();
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, displayName, new { @for = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullId) }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1477,34 +2186,105 @@ namespace RefactorName.WebApp.Helpers
             string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null, string additionalJSONDataFunctionProvider = "",
             string postAddon = "", string preAddon = "", string hint = "", bool withValidation = true)
         {
-            StringBuilder result = new StringBuilder();
+            string controlHtml = "";
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("<div class='input-group'>");
-            //preAddon
-            if (!string.IsNullOrEmpty(preAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", preAddon);
-
-            result.Append(MCIAjaxEnumDropDownListFor(helper, expression, ajaxOptions, optionLabel, httmlAttributes).ToString());
-
-            //postAddon
-            if (!string.IsNullOrEmpty(postAddon))
-                result.AppendFormat("<div class='input-group-addon'>{0}</div>", postAddon);
-
-            //if there is addon
-            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
-                result.Append("</div>");
+            controlHtml = MCIAjaxEnumDropDownListFor(helper, expression, ajaxOptions, optionLabel, httmlAttributes).ToString();
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression);
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns encrypted single-selection select element with ajax enabled on value changed mapped to enum value model property using the Enum for select items. all in bootstrap form item with caption
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="ajaxOptions">AjaxOptions</param>
+        /// <param name="optionLabel">Option Label for the null item</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="additionalJSONDataFunctionProvider">Javascript function that will return Json object to send with drop-down value inside the ajax request</param>
+        /// <param name="postAddon">Text to add after input as bootstrap addon</param>
+        /// <param name="preAddon">Text to add before input as bootstrap addon</param>
+        ///  <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedAjaxEnumDropDownListItemFor<TModel, TProperty>(
+            this HtmlHelper<TModel> helper,
+            Expression<Func<TModel, TProperty>> expression, AjaxOptions ajaxOptions,
+            string optionLabel = "اختر", int spanOf12 = 6, object httmlAttributes = null, string additionalJSONDataFunctionProvider = "",
+            string postAddon = "", string preAddon = "", string hint = "", bool withValidation = true)
+        {
+            string expressionName = ExpressionHelper.GetExpressionText(expression);
+            string fullName = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionName);
+            string fullId = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(expressionName);
+            string displayName = System.Web.Mvc.Html.DisplayNameExtensions.DisplayNameFor(helper, expression).ToString();
+
+            string controlHtml = "";
+
+            controlHtml = EncryptedAjaxEnumDropDownListFor(helper, expression, ajaxOptions, optionLabel, httmlAttributes).ToString();
+
+            if (withValidation)
+                controlHtml += System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullId)).ToString();
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, displayName, new { @for = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullId) }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            //if there is addon
+            if (!string.IsNullOrEmpty(postAddon) || !string.IsNullOrEmpty(preAddon))
+            {
+                MCITagBuilder inputGroup = new MCIInputGroup();
+                //preAddon
+                if (!string.IsNullOrEmpty(preAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(preAddon));
+
+                //input control
+                inputGroup.AppendInnerHtml(controlHtml);
+
+                //postAddon
+                if (!string.IsNullOrEmpty(postAddon))
+                    inputGroup.AppendInnerHtml(new MCIInputGroupAddon(postAddon));
+
+                frmGroup.AppendInnerHtml(inputGroup);
+            }
+            else
+                frmGroup.AppendInnerHtml(controlHtml);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -1524,15 +2304,17 @@ namespace RefactorName.WebApp.Helpers
         /// <returns>MvcHtmlString</returns>
         public static MvcHtmlString MCICheckBoxItemFor<TModel, TProperty>(
          this HtmlHelper<TModel> helper,
-         Expression<Func<TModel, TProperty>> expression, string cbLabel = "", int spanOf12 = 6, bool displayAsButton = false, string hint = "")
+         Expression<Func<TModel, TProperty>> expression, string cbLabel = "", int spanOf12 = 6, bool displayAsButton = false, string hint = "", object httmlAttributes = null)
         {
-            StringBuilder result = new StringBuilder();
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             TagBuilder myDiv = new TagBuilder("div");
             if (displayAsButton)
@@ -1540,16 +2322,15 @@ namespace RefactorName.WebApp.Helpers
 
             myDiv.InnerHtml = string.Format("<label class='{0}'>", displayAsButton ? "btn btn-default btn-sm" : "checkbox-inline");
             var typedExpression = (System.Linq.Expressions.Expression<System.Func<TModel, bool>>)(object)expression;
-            myDiv.InnerHtml += System.Web.Mvc.Html.InputExtensions.CheckBoxFor(helper, typedExpression).ToString();
+            myDiv.InnerHtml += System.Web.Mvc.Html.InputExtensions.CheckBoxFor(helper, typedExpression, httmlAttributes).ToString();
             myDiv.InnerHtml += cbLabel;
             myDiv.InnerHtml += "</label>";
 
-            result.Append(myDiv.ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtml(myDiv.ToString());
 
             if (displayAsButton)
             {
-                result.AppendFormat(
+                frmGroup.AppendInnerHtmlFormat(
                     @"<script>
                         $(function () {{
                             $('input[name={0}]:checked').parent('.btn').button('toggle');
@@ -1557,7 +2338,7 @@ namespace RefactorName.WebApp.Helpers
                     </script>", name);
             }
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1572,36 +2353,38 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="hint">Optional text to add after the caption label as a hint</param>
         /// <returns>MvcHtmlString</returns>
         public static MvcHtmlString MCICheckBoxItem<TModel>(
-            this HtmlHelper<TModel> helper, string name, string itemLabel, string cbLabel = "", int spanOf12 = 6, bool isChecked = false, bool displayAsButton = false, string hint = "")
+            this HtmlHelper<TModel> helper, string name, string itemLabel, string cbLabel = "", int spanOf12 = 6, bool isChecked = false, bool displayAsButton = false, string hint = "", object httmlAttributes = null)
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.AppendFormat("<label for='{2}' {1}>{0}</label>", itemLabel, string.IsNullOrEmpty(itemLabel) ? " class='sr-only'" : "", name);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtmlFormat("<label for='{2}' {1}>{0}</label>", itemLabel, string.IsNullOrEmpty(itemLabel) ? " class='sr-only'" : "", name);
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             TagBuilder myDiv = new TagBuilder("div");
             if (displayAsButton)
                 myDiv.Attributes.Add("data-toggle", "buttons");
 
             myDiv.InnerHtml += string.Format("<label class='{0}'>", displayAsButton ? "btn btn-default btn-sm" : "checkbox-inline");
-            myDiv.InnerHtml += System.Web.Mvc.Html.InputExtensions.CheckBox(helper, name, isChecked).ToString();
+            myDiv.InnerHtml += System.Web.Mvc.Html.InputExtensions.CheckBox(helper, name, isChecked, httmlAttributes).ToString();
             myDiv.InnerHtml += cbLabel;
             myDiv.InnerHtml += "</label>";
 
-            result.Append(myDiv.ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtml(myDiv.ToString());
 
             if (displayAsButton)
             {
-                result.AppendFormat(
+                frmGroup.AppendInnerHtmlFormat(
                     @"<script>
                         $(function () {{
                             $('input[name={0}]:checked').parent('.btn').button('toggle');
                         }});
                     </script>", name);
             }
-            return new MvcHtmlString(result.ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1619,11 +2402,14 @@ namespace RefactorName.WebApp.Helpers
             string name, IEnumerable<SelectListItem> itemList, string itemLabel = "",
             int spanOf12 = 6, CheckBoxStyles style = CheckBoxStyles.Inline, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.AppendFormat("<label for='{2}' {1}>{0}</label>", itemLabel, string.IsNullOrEmpty(itemLabel) ? " class='sr-only'" : "", name);
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtmlFormat("<label for='{2}' {1}>{0}</label>", itemLabel, string.IsNullOrEmpty(itemLabel) ? " class='sr-only'" : "", name);
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
 
             TagBuilder myDiv = new TagBuilder("div");
             if (style == CheckBoxStyles.ButtonGroup || style == CheckBoxStyles.Buttons)
@@ -1650,19 +2436,18 @@ namespace RefactorName.WebApp.Helpers
             foreach (var item in itemList)
             {
                 if (style == CheckBoxStyles.Vertical) myDiv.InnerHtml += "<div class='checkbox'>";
-                myDiv.InnerHtml += string.Format("<label class='{0}' {1}>", labelClasses, style == CheckBoxStyles.Buttons ? "style='margin: 0 0 5px 5px'" : "") +
+                myDiv.InnerHtml += string.Format("<label class='{0}' {1}>", labelClasses, style == CheckBoxStyles.Buttons ? "style='margin: 0 0 0 5px'" : "") +
                     System.Web.Mvc.Html.InputExtensions.CheckBox(helper, name, item.Selected, new { id = (name + "_" + i), value = item.Value }).ToString() +
                     item.Text +
                     "</label>";
                 if (style == CheckBoxStyles.Vertical) myDiv.InnerHtml += "</div>";
                 i++;
             }
-            result.Append(myDiv.ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtml(myDiv.ToString());
 
             if (style == CheckBoxStyles.ButtonGroup || style == CheckBoxStyles.Buttons)
             {
-                result.AppendFormat(
+                frmGroup.AppendInnerHtmlFormat(
                     @"<script>
                         $(function () {{
                             $('input[name={0}]:checked').parent('.btn').button('toggle');
@@ -1670,7 +2455,7 @@ namespace RefactorName.WebApp.Helpers
                     </script>", name);
             }
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1687,11 +2472,13 @@ namespace RefactorName.WebApp.Helpers
             string itemLabel, int spanOf12, CheckBoxStyles style = CheckBoxStyles.Inline, string hint = "",
             params Expression<Func<TModel, TProperty>>[] expressions)
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.AppendFormat("<label{1}>{0}</label>", itemLabel, string.IsNullOrEmpty(itemLabel) ? " class='sr-only'" : "");
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtmlFormat("<label{1}>{0}</label>", itemLabel, string.IsNullOrEmpty(itemLabel) ? " class='sr-only'" : "");
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
             TagBuilder myDiv = new TagBuilder("div");
             if (style == CheckBoxStyles.ButtonGroup || style == CheckBoxStyles.Buttons)
@@ -1737,12 +2524,11 @@ namespace RefactorName.WebApp.Helpers
 
                 if (style == CheckBoxStyles.Vertical) myDiv.InnerHtml += "</div>";
             }
-            result.Append(myDiv.ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtml(myDiv.ToString());
 
             if (style == CheckBoxStyles.ButtonGroup || style == CheckBoxStyles.Buttons)
             {
-                result.AppendFormat(
+                frmGroup.AppendInnerHtmlFormat(
                     @"<script>
                         $(function () {{
                             $('{0}').parent('.btn').button('toggle');
@@ -1750,7 +2536,7 @@ namespace RefactorName.WebApp.Helpers
                     </script>", namesSelector);
             }
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -1772,17 +2558,17 @@ namespace RefactorName.WebApp.Helpers
          Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> itemList,
             int spanOf12 = 6, RadioButtonStyle style = RadioButtonStyle.Inline, bool withValidation = true, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.Append(MCIRadioButtonFor(helper, expression, itemList, withValidation, style).ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtml(MCIRadioButtonFor(helper, expression, itemList, withValidation, style).ToString());
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1800,16 +2586,17 @@ namespace RefactorName.WebApp.Helpers
             SelectList itemList,
             int spanOf12 = 6, RadioButtonStyle style = RadioButtonStyle.Inline, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, itemLabel, new { @for = name }).ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, itemLabel, new { @for = name }).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.Append(MCIRadioButtons(helper, name, itemList, style).ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtml(MCIRadioButtons(helper, name, itemList, style).ToString());
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -1826,8 +2613,10 @@ namespace RefactorName.WebApp.Helpers
          Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> itemList,
             bool withValidation = true, RadioButtonStyle style = RadioButtonStyle.Inline)
         {
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+
             StringBuilder result = new StringBuilder();
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
+
             TagBuilder myDiv = new TagBuilder("div");
             if (style == RadioButtonStyle.ButtonGroup)
             {
@@ -1958,33 +2747,32 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, bool withValidation = true, object httmlAttributes = null, string imageSource = "", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
             RouteValueDictionary attr = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
             attr["autocomplete"] = "off";
             attr["class"] += " form-control";
-
-            if (!attr["class"].ToString().Contains("col-sm-")) attr["class"] += " col-sm-6";
 
             if (string.IsNullOrWhiteSpace(imageSource))
             {
                 var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
                 imageSource = urlHelper.Action("_CaptchaImage", "Shared") + "/" + System.Guid.NewGuid().ToString();
             }
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-            result.Append("<div>");
-            result.Append(System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, attr).ToString());
-            result.Append("<span class='captcha' style='padding: 0 !important; border: none'>");
-            result.AppendFormat("<img alt='Captcha' src={0}/></span></div>", imageSource);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtmlFormat("<div><div class='col-sm-6'>{0}</div><span class='captcha' style='padding: 0 !important; border: none'><img alt='Captcha' src={1}/></span></div>",
+                System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, expression, attr).ToString(), imageSource);
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
 
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
 
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
         }
 
         /// <summary>
@@ -2015,25 +2803,28 @@ namespace RefactorName.WebApp.Helpers
                 var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
                 imageSource = urlHelper.Action("_CaptchaImage", "Shared") + "/" + System.Guid.NewGuid().ToString();
             }
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
-            else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
 
-            result.Append("<div>");
-            result.Append(System.Web.Mvc.Html.InputExtensions.TextBox(helper, name, "", attr).ToString());
-            result.Append("<span class='captcha' style='padding: 0 !important; border: none'>");
-            result.AppendFormat("<img alt='Captcha' src={0}/></span></div>", imageSource);
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtml("<div><div class='col-sm-6'>");
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.TextBox(helper, name, "", attr).ToString());
+            frmGroup.AppendInnerHtml("</div><span class='captcha' style='padding: 0 !important; border: none'>");
+            frmGroup.AppendInnerHtmlFormat("<img alt='Captcha' src={0}/></span></div>", imageSource);
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null));
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, errorMessege, null, null).ToString());
 
-
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -2053,20 +2844,24 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TProperty>> expression, int spanOf12 = 6, string width = "300px", string height = "100px", string clearButtonInnerHTML = "مسح التوقيع", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
-            string name = ExpressionHelper.GetExpressionText(expression).Replace('.', '_');
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+            string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-            result.AppendFormat("<div class='signature-wraper'><div id='SigDiv_{0}' style='width: {1}; height: {2}'></div></div>", name, width, height);
-            result.AppendFormat("<button id='btnClearSig_{0}' class='btn btn-default btn-xs' type='button' style='display:block;'>{1}</button>", name, clearButtonInnerHTML);
-            result.Append(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression, new { id = name }).ToString());
-            result.Append("</div>");
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.AppendFormat("<script>$(function () {{$('#SigDiv_{0}').signature({{syncFieldImageURL: '#{0}'}}); $('#SigDiv_{0}').signature('fromImageURL', $('#{0}').val()); $('#btnClearSig_{0}').click(function () {{ $('#SigDiv_{0}').signature('clear'); }});}});</script>", name);
 
-            return new MvcHtmlString(result.ToString());
+            frmGroup.AppendInnerHtmlFormat("<div class='signature-wraper'><div id='SigDiv_{0}' style='width: {1}; height: {2}'></div></div>", name, width, height);
+            frmGroup.AppendInnerHtmlFormat("<button id='btnClearSig_{0}' class='btn btn-default btn-xs' type='button' style='display:block;'>{1}</button>", name, clearButtonInnerHTML);
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.HiddenFor(helper, expression, new { id = name }).ToString());
+
+            frmGroup.AppendInnerHtmlFormat("<script>$(function () {{$('#SigDiv_{0}').signature({{syncFieldImageURL: '#{0}'}}); $('#SigDiv_{0}').signature('fromImageURL', $('#{0}').val()); $('#btnClearSig_{0}').click(function () {{ $('#SigDiv_{0}').signature('clear'); }});}});</script>", name);
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         /// <summary>
@@ -2083,23 +2878,25 @@ namespace RefactorName.WebApp.Helpers
             this HtmlHelper<TModel> helper,
             string name, string labelText = "", int spanOf12 = 6, string width = "300px", string height = "100px", string clearButtonInnerHTML = "مسح التوقيع", string hint = "")
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
             if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
             else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.AppendFormat("<div class='signature-wraper'><div id='SigDiv_{0}' style='width: {1}; height: {2}'></div></div>", name, width, height);
-            result.AppendFormat("<button id='btnClearSig_{0}' class='btn btn-default btn-xs' type='button' style='display:block;'>{1}</button>", name, clearButtonInnerHTML);
-            result.Append(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, "", new { id = name }).ToString());
-            result.Append("</div>");
+            frmGroup.AppendInnerHtmlFormat("<div class='signature-wraper'><div id='SigDiv_{0}' style='width: {1}; height: {2}'></div></div>", name, width, height);
+            frmGroup.AppendInnerHtmlFormat("<button id='btnClearSig_{0}' class='btn btn-default btn-xs' type='button' style='display:block;'>{1}</button>", name, clearButtonInnerHTML);
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.Hidden(helper, name, "", new { id = name }).ToString());
+            frmGroup.AppendInnerHtml("</div>");
 
-            result.AppendFormat("<script>$(function () {{$('#SigDiv_{0}').signature({{syncFieldImageURL: '#{0}'}}); $('#SigDiv_{0}').signature('fromImageURL', $('#{0}').val()); $('#btnClearSig_{0}').click(function () {{ $('#SigDiv_{0}').signature('clear'); }});}});</script>", name);
+            frmGroup.AppendInnerHtmlFormat("<script>$(function () {{$('#SigDiv_{0}').signature({{syncFieldImageURL: '#{0}'}}); $('#SigDiv_{0}').signature('fromImageURL', $('#{0}').val()); $('#btnClearSig_{0}').click(function () {{ $('#SigDiv_{0}').signature('clear'); }});}});</script>", name);
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -2116,44 +2913,174 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="withValidation">True will add ValidationMessage for the input element</param>
         /// <param name="hint">Optional text to add after the caption label as a hint</param>
         /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIMultiSelectAngularTreeItemFor<TModel, TProperty>(
-            this HtmlHelper<TModel> helper,
-            Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
-            int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
-        {
-            StringBuilder result = new StringBuilder();
-            var name = "";
+        //public static MvcHtmlString MCIMultiSelectAngularTreeItemFor<TModel, TProperty>(
+        //    this HtmlHelper<TModel> helper,
+        //    Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+        //    int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
+        //{
+        //    string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
 
-            if (selectList == null)
-                selectList = new List<SelectListItem>();
+        //    if (selectList == null)
+        //        selectList = new List<SelectListItem>();
 
-            if ((expression.Body as System.Linq.Expressions.MemberExpression) != null)
-                name = (expression.Body as System.Linq.Expressions.MemberExpression).Member.Name;
+        //    var model = helper.ViewData.Model as UserEditModel;
 
-            var model = helper.ViewData.Model as UserEditModel;
+        //    var root = new RoleItemsTreeView().ToModel(selectList, model);
 
-            var root = new RolesTreeViewModel().ToModel(selectList, model);
+        //    MCITagBuilder col = new MCIItemsCol(spanOf12, new { ng_controller = "billingAppCtrl" });
+        //    MCITagBuilder frmGroup = new MCIFormGroup();
 
-            result.AppendFormat("<div class='form-group col-sm-{0}' ng-controller='billingAppCtrl'>", spanOf12.ToString());
-            result.Append(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
-            if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
-            result.Append("<multi-select-tree data-input-model='[" + Json.Encode(root) + "]' multi-select='true'" +
-                            "data-output-model='selectedItem2' data-default-label='اضغط هنا ...'" +
-                            "data-callback='selectOnly1Or2(item, selectedItems)'" +
-                            "data-select-only-leafs='false' data-switch-view-callback='switchViewCallback(scopeObj)'" +
-                            "data-switch-view-label='test1' data-switch-view='false'></multi-select-tree>" +
-                            "<select name='" + name + "' multiple='multiple' ng-hide='true' id='" + name + "' ng-init='selected = " + Json.Encode(selectList) + "' class='form-control select2-offscreen' tabindex='-1'>" +
-                                "<option value='{{item.Value}}' ng-selected='itemSelected(item)' ng-repeat='item in selected'>{{item.Text}}</option>" +
-                        "</select>");
+        //    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
 
-            if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression));
+        //    if (!string.IsNullOrEmpty(hint))
+        //        frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.Append("</div>");
+        //    frmGroup.AppendInnerHtml("<multi-select-tree data-input-model='" + Json.Encode(root) + "' multi-select='true'" +
+        //                    "data-output-model='selectedItem2' data-default-label='اضغط هنا ...'" +
+        //                    "data-callback='selectOnly1Or2(item, selectedItems)'" +
+        //                    "data-select-only-leafs='false' data-switch-view-callback='switchViewCallback(scopeObj)'" +
+        //                    "data-switch-view-label='test1' data-switch-view='false'></multi-select-tree>" +
+        //                    "<select name='" + name + "' multiple='multiple' ng-hide='true' id='" + name + "' ng-init='selected = " + Json.Encode(selectList) + "' class='form-control select2-offscreen' tabindex='-1'>" +
+        //                        "<option value='{{item.Value}}' ng-selected='itemSelected(item)' ng-repeat='item in selected'>{{item.Text}}</option>" +
+        //                "</select>");
 
-            return new MvcHtmlString(result.ToString());
-        }
+        //    if (withValidation)
+        //        frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
+
+        //    return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        //}
+
+        /// <summary>
+        /// Returns multi-select select element in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the list</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        //public static MvcHtmlString MCIMultiSelectAngularTreeItemForBlockRoles<TModel, TProperty>(
+        //    this HtmlHelper<TModel> helper,
+        //    Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+        //    int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
+        //{
+        //    string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+
+        //    if (selectList == null)
+        //        selectList = new List<SelectListItem>();
+
+        //    var model = helper.ViewData.Model as BlockRoleSubscriberModel;
+
+        //    var root = new RoleItemsTreeView().ToModel(selectList, model);
+
+        //    MCITagBuilder col = new MCIItemsCol(spanOf12, new { ng_controller = "billingAppCtrl" });
+        //    MCITagBuilder frmGroup = new MCIFormGroup();
+
+        //    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+        //    if (!string.IsNullOrEmpty(hint))
+        //        frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+        //    frmGroup.AppendInnerHtml("<multi-select-tree data-input-model='" + Json.Encode(root) + "' multi-select='true'" +
+        //                    "data-output-model='selectedItem2' data-default-label='اضغط هنا ...'" +
+        //                    "data-callback='selectOnly1Or2(item, selectedItems)'" +
+        //                    "data-select-only-leafs='false' data-switch-view-callback='switchViewCallback(scopeObj)'" +
+        //                    "data-switch-view-label='test1' data-switch-view='false'></multi-select-tree>" +
+        //                    "<select name='" + name + "' multiple='multiple' ng-hide='true' id='" + name + "' ng-init='selected = " + Json.Encode(selectList) + "' class='form-control select2-offscreen' tabindex='-1'>" +
+        //                        "<option value='{{item.Value}}' ng-selected='itemSelected(item)' ng-repeat='item in selected'>{{item.Text}}</option>" +
+        //                "</select>");
+
+        //    if (withValidation)
+        //        frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
+
+        //    return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        //}
+
+        /// <summary>
+        /// Returns multi-select select element in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the list</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        //public static MvcHtmlString MCIMultiSelectAngularTreeItemForDepartment<TModel, TProperty>(
+        //    this HtmlHelper<TModel> helper,
+        //    Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+        //    int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
+        //{
+        //    string name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression));
+
+        //    if (selectList == null)
+        //        selectList = new List<SelectListItem>();
+
+        //    var model = helper.ViewData.Model as UserEditModel;
+
+        //    var root = new RoleItemsTreeView().ToModel(selectList, model);
+
+        //    MCITagBuilder col = new MCIItemsCol(spanOf12, new { ng_controller = "billingAppCtrl" });
+        //    MCITagBuilder frmGroup = new MCIFormGroup();
+
+        //    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+        //    if (!string.IsNullOrEmpty(hint))
+        //        frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+        //    frmGroup.AppendInnerHtml("<multi-select-tree data-input-model='" + Json.Encode(root) + "' multi-select='true'" +
+        //                    "data-output-model='selectedItem2' data-default-label='اضغط هنا ...'" +
+        //                    "data-callback='selectOnly1Or2(item, selectedItems)'" +
+        //                    "data-select-only-leafs='false' data-switch-view-callback='switchViewCallback(scopeObj)'" +
+        //                    "data-switch-view-label='test1' data-switch-view='false'></multi-select-tree>" +
+        //                    "<select name='" + name + "' multiple='multiple' ng-hide='true' id='" + name + "' ng-init='selected = " + Json.Encode(selectList) + "' class='form-control select2-offscreen' tabindex='-1'>" +
+        //                        "<option value='{{item.Value}}' ng-selected='itemSelected(item)' ng-repeat='item in selected'>{{item.Text}}</option>" +
+        //                "</select>");
+
+        //    if (withValidation)
+        //        frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
+
+        //    return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        //}
+
+        /// <summary>
+        /// Returns multi-select select element in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the list</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        //public static MvcHtmlString MCIListBoxtItemFor<TModel, TProperty>(
+        //    this HtmlHelper<TModel> helper,
+        //    Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+        //    int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
+        //{
+        //    RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+        //    customAttributes["class"] += " form-control";
+
+        //    if (selectList == null)
+        //        selectList = new List<SelectListItem>();
+
+        //    MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+        //    MCITagBuilder frmGroup = new MCIFormGroup();
+
+        //    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.LabelFor(helper, expression).ToString());
+
+        //    if (!string.IsNullOrEmpty(hint))
+        //        frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+        //    frmGroup.AppendInnerHtml(System.Web.Mvc.Html.SelectExtensions.ListBoxFor(helper, expression, selectList, customAttributes).ToString());
+
+
+        //    if (withValidation)
+        //        frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, expression).ToString());
+
+        //    return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        //}
 
         /// <summary>
         /// Returns multi-select select element in bootstrap form item with caption mapped to model property
@@ -2188,6 +3115,50 @@ namespace RefactorName.WebApp.Helpers
             return new MvcHtmlString(result.ToString());
         }
 
+
+        /// <summary>
+        /// Returns encrypted multi-select select element in bootstrap form item with caption mapped to model property
+        /// </summary>
+        /// <param name="expression">Lambda expression for the property</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the list</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedListBoxtItemFor<TModel, TProperty>(
+            this HtmlHelper<TModel> helper,
+            Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList,
+            int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
+        {
+            string expressionName = ExpressionHelper.GetExpressionText(expression);
+            string fullName = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(expressionName);
+            string fullId = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(expressionName);
+            string displayName = System.Web.Mvc.Html.DisplayNameExtensions.DisplayNameFor(helper, expression).ToString();
+
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, displayName, new { @for = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullId) }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtml(EncryptedSelectExtensions.EncryptedListBoxFor(helper, expression, selectList, customAttributes).ToString());
+
+
+            if (withValidation)
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, fullName)).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
         /// <summary>
         /// Returns multi-select select element in bootstrap form item with caption
         /// </summary>
@@ -2206,38 +3177,87 @@ namespace RefactorName.WebApp.Helpers
             string labelText = "",
             int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
         {
-            StringBuilder result = new StringBuilder();
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
             if (selectList == null)
                 selectList = new List<SelectListItem>();
 
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
-            customAttributes["class"] += " form-control";
             if (!customAttributes.ContainsKey("id"))
                 customAttributes["id"] = name;
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
             if (string.IsNullOrWhiteSpace(labelText))
-                result.Append("<div style='margin-bottom:24px'> </div>");
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
             else
-                result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = name }).ToString());
 
             if (!string.IsNullOrEmpty(hint))
-                result.AppendFormat("&nbsp;&nbsp;<i>{0}</i>", hint);
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
 
-            result.Append(System.Web.Mvc.Html.SelectExtensions.ListBox(helper, name, selectList, customAttributes).ToString());
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.SelectExtensions.ListBox(helper, name, selectList, customAttributes).ToString());
+
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, "", null, null));
-            result.Append("</div>");
-            return new MvcHtmlString(result.ToString());
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, name, "", null, null).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
+        }
+
+        /// <summary>
+        /// Returns Encrypted multi-select select element in bootstrap form item with caption
+        /// </summary>
+        /// <param name="name">Unique name for the select element</param>
+        /// <param name="selectList">A collection of System.Web.Mvc.SelectListItem object that are used to populate the list</param>
+        /// <param name="labelText">Item caption</param>
+        /// <param name="spanOf12">Number represents bootstrap column span for the item width</param>
+        /// <param name="httmlAttributes">custom httmlAttributes applied to the select element</param>
+        /// <param name="withValidation">True will add ValidationMessage for the input element</param>
+        /// <param name="hint">Optional text to add after the caption label as a hint</param>
+        /// <returns>MvcHtmlString</returns>
+        public static MvcHtmlString EncryptedListBoxtItem<TModel>(
+            this HtmlHelper<TModel> helper,
+            string name,
+            IEnumerable<SelectListItem> selectList,
+            string labelText = "",
+            int spanOf12 = 6, object httmlAttributes = null, bool withValidation = true, string hint = "")
+        {
+            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(httmlAttributes);
+            customAttributes["class"] += " form-control";
+
+            if (selectList == null)
+                selectList = new List<SelectListItem>();
+
+            if (!customAttributes.ContainsKey("id"))
+                customAttributes["id"] = name;
+
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            if (string.IsNullOrWhiteSpace(labelText))
+                frmGroup.AppendInnerHtml("<div style='margin-bottom:24px'> </div>");
+            else
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText, new { @for = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name) }).ToString());
+
+            if (!string.IsNullOrEmpty(hint))
+                frmGroup.AppendInnerHtml(new MCIHint(hint));
+
+            frmGroup.AppendInnerHtml(EncryptedSelectExtensions.EncryptedListBox(helper, name, selectList, customAttributes).ToString());
+
+            if (withValidation)
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessage(helper, string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name)).ToString());
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
 
         #endregion
 
-        #region Buttons and links
+        #region Buttons
 
-        public static RouteValueDictionary AddConfirmationAttributes(object htmlAttributes, ConfirmInfo confirmInfo)
+        private static RouteValueDictionary AddConfirmationAttributes(object htmlAttributes, string confirmationTitle, string confirmationMessage)
         {
             RouteValueDictionary result;
             if (htmlAttributes is RouteValueDictionary)
@@ -2246,8 +3266,8 @@ namespace RefactorName.WebApp.Helpers
                 result = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
 
             result["class"] += " mci-confirm";
-            result["title"] = confirmInfo.Title;
-            result["rel"] = confirmInfo.Message;
+            result["title"] = confirmationTitle;
+            result["rel"] = confirmationMessage;
 
             return result;
         }
@@ -2302,10 +3322,11 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="htmlAttributes">custom httmlAttributes applied to the button element</param>
         /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
         /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCISubmitButtonWithConfirm(this HtmlHelper helper, string innerHtml, ConfirmInfo confirmInfo,
+        public static MvcHtmlString MCISubmitButtonWithConfirm(this HtmlHelper helper, string innerHtml,
+            string confirmationTitle, string confirmationMessage,
             string name = "", string value = "", object htmlAttributes = null, string onlyForRoles = null)
         {
-            RouteValueDictionary customHtmlAttributes = AddConfirmationAttributes(htmlAttributes, confirmInfo);
+            RouteValueDictionary customHtmlAttributes = AddConfirmationAttributes(htmlAttributes, confirmationTitle, confirmationMessage);
 
             return MCISubmitButton(helper, innerHtml, name, value, customHtmlAttributes, onlyForRoles);
         }
@@ -2357,7 +3378,7 @@ namespace RefactorName.WebApp.Helpers
             ajaxOptions.OnBegin = string.Format("{0}_onBegin", name);
             ajaxOptions.OnComplete = string.Format("$('#{0}').button('reset'); {1}", customAttributes["id"].ToString(), ajaxOptions.OnComplete);
 
-            result.Append(MCIAjaxLink(helper, btnInnerHtml, actionName, controllerName, routeValues, ajaxOptions, customAttributes, null));
+            result.Append(helper.Link(btnInnerHtml, actionName, controllerName, routeValues, customAttributes, ajaxOptions));
 
             result.AppendFormat(
                 @"<script>
@@ -2395,7 +3416,7 @@ namespace RefactorName.WebApp.Helpers
                                 theUrl += theUrl.indexOf('?') == -1 ? '?' : '';                                
                                 for (var key in data) {{
                                     theUrl += '&';
-                                    theUrl += key + '=' + data[key];
+                                    theUrl += key + '=' + encodeURIComponent(data[key]);
                                 }}
                                 opts.url = theUrl;
                             }}
@@ -2410,209 +3431,8 @@ namespace RefactorName.WebApp.Helpers
             return new MvcHtmlString(result.ToString());
         }
 
-
-        /// <summary>
-        /// Returns ajax anchor element with bootstrap modal confirmation befor request
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="confirmationTitle">bootstrap modal title</param>
-        /// <param name="confirmationMessage">bootstrap modal confirmation message</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIAjaxLinkWithConfirm(this AjaxHelper helper, string linkInnerHtml, ConfirmInfo confirmInfo,
-            string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            RouteValueDictionary customAttributes = AddConfirmationAttributes(htmlAttributes, confirmInfo);
-            ajaxOptions = (ajaxOptions ?? new AjaxOptions());
-            if (string.IsNullOrWhiteSpace(ajaxOptions.OnBegin))
-                ajaxOptions.OnBegin = "ReturnFalse";
-
-            return MCIAjaxLink(helper, linkInnerHtml, actionName, controllerName, routeValues, ajaxOptions, customAttributes, onlyForRoles);
-        }
-
-        /// <summary>
-        /// Returns Exact same as ActionLink but takes inner html instead of inner text
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        [Obsolete("Need to re-direct all invoke to this method to the new one.")]
-        public static MvcHtmlString MCIAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml,
-            string actionName, string controllerName = null, object routeValues = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, null, null, null, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, false /* encrypted */);
-        }
-
-        /// <summary>
-        /// Returns Exact same as AjaxActionLink but takes inner html instead of inner text
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="ajaxOptions">AjaxOptions</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIAjaxLink(this AjaxHelper helper, string linkInnerHtml,
-            string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            RouteValueDictionary customAttributes;
-            if (htmlAttributes is RouteValueDictionary)
-                customAttributes = htmlAttributes as RouteValueDictionary;
-            else
-                customAttributes = new RouteValueDictionary(htmlAttributes);
-
-            ajaxOptions = (ajaxOptions ?? new AjaxOptions());
-
-            var ajaxOptionAttributes = ajaxOptions.ToUnobtrusiveHtmlAttributes();
-            //add ajax attributes to htmlAttributes
-            foreach (var item in ajaxOptionAttributes)
-                customAttributes[item.Key] = item.Value;
-
-            RouteValueDictionary realRoutValues;
-            if (routeValues is RouteValueDictionary)
-                realRoutValues = routeValues as RouteValueDictionary;
-            else
-                realRoutValues = new RouteValueDictionary(routeValues);
-
-            return GenerateAcionLink(helper.RouteCollection, helper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, null, null, null, realRoutValues, customAttributes, onlyForRoles, false /* encrypted */);
-        }
-
-        [Obsolete("Need to re-direct all invoke to this method to the new one.")]
-        public static MvcHtmlString MCIAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, object routeValues, object htmlAttributes, string onlyForRoles)
-        {
-            return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, protocol, hostName, fragment, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, false /* encrypted */);
-        }
-
-        [Obsolete("Need to re-direct all invoke to this method to the new one.")]
-        public static MvcHtmlString MCIAcionLink(this HtmlHelper htmlHelper, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, string onlyForRoles)
-        {
-            return GenerateAcionLink(htmlHelper.RouteCollection, htmlHelper.ViewContext.RequestContext, linkInnerHtml, actionName, controllerName, protocol, hostName, fragment, HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes), onlyForRoles, false /* encrypted */);
-        }
-
-        public static MvcHtmlString GenerateAcionLink(RouteCollection routeCollection, RequestContext requestContext, string linkInnerHtml, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, string onlyForRoles, bool encrypted)
-        {
-            //check roles
-            if (!string.IsNullOrWhiteSpace(onlyForRoles) &&
-                (
-                !HttpContext.Current.Request.IsAuthenticated ||
-                (HttpContext.Current.User as UserProfilePrincipal) != null && !(HttpContext.Current.User as UserProfilePrincipal).IsInRoles(onlyForRoles))
-                )
-                return new MvcHtmlString("");
-
-            if (encrypted)
-                routeValues = Util.EncryptRouteValues(routeValues);
-
-            string url = UrlHelper.GenerateUrl(null, actionName, controllerName, protocol, hostName, fragment, routeValues, routeCollection, requestContext, false);
-            TagBuilder tagBuilder = new TagBuilder("a")
-            {
-                InnerHtml = (!String.IsNullOrEmpty(linkInnerHtml)) ? linkInnerHtml : String.Empty
-            };
-            tagBuilder.MergeAttributes(htmlAttributes);
-            tagBuilder.MergeAttribute("href", url);
-            return new MvcHtmlString(tagBuilder.ToString(TagRenderMode.Normal));
-        }
-
         #endregion
 
-        #region Encypted Hidden Fields
-
-        public static MvcHtmlString MCIEncryptedHidden<TModel>(this HtmlHelper<TModel> helper, string name, object value)
-        {
-            return MCIEncryptedHidden(helper, name, value, null);
-        }
-
-        public static MvcHtmlString MCIEncryptedHidden<TModel>(this HtmlHelper<TModel> helper, string name, object value, object htmlAttributes)
-        {
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-            return MCIEncryptedHidden(helper, name, value, customAttributes);
-        }
-
-        public static MvcHtmlString MCIEncryptedHidden<TModel>(this HtmlHelper<TModel> helper, string name, object value, IDictionary<string, object> htmlAttributes)
-        {
-            htmlAttributes = htmlAttributes ?? new RouteValueDictionary();
-
-            value = value ?? string.Empty;
-            string strValue = value.ToString();
-            string encryptedValue = StringEncrypter.ControlsEncrypter.Encrypt(strValue);
-
-            string newName = string.Concat(StringEncrypter.ControlsEncrypter.Prefix, name);
-            string id = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(newName);
-            if (!htmlAttributes.ContainsKey("id"))
-                htmlAttributes.Add("id", id);
-
-            return System.Web.Mvc.Html.InputExtensions.Hidden(helper, newName, encryptedValue, htmlAttributes);
-        }
-
-        public static MvcHtmlString MCIEncryptedHiddenFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression)
-        {
-            return MCIEncryptedHiddenFor(helper, expression, null);
-        }
-
-        public static MvcHtmlString MCIEncryptedHiddenFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, object htmlAttributes)
-        {
-            RouteValueDictionary customAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-
-            return MCIEncryptedHiddenFor(helper, expression, customAttributes);
-        }
-
-        public static MvcHtmlString MCIEncryptedHiddenFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)
-        {
-            string fullName = ExpressionHelper.GetExpressionText(expression);
-            var value = ModelMetadata.FromLambdaExpression(expression, helper.ViewData).Model;
-
-            return MCIEncryptedHidden(helper, fullName, value, htmlAttributes);
-        }
-
-        #endregion Encypted Hidden Fields
-
-        #region Encrypted Action Link
-        /// <summary>
-        /// Returns ajax anchor element with bootstrap modal confirmation befor request and with encrypted route values
-        /// </summary>
-        /// <param name="linkInnerHtml">Anchor inner html</param>
-        /// <param name="confirmationTitle">bootstrap modal title</param>
-        /// <param name="confirmationMessage">bootstrap modal confirmation message</param>
-        /// <param name="actionName">Url Action name</param>
-        /// <param name="controllerName">Url Controller name</param>
-        /// <param name="routeValues">Url rout values</param>
-        /// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        /// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        /// <returns>MvcHtmlString</returns>
-        public static MvcHtmlString MCIEncryptedAjaxLinkWithConfirm(this AjaxHelper helper, string linkInnerHtml,
-            ConfirmInfo confirmInfo,
-            string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
-        {
-            return MCIAjaxLinkWithConfirm(helper, linkInnerHtml, confirmInfo, actionName, controllerName, Util.EncryptRouteValues(routeValues), ajaxOptions, htmlAttributes, onlyForRoles);
-        }
-
-        ///// <summary>
-        ///// Returns Exact same as AjaxActionLink but takes inner html instead of inner text and with encrypted route values
-        ///// </summary>
-        ///// <param name="linkInnerHtml">Anchor inner html</param>
-        ///// <param name="actionName">Url Action name</param>
-        ///// <param name="controllerName">Url Controller name</param>
-        ///// <param name="routeValues">Url rout values</param>
-        ///// <param name="ajaxOptions">AjaxOptions</param>
-        ///// <param name="htmlAttributes">custom httmlAttributes applied to the anchor element</param>
-        ///// <param name="onlyForRoles">comma delimited roles to display the button for</param>
-        ///// <returns>MvcHtmlString</returns>
-        //public static MvcHtmlString MCIEncryptedAjaxLink(this AjaxHelper helper, string linkInnerHtml,
-        //    string actionName, string controllerName = null, object routeValues = null, AjaxOptions ajaxOptions = null, object htmlAttributes = null, string onlyForRoles = null)
-        //{
-        //    return MCIAjaxLink(helper, linkInnerHtml, actionName, controllerName, Util.EncryptRouteValues(routeValues), ajaxOptions, htmlAttributes, onlyForRoles);
-        //}
-
-        #endregion
 
         #region Modal
 
@@ -2621,9 +3441,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="modalUniqueName">Unique id for the Modal Container</param>
         /// <returns></returns>
-        public static MCIModalContainer MCIBeginModalContainer(this HtmlHelper helper, string modalUniqueName)
+        public static MCIDisposableHelper MCIBeginModalContainer(this HtmlHelper helper, string modalUniqueName, ModalFadeMode fadeMode = ModalFadeMode.Transperent)
         {
-            return new MCIModalContainer(helper, modalUniqueName);
+            return new MCIDisposableHelper(helper, new MCIModalContainer(modalUniqueName, fadeMode));
         }
 
         /// <summary>
@@ -2631,9 +3451,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="modalSize">Modal size (small, default, large)</param>
         /// <returns></returns>
-        public static MCIModal MCIBeginModal(this HtmlHelper helper, ModalSize modalSize = ModalSize.Default)
+        public static MCIDisposableHelper MCIBeginModal(this HtmlHelper helper, ModalSize modalSize = ModalSize.Default)
         {
-            return new MCIModal(helper, modalSize);
+            return new MCIDisposableHelper(helper, new MCIModal(modalSize));
         }
 
         /// <summary>
@@ -2641,9 +3461,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="withCloseButton">Display modal close button</param>
         /// <returns></returns>
-        public static MCIModalHeader MCIBeginModalHeader(this HtmlHelper helper, bool withCloseButton = true)
+        public static MCIDisposableHelper MCIBeginModalHeader(this HtmlHelper helper, bool withCloseButton = true, ModalHeaderStyle modalHeaderStyle = ModalHeaderStyle.Light)
         {
-            return new MCIModalHeader(helper, withCloseButton);
+            return new MCIDisposableHelper(helper, new MCIModalHeader(withCloseButton, modalHeaderStyle));
         }
 
         /// <summary>
@@ -2651,9 +3471,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="htmlAttributes">custom html attributes for the div</param>
         /// <returns></returns>
-        public static MCIModalBody MCIBeginModalBody(this HtmlHelper helper, object htmlAttributes = null)
+        public static MCIDisposableHelper MCIBeginModalBody(this HtmlHelper helper, object htmlAttributes = null)
         {
-            return new MCIModalBody(helper, htmlAttributes);
+            return new MCIDisposableHelper(helper, new MCIModalBody(htmlAttributes));
         }
 
         /// <summary>
@@ -2661,9 +3481,9 @@ namespace RefactorName.WebApp.Helpers
         /// </summary>
         /// <param name="htmlAttributes">custom html attributes for the div</param>
         /// <returns></returns>
-        public static MCIModalFooter MCIBeginModalFooter(this HtmlHelper helper, object htmlAttributes = null)
+        public static MCIDisposableHelper MCIBeginModalFooter(this HtmlHelper helper, object htmlAttributes = null)
         {
-            return new MCIModalFooter(helper, htmlAttributes);
+            return new MCIDisposableHelper(helper, new MCIModalFooter(htmlAttributes));
         }
 
         #endregion
@@ -2689,25 +3509,27 @@ namespace RefactorName.WebApp.Helpers
             Expression<Func<TModel, TProperty>> latExpression, Expression<Func<TModel, TProperty>> lngExpression, string markerTitle = "",
             string name = "mciMap", bool editable = true, string height = "400px", int spanOf12 = 6, string labelText = "", bool withValidation = false, string callBack = "")
         {
-            StringBuilder result = new StringBuilder();
+            string latExpName = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(latExpression));
+            string lngExpName = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(lngExpression));
 
-            string latExpName = ExpressionHelper.GetExpressionText(latExpression).Replace('.', '_');
-            string lngExpName = ExpressionHelper.GetExpressionText(lngExpression).Replace('.', '_');
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (!string.IsNullOrEmpty(labelText)) result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
+            if (!string.IsNullOrEmpty(labelText))
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
 
-            result.Append(System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, latExpression, new { @style = "position:absolute;opacity:0.0;visibility:hidden" }).ToString() +
-                System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, lngExpression, new { @style = "position:absolute;opacity:0.0;visibility:hidden" }).ToString());
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, latExpression, new { @style = "position:absolute;opacity:0.0;visibility:hidden" }).ToString());
+            frmGroup.AppendInnerHtml(System.Web.Mvc.Html.InputExtensions.TextBoxFor(helper, lngExpression, new { @style = "position:absolute;opacity:0.0;visibility:hidden" }).ToString());
 
             if (withValidation)
-                result.Append(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, latExpression));
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.ValidationExtensions.ValidationMessageFor(helper, latExpression).ToString());
 
-            result.AppendFormat("<div id='{0}_canvas' style='direction: ltr; height:{1}'></div>", name, height);
 
-            result.Append("</div>");
+            frmGroup.AppendInnerHtmlFormat("<div id='{0}_canvas' style='direction: ltr; height:{1}'></div>", name, height);
 
-            result.AppendFormat(@"<script>
+            frmGroup.AppendInnerHtml("</div>");
+
+            frmGroup.AppendInnerHtmlFormat(@"<script>
                 var {0}_marker, {0}_map, {0}_editable, {0}_laditude, {0}_longitude;
                 $(function () {{
                     loadGoogleMapsApi('{0}_initialize');
@@ -2790,7 +3612,7 @@ namespace RefactorName.WebApp.Helpers
                 }}                                 
          </script>", name, markerTitle, latExpName, lngExpName, new UrlHelper(helper.ViewContext.RequestContext).Content("~/Content/images/marker.png"), editable.ToString().ToLower(), callBack);
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
 
@@ -2809,18 +3631,19 @@ namespace RefactorName.WebApp.Helpers
             IList<GoogleMarker> markers,
             string name = "mciMap", string height = "400px", int spanOf12 = 6, string labelText = "", string callBack = "")
         {
-            StringBuilder result = new StringBuilder();
-
             var markersJson = Newtonsoft.Json.JsonConvert.SerializeObject(markers);
 
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            if (!string.IsNullOrEmpty(labelText)) result.Append(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
 
-            result.AppendFormat("<div id='{0}_canvas' style='direction: ltr; height:{1}'></div>", name, height);
+            if (!string.IsNullOrEmpty(labelText))
+                frmGroup.AppendInnerHtml(System.Web.Mvc.Html.LabelExtensions.Label(helper, labelText).ToString());
 
-            result.Append("</div>");
+            frmGroup.AppendInnerHtmlFormat("<div id='{0}_canvas' style='direction: ltr; height:{1}'></div>", name, height);
 
-            result.AppendFormat(@"<script>
+            frmGroup.AppendInnerHtml("</div>");
+
+            frmGroup.AppendInnerHtmlFormat(@"<script>
                 var {0}_markers = [];
                 var {0}_map;
                 var {0}_bounds;
@@ -2883,7 +3706,7 @@ namespace RefactorName.WebApp.Helpers
                    markersJson.ToString(),
                    callBack);
 
-            return new MvcHtmlString(result.ToString());
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
 
@@ -2986,15 +3809,18 @@ namespace RefactorName.WebApp.Helpers
         public static MvcHtmlString MciChart<TModel>(this HtmlHelper<TModel> helper, object chartData, MciChartType MciChartType, string name = "mciChart", int spanOf12 = 12, string height = "400px", MciChartOptions options = null)
         {
             HtmlString mciChartData = new HtmlString(Json.Encode((MciChart)chartData));
-            StringBuilder result = new StringBuilder();
-            result.AppendFormat("<div class='form-group col-sm-{0}'>", spanOf12.ToString());
-            result.AppendFormat("<div id='{0}' style='direction: ltr; height: {1}; width:100%;'></div></div>", name, height);
-            if (options == null)
-                result.AppendFormat(@"<script>$(document).ready(function () {{ Draw{0}('{1}', JSON.parse('{2}')); }});</script>", MciChartType, name, mciChartData);
-            else
-                result.AppendFormat(@"<script>$(document).ready(function () {{ Draw{0}('{1}', JSON.parse('{2}'), JSON.parse('{3}')); }});</script>", MciChartType, name, mciChartData, Json.Encode(options));
 
-            return new MvcHtmlString(result.ToString());
+            MCITagBuilder col = new MCIItemsCol(spanOf12, null);
+            MCITagBuilder frmGroup = new MCIFormGroup();
+
+            frmGroup.AppendInnerHtmlFormat("<div id='{0}' style='direction: ltr; height: {1}; width:100%;'></div>", name, height);
+
+            if (options == null)
+                frmGroup.AppendInnerHtmlFormat(@"<script>$(document).ready(function () {{ Draw{0}('{1}', JSON.parse('{2}')); }});</script>", MciChartType.ToString(), name, mciChartData.ToString());
+            else
+                frmGroup.AppendInnerHtmlFormat(@"<script>$(document).ready(function () {{ Draw{0}('{1}', JSON.parse('{2}'), JSON.parse('{3}')); }});</script>", MciChartType.ToString(), name, mciChartData.ToString(), Json.Encode(options));
+
+            return col.AppendInnerHtml(frmGroup).ToMvcHtmlString();
         }
 
         #endregion
@@ -3061,221 +3887,6 @@ namespace RefactorName.WebApp.Helpers
 
     #region disposable helpers
 
-    public class MCIModalContainer : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIModalContainer(HtmlHelper helper, string modalUniqueName)
-        {
-            _helper = helper;
-            StringBuilder result = new StringBuilder();
-
-            result.AppendFormat("<div data-backdrop='static' class='modal fade' id='{0}' tabindex='-1' role='dialog' aria-labelledby='{1}' aria-hidden='true'>", modalUniqueName, modalUniqueName + "Label");
-
-            _helper.ViewContext.Writer.Write(result.ToString());
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-    }
-
-    public class MCIModal : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIModal(HtmlHelper helper, ModalSize modalSize)
-        {
-            _helper = helper;
-            StringBuilder result = new StringBuilder();
-
-            result.AppendFormat("<div class='modal-dialog {0}'><div class='modal-content'>", ParseModalSize(modalSize));
-
-            _helper.ViewContext.Writer.Write(result.ToString());
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div></div>");
-        }
-
-        private string ParseModalSize(ModalSize size)
-        {
-            switch (size)
-            {
-                case ModalSize.Large:
-                    return "modal-lg";
-                case ModalSize.Small:
-                    return "modal-sm";
-                default:
-                    return "";
-            }
-        }
-    }
-
-    public class MCIModalHeader : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIModalHeader(HtmlHelper helper, bool withCloseButton)
-        {
-            _helper = helper;
-            StringBuilder result = new StringBuilder();
-
-            result.Append("<div class='modal-header'>");
-
-            if (withCloseButton)
-                result.Append("<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>");
-
-            _helper.ViewContext.Writer.Write(result.ToString());
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-
-        private string ParseModalSize(ModalSize size)
-        {
-            switch (size)
-            {
-                case ModalSize.Large:
-                    return "modal-lg";
-                case ModalSize.Small:
-                    return "modal-sm";
-                default:
-                    return "";
-            }
-        }
-    }
-
-    public class MCIModalBody : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIModalBody(HtmlHelper helper, object htmlAttributes)
-        {
-            _helper = helper;
-            RouteValueDictionary customAttributes = htmlAttributes != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) : new RouteValueDictionary();
-            customAttributes["class"] += " modal-body";
-
-            TagBuilder tagBuilder = new TagBuilder("div");
-            tagBuilder.MergeAttributes(customAttributes);
-
-            var result = tagBuilder.ToString().Replace("</div>", "");
-
-            _helper.ViewContext.Writer.Write(result);
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-
-        private string ParseModalSize(ModalSize size)
-        {
-            switch (size)
-            {
-                case ModalSize.Large:
-                    return "modal-lg";
-                case ModalSize.Small:
-                    return "modal-sm";
-                default:
-                    return "";
-            }
-        }
-    }
-
-    public class MCIModalFooter : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIModalFooter(HtmlHelper helper, object htmlAttributes)
-        {
-            _helper = helper;
-            RouteValueDictionary customAttributes = htmlAttributes != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) : new RouteValueDictionary();
-            customAttributes["class"] += " modal-footer";
-
-            TagBuilder tagBuilder = new TagBuilder("div");
-            tagBuilder.MergeAttributes(customAttributes);
-
-            var result = tagBuilder.ToString().Replace("</div>", "");
-
-            _helper.ViewContext.Writer.Write(result);
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-
-        private string ParseModalSize(ModalSize size)
-        {
-            switch (size)
-            {
-                case ModalSize.Large:
-                    return "modal-lg";
-                case ModalSize.Small:
-                    return "modal-sm";
-                default:
-                    return "";
-            }
-        }
-    }
-
-    public class MCINavBar : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCINavBar(HtmlHelper helper, string tabName)
-        {
-            _helper = helper;
-            if (tabName != "") tabName = string.Format("id='{0}'", tabName);
-            _helper.ViewContext.Writer.Write(string.Format("<ul {0} class='nav nav-tabs'>", tabName));
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</ul>");
-        }
-    }
-
-    public class MCITabPanels : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCITabPanels(HtmlHelper helper, string minHeight)
-        {
-            _helper = helper;
-            _helper.ViewContext.Writer.Write(string.Format("<div class='tab-content' {0} >", string.IsNullOrEmpty(minHeight) ? "" : "style='min-height:" + minHeight + "'"));
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-    }
-
-    public class MCITabPanel : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCITabPanel(HtmlHelper helper, string name, bool active, bool withFadeEffect)
-        {
-            _helper = helper;
-
-            string st = string.Format("<div class='tab-pane {1} {2} {3}' id='{0}'>", name, active ? "active" : "", withFadeEffect ? "fade" : "", (active && withFadeEffect) ? "in" : "");
-
-            _helper.ViewContext.Writer.Write(st);
-        }
-
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-    }
-
     public class MCIWizard : IDisposable
     {
         protected HtmlHelper _helper;
@@ -3308,49 +3919,6 @@ namespace RefactorName.WebApp.Helpers
         }
     }
 
-    public class MCIItemsRow : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIItemsRow(HtmlHelper helper, object htmlAttributes)
-        {
-            _helper = helper;
-            RouteValueDictionary customAttributes = htmlAttributes != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) : new RouteValueDictionary();
-            customAttributes["class"] += " row";
-
-            TagBuilder tagBuilder = new TagBuilder("div");
-            tagBuilder.MergeAttributes(customAttributes);
-
-            var result = tagBuilder.ToString().Replace("</div>", "");
-            _helper.ViewContext.Writer.Write(result);
-        }
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-    }
-
-    public class MCIItemsCol : IDisposable
-    {
-        protected HtmlHelper _helper;
-
-        public MCIItemsCol(HtmlHelper helper, int spanOf12, object htmlAttributes)
-        {
-            _helper = helper;
-            RouteValueDictionary customAttributes = htmlAttributes != null ? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes) : new RouteValueDictionary();
-            customAttributes["class"] += string.Format(" col-sm-{0}", spanOf12.ToString());
-
-            TagBuilder tagBuilder = new TagBuilder("div");
-            tagBuilder.MergeAttributes(customAttributes);
-
-            var result = tagBuilder.ToString().Replace("</div>", "");
-            _helper.ViewContext.Writer.Write(result);
-        }
-        public void Dispose()
-        {
-            _helper.ViewContext.Writer.Write("</div>");
-        }
-    }
 
     #endregion
 
@@ -3363,12 +3931,6 @@ namespace RefactorName.WebApp.Helpers
         MapChart
     }
 
-    public enum ModalSize
-    {
-        Large,
-        Default,
-        Small
-    }
 
     public enum RadioButtonStyle
     {
@@ -3394,16 +3956,14 @@ namespace RefactorName.WebApp.Helpers
 
     #endregion
 
+    public class GoogleMarker
+    {
+        public int ID { get; set; }
+
+        public double Lat { get; set; }
+
+        public double Lng { get; set; }
+
+        public string Title { get; set; }
+    }
 }
-
-public class GoogleMarker
-{
-    public int ID { get; set; }
-
-    public double Lat { get; set; }
-
-    public double Lng { get; set; }
-
-    public string Title { get; set; }
-}
-

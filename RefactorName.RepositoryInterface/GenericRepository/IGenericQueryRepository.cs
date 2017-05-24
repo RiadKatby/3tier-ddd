@@ -15,50 +15,86 @@ namespace RefactorName.RepositoryInterface
     public interface IGenericQueryRepository
     {
         /// <summary>
-        /// Returns single BusinessObject of table that satisfies a specified condition or a null if no such element is found.
+        /// Returns single BusinessObject of table that satisfies the given <paramref name="id"/> or <see cref="EntityNotFoundException"/> will be thrown.
         /// </summary>
         /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
         /// <param name="id">Id of the BusinessObject.</param>
-        /// <returns>The BusinessObject the satisfy the predicate.</returns>
+        /// <returns>BusinessObject the satisfy the <paramref name="id"/>.</returns>
+        /// <exception cref="EntityNotFoundException">When no related BusinessObject is found in table with the given <paramref name="id"/>.</exception>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
         TBusinessEntity Single<TBusinessEntity>(int id) where TBusinessEntity : class, new();
 
         /// <summary>
-        /// Return one entity which complies to constraints, if more than one entity complies to constraints an exception will be thrown.
+        /// Returns single BusinessObject of table that satisfies the given <paramref name="id"/> or a null if no such element is found.
         /// </summary>
-        /// <typeparam name="TBusinessEntity"></typeparam>
-        /// <param name="constraints"></param>
-        /// <returns></returns>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="id">Id of the BusinessObject.</param>
+        /// <returns>BusinessObject the satisfy the <paramref name="id"/>.</returns>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
+        TBusinessEntity SingleOrDefault<TBusinessEntity>(int id) where TBusinessEntity : class, new();
+
+        /// <summary>
+        /// Returns full graph of single BusinessObject of table that satisfies the given <paramref name="id"/> or <see cref="EntityNotFoundException"/> will be thrown.
+        /// </summary>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="id">Id of the BusinessObject.</param>
+        /// <returns>BusinessObject the satisfy the <paramref name="id"/>.</returns>
+        /// <exception cref="EntityNotFoundException">When no related businessObject is found with the given <paramref name="id"/>.</exception>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
+        TBusinessEntity SingleWithGraph<TBusinessEntity>(int id) where TBusinessEntity : class, new();
+
+        /// <summary>
+        /// Returns full graph of single BusinessObject of table that satisfies the given <paramref name="id"/> or null if no such element is found.
+        /// </summary>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="id">Id of the BusinessObject.</param>
+        /// <returns>BusinessObject the satisfy the <paramref name="id"/>.</returns>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
+        TBusinessEntity SingleOrDefaultWithGraph<TBusinessEntity>(int id) where TBusinessEntity : class, new();
+
+        /// <summary>
+        /// Returns custom graph of single BusinessObject of table that satisfies the given <see cref="IQueryConstraints{T}"/> or <see cref="EntityNotFoundException"/> will be thrown.
+        /// </summary>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="constraints">QueryConstraints object to be satisfied.</param>
+        /// <returns>BusinessObject the satisfy the <paramref name="constraints"/>.</returns>
+        /// <exception cref="EntityNotFoundException">When no related businessObject is found with the given <paramref name="constraints"/>.</exception>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
         TBusinessEntity Single<TBusinessEntity>(IQueryConstraints<TBusinessEntity> constraints) where TBusinessEntity : class, new();
 
         /// <summary>
-        /// Return one or first entity which complies to constraint, if no or more than one entity complies to constraint the first one or null will be returned.
+        /// Returns custom graph of single BusinessObject of table that satisfies a specified <see cref="IQueryConstraints{T}"/> or null if no such element is found.
         /// </summary>
-        /// <typeparam name="TBusinessEntity"></typeparam>
-        /// <param name="constraints"></param>
-        /// <returns></returns>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="constraints">QueryConstraints object to be satisfied.</param>
+        /// <returns>BusinessObject the satisfy the <paramref name="constraints"/>.</returns>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
         TBusinessEntity SingleOrDefault<TBusinessEntity>(IQueryConstraints<TBusinessEntity> constraints) where TBusinessEntity : class, new();
 
         /// <summary>
-        /// Returns the number of elements of the specified T BusinessEntity that satisfies a condition.
+        /// Returns record count of table.
         /// </summary>
         /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
-        /// <param name="constraints">A function to test each element for a condition.</param>
-        /// <returns>The number of elements in the sequence that satisfies the condition in the predicate function.</returns>
-        int GetCount<TBusinessEntity>(IQueryConstraints<TBusinessEntity> constraints) where TBusinessEntity : class, new();
-
-        /// <summary>
-        /// Returns the number of elements in a BusinessObject's table.
-        /// </summary>
-        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
-        /// <returns>The number of elements in the input sequence.</returns>
+        /// <returns>The number of elements in the table.</returns>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
         int GetCount<TBusinessEntity>() where TBusinessEntity : class, new();
 
         /// <summary>
-        /// Apply QueryConstraints on corresponding table of TEntity type and return the result.
+        /// Returns record count of table that satisfy the given <paramref name="constraints"/>.
         /// </summary>
-        /// <typeparam name="TBusinessEntity">An Entity type to retrieves the entity objects from.</typeparam>
-        /// <param name="constraints">An QueryConstraints that has the criteria of search results.</param>
-        /// <returns>An object of <see cref="IQueryResult"/> with TEntity objects if any satisfied the QueryConstraints object.</returns>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="constraints">QueryConstraints object to be satisfied.</param>
+        /// <returns>The number of elements in the table that satisfies the given <paramref name="constraints"/>.</returns>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
+        int GetCount<TBusinessEntity>(IQueryConstraints<TBusinessEntity> constraints) where TBusinessEntity : class, new();
+
+        /// <summary>
+        /// Returns <see cref="IQueryResult{T}"/> that satisfy the given <paramref name="constraints"/> on the table.
+        /// </summary>
+        /// <typeparam name="TBusinessEntity">The type of BusinessObject of source table.</typeparam>
+        /// <param name="constraints">QueryConstraints object to be satisfied.</param>
+        /// <returns>The result records that satisfy the given <paramref name="constraints"/>.</returns>
+        /// <exception cref="RepositoryException">When an error on the database level is occurred and couldn't be recovered.</exception>
         IQueryResult<TBusinessEntity> Find<TBusinessEntity>(IQueryConstraints<TBusinessEntity> constraints) where TBusinessEntity : class, new();
     }
 }

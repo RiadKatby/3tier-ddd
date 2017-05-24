@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using System.Web.Routing;
 
 namespace RefactorName.WebApp
 {
@@ -156,25 +157,100 @@ namespace RefactorName.WebApp
         #endregion
 
 
+        /// <summary>
+        /// Returns URL Encoded Query String collection of the specified <see cref="AjaxOptions"/>.
+        /// </summary>
+        /// <param name="ajaxOptions"></param>
+        /// <returns>New object of <see cref="NameValueCollection"/> that contains all property of <see cref="AjaxOptions"/>.</returns>
         public static NameValueCollection ToQueryString(this AjaxOptions ajaxOptions)
         {
-            NameValueCollection retVal = HttpUtility.ParseQueryString("?");
+            NameValueCollection parameters = HttpUtility.ParseQueryString("?");
 
-            foreach (var item in ajaxOptions.ToUnobtrusiveHtmlAttributes())
-                retVal.Add(item.Key, item.Value.ToString());
+            foreach (var param in ajaxOptions.ToUnobtrusiveHtmlAttributes())
+                parameters.Add(param.Key, param.Value.ToString());
 
-
-            return retVal;
+            return parameters;
         }
 
+        /// <summary>
+        /// Returns URL Encoded Query String collection of the specified <see cref="IDictionary{TKey, TValue}"/>.
+        /// </summary>
+        /// <param name="dictionary"></param>
+        /// <returns>New object of <see cref="NameValueCollection"/> that contains all entries of Dictionary.</returns>
         public static NameValueCollection ToQueryString(this IDictionary<string, object> dictionary)
         {
-            NameValueCollection retVal = HttpUtility.ParseQueryString("?");
+            NameValueCollection parameters = HttpUtility.ParseQueryString("?");
 
-            foreach (var item in dictionary)
-                retVal.Add(item.Key, item.Value.ToString());
+            foreach (var param in dictionary)
+                parameters.Add(param.Key, param.Value.ToString());
 
-            return retVal;
+            return parameters;
+        }
+
+        /// <summary>
+        /// Encrypt the specified parameters by static URL key into one payload.
+        /// </summary>
+        /// <param name="parameters">Query string parameters to be encrypted by static key.</param>
+        /// <returns>One encrypted payload as URL Encoded string.</returns>
+        public static string EncryptAndUrlEncode(this NameValueCollection parameters)
+        {
+            string queryString = parameters.ToString();
+            string encryptedString = StringEncrypter.UrlEncrypter.Encrypt(queryString);
+
+            return HttpUtility.UrlEncode(encryptedString);
+        }
+
+        /// <summary>
+        /// Encrypts the specified parameters by static URL key into one query string with specified paramName.
+        /// </summary>
+        /// <param name="parameters">Query string parameters to be encrypted by static key and parametrized.</param>
+        /// <param name="paramName">parameter name of encrypted payload.</param>
+        /// <returns>New object of RouteValueDictionary that contains one entry of specified paramName.</returns>
+        public static RouteValueDictionary EncryptAndUrlEncode(this NameValueCollection parameters, string paramName)
+        {
+            string encryptedQueryString = EncryptAndUrlEncode(parameters);
+
+            RouteValueDictionary routeValues = new RouteValueDictionary();
+            routeValues.Add(paramName, encryptedQueryString);
+
+            return routeValues;
+        }
+
+        /// <summary>
+        /// Encrypts, UrlEnocde, and Parametrized the specified route Values into specified paramName.
+        /// </summary>
+        /// <param name="routeValues">route values to be encrypted and Url Encoded.</param>
+        /// <param name="paramName">parameter name of returned payload.</param>
+        /// <returns>New object of <see cref="RouteValueDictionary"/> with one entry of paramName.</returns>
+        public static RouteValueDictionary EncryptAndUrlEncode(this RouteValueDictionary routeValues, string paramName)
+        {
+            return routeValues.ToQueryString()
+                .EncryptAndUrlEncode(paramName);
+        }
+
+        /// <summary>
+        /// Encrypts, UrlEncode, and Default Parametrized the specified route values into "q" parameter name.
+        /// </summary>
+        /// <param name="routeValues">route values to be encrypted and Url Encoded.</param>
+        /// <returns>New object of <see cref="RouteValueDictionary"/> with one entry of paramName.</returns>
+        public static RouteValueDictionary EncryptAndUrlEncode(this RouteValueDictionary routeValues)
+        {
+            return routeValues.ToQueryString()
+                .EncryptAndUrlEncode("q");
+        }
+
+        /// <summary>
+        /// Convert to RouteValueDictionary, Encrypt, UrlEncode and default parametrized the specified routeValues into "q" parameter name.
+        /// </summary>
+        /// <typeparam name="T">Anonymous Type.</typeparam>
+        /// <param name="routeValues">Anonymous object to Encrypt and UrlEncode.</param>
+        /// <returns>New object of <see cref="RouteValueDictionary"/> with one entry of "q".</returns>
+        public static RouteValueDictionary EncryptAndUrlEncode<T>(this T routeValues)
+        {
+            RouteValueDictionary parameters = HtmlHelper.AnonymousObjectToHtmlAttributes(routeValues);
+
+            return parameters.ToQueryString()
+                .EncryptAndUrlEncode("q");
         }
 
         public static IDictionary<string, object> DecryptUrlToDictionary(string s)

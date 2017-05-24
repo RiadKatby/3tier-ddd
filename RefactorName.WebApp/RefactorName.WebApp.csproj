@@ -111,6 +111,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
@@ -198,8 +199,14 @@
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Helpers\ConfirmableLink.cs" />
     <Compile Include="Helpers\ConfirmInfo.cs" />
     <Compile Include="Helpers\EncryptedActionExtentions.cs" />
+    <Compile Include="Helpers\EncryptedInputExtensions.cs" />
+    <Compile Include="Helpers\EncryptedSelectExtensions.cs" />
+    <Compile Include="Helpers\Error.cs" />
+    <Compile Include="Helpers\HtmlHelperClasses.cs" />
+    <Compile Include="Helpers\HtmlHelperExt.cs" />
     <Compile Include="Helpers\LinkExtentions.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Filters\AjaxAttribute.cs" />
@@ -208,6 +215,10 @@
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Binders\AliasModelBinder.cs" />
+    <Compile Include="Helpers\MvcResources.Designer.cs" />
+    <Compile Include="Helpers\PopoverLink.cs" />
+    <Compile Include="Helpers\RoleItemsTreeView.cs" />
+    <Compile Include="Helpers\RolesTreeViewModel.cs" />
     <Compile Include="Infrastructure\BaseController.cs" />
     <Compile Include="Infrastructure\BaseController.ExceptionHandling.cs" />
     <Compile Include="Infrastructure\BaseController.Snackbars.cs" />
@@ -538,6 +549,7 @@
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\dev-framework.ui.popover.js" />
     <Content Include="Scripts\fin-uploader\ajax.requester.js" />
     <Content Include="Scripts\fin-uploader\button.js" />
     <Content Include="Scripts\fin-uploader\deletefile.ajax.requester.js" />
@@ -718,6 +730,9 @@
       <Project>{adf08c24-75bc-4f5d-9a59-bd0cf024982f}</Project>
       <Name>RefactorName.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Helpers\MvcResources.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

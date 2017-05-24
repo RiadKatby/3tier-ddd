@@ -7,6 +7,7 @@
 /// <reference path="bootstrap.js" />
 /// <reference path="bootstrap-multiselect.js" />
 /// <reference path="common.js" />
+/// <reference path="dev-framework.ui.popover.js" />
 /// <reference path="fin-uploader/ajax.requester.js" />
 /// <reference path="fin-uploader/button.js" />
 /// <reference path="fin-uploader/deletefile.ajax.requester.js" />

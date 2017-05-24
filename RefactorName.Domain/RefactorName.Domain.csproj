@@ -49,6 +49,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Identity\RoleService.cs" />
     <Compile Include="Identity\UserSevice.cs" />
+    <Compile Include="InvoiceDomain.cs" />
+    <Compile Include="ItemDomain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

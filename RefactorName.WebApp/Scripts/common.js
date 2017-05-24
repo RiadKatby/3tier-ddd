@@ -65,6 +65,15 @@ $(document).bind("ajaxSend", function (e, xhr, settings) {
     //Sent
 
 }).bind("ajaxComplete", function (e, xhr, settings) {
+    if (xhr.getResponseHeader("dev-fw-message")) {
+        var message = decodeURIComponent(xhr.getResponseHeader("dev-fw-message"))
+        if (message != null) {
+            message = message.replace(/\+/g, ' ');
+            var messageType = xhr.getResponseHeader("dev-fw-message-type");
+            var messageTimeout = xhr.getResponseHeader("dev-fw-message-timeout");
+            snackbar(message, messageType, messageTimeout);
+        }
+    }
     //Complete
     //tooltipfy();
     //fixPagingStyle();

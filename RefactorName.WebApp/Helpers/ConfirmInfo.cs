@@ -25,7 +25,7 @@ namespace RefactorName.WebApp.Helpers
     {
         public const string ActionNameKey = "actionname";
         public const string ControllerNameKey = "controllername";
-        public const string QueryStringKey = "querystring";
+        public const string QueryStringKey = "q";
         public const string TitleKey = "title";
         public const string MessageKey = "message";
         public const string PositiveButtonKey = "positivebutton";
@@ -93,7 +93,19 @@ namespace RefactorName.WebApp.Helpers
         #endregion
 
         /// <summary>
-        /// Initializes new instance of <see cref="ConfirmInfo"/> with its properties.
+        /// Initializes a new instance of the ConfirmInfo class with default values.
+        /// </summary>
+        public ConfirmInfo(IDictionary<string, object> attributes)
+        {
+            Title = attributes[TitleKey].ToString();
+            Message = attributes[MessageKey].ToString();
+            PositiveButton = attributes[PositiveButtonKey].ToString();
+            NegativeButton = attributes[NegativeButtonKey].ToString();
+            PositiveButtonStyle = (ButtonStyle)Enum.Parse(typeof(ButtonStyle), attributes[PositiveButtonStyleKey].ToString());
+        }
+
+        /// <summary>
+        /// Initializes new instance of ConfirmInfo with specific title, message and default values for rest properties.
         /// </summary>
         /// <param name="title">title of confirmation dialog box.</param>
         /// <param name="message">message that asks the user about his/her confirmation.</param>
@@ -102,34 +114,39 @@ namespace RefactorName.WebApp.Helpers
         /// <param name="positiveStyle">style of positive answer button.</param>
         public ConfirmInfo(string title, string message)
         {
-            this.Title = title;
-            this.Message = message;
-            this.PositiveButton = "نعم";
-            this.NegativeButton = "لا";
-            this.PositiveButtonStyle = ButtonStyle.primary;
+            Title = title;
+            Message = message;
+            PositiveButton = "نعم";
+            NegativeButton = "لا";
+            PositiveButtonStyle = ButtonStyle.primary;
         }
-        public ConfirmInfo()
-        {
 
+        /// <summary>
+        /// Initializes a new instance of the ConfirmInfo class with specific title, message, positiveButton, negativeButton, positiveButtonStyle.
+        /// </summary>
+        /// <param name="title">Title text of confirmation dialog.</param>
+        /// <param name="message">Message text of confirmation dialog.</param>
+        /// <param name="positiveButton">Positive button caption.</param>
+        /// <param name="negativeButton">Negative button caption.</param>
+        /// <param name="positiveButtonStyle">Positive button style.</param>
+        public ConfirmInfo(string title, string message, string positiveButton, string negativeButton, ButtonStyle positiveButtonStyle)
+        {
+            Title = title;
+            Message = message;
+            PositiveButton = positiveButton ?? "نعم";
+            NegativeButton = negativeButton ?? "لا";
+            PositiveButtonStyle = positiveButtonStyle;
         }
+
         public void PopulateAttribute(IDictionary<string, object> htmlAttributes)
         {
             HtmlAttributes = HtmlAttributes ?? new RouteValueDictionary(htmlAttributes);
-            HtmlAttributes["class"] += " mci-confirm";
+            //HtmlAttributes["class"] += " mci-confirm";
             //HtmlAttributes["dialog-title"] = htmlAttributes[TitleKey].ToString();
             //HtmlAttributes["dialog-content"] = htmlAttributes[MessageKey].ToString();
             //HtmlAttributes["dialog-positiveButton"] = htmlAttributes[PositiveButtonKey].ToString();
             //HtmlAttributes["dialog-negativeButton"] = htmlAttributes[NegativeButtonKey].ToString();
             //HtmlAttributes["dialog-positiveButtonStyle"] = htmlAttributes[PositiveButtonStyleKey].ToString();
-        }
-
-        internal void PopulateDialog(IDictionary<string, object> dialogAttributes)
-        {
-            Title = dialogAttributes[TitleKey].ToString();
-            Message = dialogAttributes[MessageKey].ToString();
-            PositiveButton = dialogAttributes[PositiveButtonKey].ToString();
-            NegativeButton = dialogAttributes[NegativeButtonKey].ToString();
-            PositiveButtonStyle = (ButtonStyle)Enum.Parse(typeof(ButtonStyle), dialogAttributes[PositiveButtonStyleKey].ToString());
         }
 
         internal void PopulateUrl(IDictionary<string, object> urlParts)

@@ -31,19 +31,22 @@ namespace RefactorName.WebApp.Filters
                 {
                     ApplicationUserManager manager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
-
-                    var adminUser = manager.FindByNameAsync("Admin").Result;
-
+                    var adminUser = TaskUtil.Await(() => manager.FindByNameAsync("Admin"));
 
                     if (adminUser == null)
                     {
                         User firstUser = new User("Admin", "Administrator", true, "0555555555", "Admin");
-                        var u = manager.CreateAsync(firstUser, "P@ssw0rd");
+                        var u = TaskUtil.Await(() => manager.CreateAsync(firstUser, "P@ssw0rd"));
+
                         //get details
-                        firstUser = manager.FindByNameAsync("Admin").Result;
+                        firstUser = TaskUtil.Await(() => manager.FindByNameAsync("Admin"));
 
                         //add to role
                         manager.AddToRoleAsync(firstUser.Id, RoleNames.SuperAdministrator);
+                    }
+                    else if (adminUser.Roles.Count == 0)
+                    {
+                        manager.AddToRoleAsync(adminUser.Id, RoleNames.SuperAdministrator);
                     }
                 }
                 catch (Exception ex)

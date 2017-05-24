@@ -53,6 +53,7 @@
     <Compile Include="Basis\AuditableEntity.cs" />
     <Compile Include="Basis\BaseEntity.cs" />
     <Compile Include="Basis\BusinessRule.cs" />
+    <Compile Include="Basis\Extensions.cs" />
     <Compile Include="Basis\Factory.cs" />
     <Compile Include="Basis\IEntity.cs" />
     <Compile Include="Basis\IQueryResult.cs" />
@@ -63,6 +64,9 @@
     <Compile Include="Basis\Settings.cs" />
     <Compile Include="Basis\SortOrderEnum.cs" />
     <Compile Include="Basis\Tracer.cs" />
+    <Compile Include="Entities\Invoice.cs" />
+    <Compile Include="Entities\InvoiceDetail.cs" />
+    <Compile Include="Entities\Item.cs" />
     <Compile Include="Exceptions\BusinessRuleException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\PermissionException.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\User.cs" />
     <Compile Include="SMS.cs" />
+    <Compile Include="TaskUtil.cs" />
     <Compile Include="UserSearchCriteria.cs" />
   </ItemGroup>
   <ItemGroup>

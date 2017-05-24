@@ -20,16 +20,22 @@ namespace RefactorName.Core
         /// </summary>
         ConnectionFailed,
 
-        /// <summary>
-        /// لا يمكن اضافة سجل مرتين
-        /// </summary>
-        DuplicateValue,
         ValidationError,
         ModifiedbyAnotherUserCheckUpdates,
         DeleteReferencedRecord,
         ConcurrencyCheckFailed,
         NotificationServiceError = 50301,
-        DatabaseError = 50102
+        DatabaseError = 50102,
+
+        /// <summary>
+        /// Core Classes have new update that are not reflected on Database Schema.
+        /// </summary>
+        CoreNotMatchedWithDatabase = 50302,
+
+        /// <summary>
+        /// INSERT, UPDATE, or DELETE operation on master object that has details and database relationship is set NO ACTION
+        /// </summary>
+        ConceptualNull = 50303
     }
 
     /// <summary>

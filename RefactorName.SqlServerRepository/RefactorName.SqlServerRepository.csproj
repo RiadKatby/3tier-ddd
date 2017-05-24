@@ -67,6 +67,30 @@
     <Compile Include="Migrations\201512141203140_initial.Designer.cs">
       <DependentUpon>201512141203140_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705241628478_InvoiceSeed.cs" />
+    <Compile Include="Migrations\201705241628478_InvoiceSeed.Designer.cs">
+      <DependentUpon>201705241628478_InvoiceSeed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705241643205_InvoiceSeed1.cs" />
+    <Compile Include="Migrations\201705241643205_InvoiceSeed1.Designer.cs">
+      <DependentUpon>201705241643205_InvoiceSeed1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705241738433_InvoiceItem.cs" />
+    <Compile Include="Migrations\201705241738433_InvoiceItem.Designer.cs">
+      <DependentUpon>201705241738433_InvoiceItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705241742144_InvoiceItem1.cs" />
+    <Compile Include="Migrations\201705241742144_InvoiceItem1.Designer.cs">
+      <DependentUpon>201705241742144_InvoiceItem1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705241829399_InvoiceItem2.cs" />
+    <Compile Include="Migrations\201705241829399_InvoiceItem2.Designer.cs">
+      <DependentUpon>201705241829399_InvoiceItem2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705241913157_InvoiceItem3.cs" />
+    <Compile Include="Migrations\201705241913157_InvoiceItem3.Designer.cs">
+      <DependentUpon>201705241913157_InvoiceItem3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AppDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +100,24 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201512141203140_initial.resx">
       <DependentUpon>201512141203140_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705241628478_InvoiceSeed.resx">
+      <DependentUpon>201705241628478_InvoiceSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705241643205_InvoiceSeed1.resx">
+      <DependentUpon>201705241643205_InvoiceSeed1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705241738433_InvoiceItem.resx">
+      <DependentUpon>201705241738433_InvoiceItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705241742144_InvoiceItem1.resx">
+      <DependentUpon>201705241742144_InvoiceItem1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705241829399_InvoiceItem2.resx">
+      <DependentUpon>201705241829399_InvoiceItem2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705241913157_InvoiceItem3.resx">
+      <DependentUpon>201705241913157_InvoiceItem3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using RefactorName.Core;
+using RefactorName.Core.Entities;
 
 namespace RefactorName.SqlServerRepository
 {
@@ -78,6 +79,18 @@ namespace RefactorName.SqlServerRepository
 
 
             #endregion
+
+            modelBuilder.Entity<Invoice>()
+                .HasMany(x => x.Details)
+                .WithRequired(x => x.Invoice)
+                .HasForeignKey(x => x.InvoiceId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<InvoiceDetail>()
+                .HasOptional(x => x.Item)
+                .WithMany()
+                .HasForeignKey(x => x.ItemId)
+                .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }

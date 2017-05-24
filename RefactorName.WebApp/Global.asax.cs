@@ -40,8 +40,6 @@ namespace RefactorName.WebApp
 
             Thread cleanThread = new Thread(() => Util.CleanTempFolder());
             cleanThread.Start();
-
-
         }
 
         protected void Session_End(Object sender, EventArgs e)
@@ -63,7 +61,7 @@ namespace RefactorName.WebApp
             Session.Clear();
         }
 
-        protected static void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        protected void Application_PreSendRequestHeaders(object sender, EventArgs e)
         {
             HttpContext.Current.Response.Headers.Remove("X-Powered-By");
             HttpContext.Current.Response.Headers.Remove("X-AspNet-Version");
@@ -76,7 +74,7 @@ namespace RefactorName.WebApp
             //HttpContext.Current.Response.Headers.Add("content-security-policy", "script-src 'self' 'unsafe-inline' 'unsafe-eval'");
         }
 
-        protected static void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             var oldPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
             if (oldPrincipal != null)

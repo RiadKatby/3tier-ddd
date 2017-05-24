@@ -498,7 +498,6 @@ namespace RefactorName.WebApp.Helpers
             return result;
         }
 
-
         private static string GenerateLink(AjaxHelper ajaxHelper, string innerHtml, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
         {
             TagBuilder tag = new TagBuilder("a")
@@ -521,72 +520,77 @@ namespace RefactorName.WebApp.Helpers
             return tag.ToString(TagRenderMode.Normal);
         }
 
+        #region Confirmable and Encrypted (Ajax / HTML) Action Link
+
+        /// <summary>
+        /// Returns a confirmable and encrypted HREF anchor element (a element) that ask user for confirmation before AJAX submit to server.
+        /// </summary>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
+        /// <param name="innerHtml">The inner HTML tag of the anchor element.</param>
+        /// <param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
+        /// <param name="permissionCodes">permissions that have to be checked to show the element.</param>
+        /// <returns>A confirmable and encrypted HREF anchor element (a element) if current user is authenticated and has the specified permission codes.</returns>
         public static ConfirmableLink ConfirmableLink(this AjaxHelper helper, string innerHtml, object htmlAttributes, params string[] permissionCodes)
+        {
+            var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
+
+            return ConfirmableLink(helper, innerHtml, attributes, permissionCodes);
+        }
+
+        /// <summary>
+        /// Returns a confirmable and encrypted HREF anchor element (a element) that ask user for confirmation before AJAX submit to server.
+        /// </summary>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
+        /// <param name="innerHtml">The inner HTML tag of the anchor element.</param>
+        /// <param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
+        /// <param name="permissionCodes">permissions that have to be checked to show the element.</param>
+        /// <returns>A confirmable and encrypted HREF anchor element (a element) if current user is authenticated and has the specified permission codes.</returns>
+        public static ConfirmableLink ConfirmableLink(this AjaxHelper helper, string innerHtml, IDictionary<string, object> htmlAttributes, params string[] permissionCodes)
         {
             var confirmableLink = new ConfirmableLink(helper);
             confirmableLink.Link(innerHtml, htmlAttributes, permissionCodes);
 
             return confirmableLink;
         }
-    }
 
-    public class ConfirmableLink
-    {
-        private AjaxHelper helper;
-
-        private string innerHtml;
-        private object htmlAttributes;
-        private string[] permissionCodes;
-
-        private ConfirmInfo confirmInfo;
-
-        public ConfirmableLink(AjaxHelper helper)
+        /// <summary>
+        /// Returns a confirmable and encrypted HREF anchor element (a element) that as user for confirmation before regular submit to server.
+        /// </summary>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
+        /// <param name="innerHtml">The inner HTML tag of the anchor element.</param>
+        /// <param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
+        /// <param name="permissionCodes">permissions that have to be checked to show the element.</param>
+        /// <returns>A confirmable and encrypted HREF anchor element (a element) if current user is authenticated and has the specified permission codes.</returns>
+        public static ConfirmableLink ConfirmableLink(this HtmlHelper helper, string innerHtml, object htmlAttributes, params string[] permissionCodes)
         {
-            this.helper = helper;
+            var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
+
+            return ConfirmableLink(helper, innerHtml, attributes, permissionCodes);
         }
 
-        internal void Link(string innerHtml, object htmlAttributes, params string[] permissionCodes)
+        /// <summary>
+        /// Returns a confirmable and encrypted HREF anchor element (a element) that as user for confirmation before regular submit to server.
+        /// </summary>
+        /// <param name="helper">The HTML helper instance that this method extends.</param>
+        /// <param name="innerHtml">The inner HTML tag of the anchor element.</param>
+        /// <param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
+        /// <param name="permissionCodes">permissions that have to be checked to show the element.</param>
+        /// <returns>A confirmable and encrypted HREF anchor element (a element) if current user is authenticated and has the specified permission codes.</returns>
+        public static ConfirmableLink ConfirmableLink(this HtmlHelper helper, string innerHtml, IDictionary<string, object> htmlAttributes, params string[] permissionCodes)
         {
-            this.innerHtml = innerHtml;
-            this.htmlAttributes = htmlAttributes;
-            this.permissionCodes = permissionCodes;
+            var confirmableLink = new ConfirmableLink(helper);
+            confirmableLink.Link(innerHtml, htmlAttributes, permissionCodes);
+
+            return confirmableLink;
         }
 
-        public ConfirmableLink ConfirmedByPopover(string actionName, string controllerName, object routeValues, string title, string message)
+        public static PopoverLink Dialog(this HtmlHelper helper, string innerHtml, object htmlAttributes, params string[] permissionCodes)
         {
-            confirmInfo = new ConfirmInfo(title, message);
+            var popoverLink = new PopoverLink(helper);
+            popoverLink.Link(innerHtml, htmlAttributes, permissionCodes);
 
-            var parameters = Util.EncryptRouteValues(routeValues);
-            RouteValueDictionary routeData = new RouteValueDictionary();
-            routeData.Add(ConfirmInfo.ActionNameKey, actionName);
-            routeData.Add(ConfirmInfo.ControllerNameKey, controllerName ?? helper.ViewContext.RouteData.Values["controller"]);
-            routeData.Add(ConfirmInfo.QueryStringKey, parameters["q"]);
-
-            confirmInfo.Url = StringEncrypter.UrlEncrypter.Encrypt(routeData.ToQueryString().ToString());
-
-            return this;
+            return popoverLink;
         }
-
-        public MvcHtmlString RequestOptions(string httpMethod, string updateTargetId, string loadingElementId)
-        {
-            var ajaxOptions = new AjaxOptions
-            {
-                HttpMethod = httpMethod,
-                UpdateTargetId = updateTargetId,
-                LoadingElementId = loadingElementId
-            };
-
-            string attributeAsQueryString = ajaxOptions.ToQueryString().ToString();
-            confirmInfo.Attributes = StringEncrypter.UrlEncrypter.Encrypt(attributeAsQueryString);
-
-            var htmlHelper = new HtmlHelper(helper.ViewContext, helper.ViewDataContainer, helper.RouteCollection);
-
-            var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(this.htmlAttributes);
-            attributes.Add("title", confirmInfo.Title);
-            attributes.Add("data-toggle", "popover");
-            attributes.Add("data-placement", "top");
-
-            return htmlHelper.HtmlLink(innerHtml, "GetConfirmationPopover", "Shared", null, null, null, confirmInfo.ToRouteValues(), attributes, permissionCodes);
-        }
+        #endregion
     }
 }
